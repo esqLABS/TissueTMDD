@@ -14,6 +14,7 @@ mod_sidebar_ui <- function(id){
                    collapsed = FALSE,
                    minified = FALSE,
                    fixed = TRUE,
+                   mod_introduction_provider_ui("introduction_provider_1")
 
                       )
 }
