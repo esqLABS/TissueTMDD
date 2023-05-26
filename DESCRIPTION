@@ -9,6 +9,7 @@ License: MIT + file LICENSE
 URL: https://github.com/esqLABS/TissueTMDD
 BugReports: https://github.com/esqLABS/TissueTMDD/issues
 Imports: 
+    bs4Dash,
     config (>= 0.3.1),
     golem (>= 0.4.0),
     shiny (>= 1.7.4)
