@@ -3,14 +3,19 @@
 #' @param request Internal parameter for `{shiny}`.
 #'     DO NOT REMOVE.
 #' @import shiny
+#' @import bs4Dash
 #' @noRd
 app_ui <- function(request) {
   tagList(
     # Leave this function for adding external resources
     golem_add_external_resources(),
     # Your application UI logic
-    fluidPage(
-      h1("TissueTMDD")
+    bs4Dash::dashboardPage(
+      bs4Dash::dashboardHeader(title = "TissueTMDD"),
+      mod_sidebar_ui("sidebar_1"),
+      mod_body_ui("body_1"),
+      fullscreen = TRUE,
+      dark = NULL
     )
   )
 }

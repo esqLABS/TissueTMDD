@@ -20,8 +20,24 @@ attachment::att_amend_desc()
 
 ## Add modules ----
 ## Create a module infrastructure in R/
-golem::add_module(name = "name_of_module1", with_test = TRUE) # Name of the module
-golem::add_module(name = "name_of_module2", with_test = TRUE) # Name of the module
+golem::add_module(name = "sidebar", with_test = TRUE) # Name of the module
+golem::add_module(name = "body", with_test = TRUE) # Name of the module
+
+### Sidebar modules
+golem::add_module(name = "introduction_provider", with_test = TRUE) # Name of the module
+golem::add_module(name = "preset_selector", with_test = TRUE)
+golem::add_module(name = "settings_importer", with_test = TRUE)
+golem::add_module(name = "input_handler", with_test = TRUE)
+golem::add_module(name = "run_launcher", with_test = TRUE)
+golem::add_module(name = "settings_saver", with_test = TRUE)
+golem::add_module(name = "comparison_handler", with_test = TRUE)
+golem::add_module(name = "tooltip_handler", with_test = TRUE)
+
+
+### Body modules
+golem::add_module(name = "result_displayer", with_test = TRUE)
+
+### Backend modules
 
 ## Add helper functions ----
 ## Creates fct_* and utils_*
