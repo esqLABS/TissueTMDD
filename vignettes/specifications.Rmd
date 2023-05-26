@@ -1,0 +1,42 @@
+---
+title: "Specifications"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{ui-prototype}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+# User requirements
+
+As a user, I need TissueTMDD app to be able to:
+  
+  - Run PK simulation using a preloaded model,
+  - Let me customize the simulations by changing value for most the relevant parameters,
+  - Export and import simulation settings,
+  - Display simulation result as concentration over time plot,
+  - Compare at least two simulations results graphically.
+  
+# Graphical User Interface Prototype
+
+![](assets/gui-prototype.png)
+
+# Technical requirements
+
+The application should:
+
+  - Interact with a .pkml file through OSPS,
+  - Be deployable on a server,
+  - Be an R package.
+
+
+
+
+
