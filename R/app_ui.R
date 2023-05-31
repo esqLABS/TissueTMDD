@@ -9,6 +9,7 @@ app_ui <- function(request) {
   tagList(
     # Leave this function for adding external resources
     golem_add_external_resources(),
+    useShinyjs(),
     # Your application UI logic
     bs4Dash::dashboardPage(
       bs4Dash::dashboardHeader(title = "TissueTMDD"),

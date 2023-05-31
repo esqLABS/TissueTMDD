@@ -14,18 +14,26 @@ mod_sidebar_ui <- function(id){
                    collapsed = FALSE,
                    minified = FALSE,
                    fixed = TRUE,
-                   mod_introduction_provider_ui("introduction_provider_1")
+                   mod_introduction_provider_ui(ns("introduction_provider_1")),
+                   mod_input_handler_ui(ns("input_handler_1")),
+                   fluidRow(
+                     column(7, mod_run_launcher_ui(ns("run_launcher_1"))),
+                     column(4, mod_settings_saver_ui(ns("settings_saver_1"))),
+                   )
 
-                      )
+  )
 }
 
 #' sidebar Server Functions
 #'
 #' @noRd
-mod_sidebar_server <- function(id){
+mod_sidebar_server <- function(id, r){
   moduleServer( id, function(input, output, session){
     ns <- session$ns
 
+    mod_input_handler_server("input_handler_1", r)
+    mod_run_launcher_server("run_launcher_1", r)
+    mod_settings_saver_server("settings_saver_1", r)
   })
 }
 

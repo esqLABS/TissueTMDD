@@ -9,25 +9,19 @@
 #' @importFrom shiny NS tagList
 mod_body_ui <- function(id){
   ns <- NS(id)
-    dashboardBody(
-      # Boxes need to be put in a row (or column)
-      fluidRow(
-        box(plotOutput("plot1", height = 250)),
-
-        box(
-          title = "Controls",
-          sliderInput("slider", "Number of observations:", 1, 100, 50)
-        )
-      )
-    )
+  dashboardBody(
+    mod_result_displayer_ui(ns("result_displayer_1"))
+  )
 }
 
 #' body Server Functions
 #'
 #' @noRd
-mod_body_server <- function(id){
+mod_body_server <- function(id, r){
   moduleServer( id, function(input, output, session){
     ns <- session$ns
+
+    mod_result_displayer_server("result_displayer_1", r )
 
   })
 }
