@@ -38,6 +38,9 @@ golem::add_module(name = "tooltip_handler", with_test = TRUE)
 golem::add_module(name = "result_displayer", with_test = TRUE)
 
 ### Backend modules
+golem::add_module(name = "simulation_runner", with_test = TRUE)
+golem::add_module(name = "results_transformer", with_test = TRUE)
+
 
 ## Add helper functions ----
 ## Creates fct_* and utils_*
