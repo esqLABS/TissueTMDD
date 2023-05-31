@@ -20,6 +20,7 @@ As a user, I need TissueTMDD app to be able to:
   
   - Run PK simulation using a preloaded model,
   - Let me customize the simulations by changing value for most the relevant parameters,
+  - Pick the output path I want,
   - Export and import simulation settings,
   - Display simulation result as concentration over time plot,
   - Compare at least two simulations results graphically.
