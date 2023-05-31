@@ -12,9 +12,10 @@ mod_input_handler_ui <- function(id){
   bs4Dash::box(title = "Settings",
                width = 12,
                collapsible = FALSE,
-
-               mod_preset_selector_ui(ns("preset_selector_1")),
-
+               fluidRow(
+                 mod_preset_selector_ui(ns("preset_selector_1")),
+                 mod_settings_importer_ui(ns("settings_importer_1")),
+               ),
                sliderInput(ns("param_kdeg"),
                            "Target Degradation (Kdeg, [1/min])",
                            min = 0,
@@ -58,6 +59,7 @@ mod_input_handler_server <- function(id, r){
     ns <- session$ns
 
     mod_preset_selector_server("preset_selector_1", r)
+    mod_settings_importer_server("settings_importer_1", r)
 
     r$parameters <- list(kdeg = list(type = "slider",
                                      value = 0.0017,
