@@ -23,6 +23,8 @@ mod_data_loader_server <- function(id, r){
 
     r$all_sim_results <- list()
 
+    data("default_data")
+
     observe({
       message("default_data loaded")
       r$all_sim_results[["default"]] <- default_data
