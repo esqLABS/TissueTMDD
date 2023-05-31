@@ -11,7 +11,7 @@ mod_settings_saver_ui <- function(id){
   ns <- NS(id)
   tagList(
     actionButton(inputId = ns("save_settings_btn"),
-                 label = "Save Settings",
+                 label = "Save",
                  icon = icon("save"),
                  width = "100%"),
     # Hidden button, necessary for download to work
@@ -28,7 +28,7 @@ mod_settings_saver_server <- function(id, r){
     ns <- session$ns
 
     dataModal <- function(failed = FALSE) {
-      modalDialog(title = "Save Simulation",
+      modalDialog(title = "Save Simulation Settings",
                   fluidRow(column(1),
                            textInput(ns("simulation_name"),
                                      label = "Simulation Name",
@@ -47,11 +47,7 @@ mod_settings_saver_server <- function(id, r){
       )
     }
 
-    observeEvent(input$save_settings_btn, {
-      r$save_settings <- input$save_settings_btn
-    })
-
-    observeEvent(r$save_settings,{
+    observeEvent(input$save_settings_btn,{
       showModal(dataModal())
     })
 
@@ -59,6 +55,7 @@ mod_settings_saver_server <- function(id, r){
       if (!is.null(input$simulation_name) && nzchar(input$simulation_name)) {
         r$presets[[input$simulation_name]] <- r$parameters
         r$simulation_name <- input$simulation_name
+        r$save_settings <- Sys.time()
         if (input$export_checkbox) {
           message("downloading settings")
           # We simulate a click on the hidden "download button"
@@ -72,7 +69,7 @@ mod_settings_saver_server <- function(id, r){
 
     output$download_settings <- downloadHandler(
       filename = function() {
-        paste("tissuetmdd_settings_", input$simulation_name,".json", sep="")
+        paste(input$simulation_name, "_tissuetmdd_settings", ".json", sep="")
       },
       content = function(file) {
         to_export <- list()

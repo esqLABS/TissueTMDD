@@ -18,9 +18,13 @@ mod_result_displayer_ui <- function(id){
                  id = ns("plot-sidebar"),
                  width = 33,
                  h3("Plot Settings"),
-                 selectInput(ns("output_path_select"),
-                             label = "Output Path to Display",
-                             choices = output_paths())
+                 fluidRow(column(1),
+                          selectInput(ns("output_path_select"),
+                                      label = "Output Path to Display",
+                                      choices = output_paths(),
+                                      width = "83%"),
+                          column(1))
+
                ))
 }
 
@@ -30,7 +34,6 @@ mod_result_displayer_ui <- function(id){
 mod_result_displayer_server <- function(id, r){
   moduleServer( id, function(input, output, session){
     ns <- session$ns
-
 
     output$plot <- renderPlot({
       req(r$result_df)

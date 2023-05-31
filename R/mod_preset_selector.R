@@ -12,7 +12,8 @@ mod_preset_selector_ui <- function(id){
   selectInput(ns("preset_select"),
               "Presets",
               multiple = FALSE,
-              choices = c("default")
+              choices = c("default"),
+              width = "50%"
   )
 }
 
@@ -33,15 +34,27 @@ mod_preset_selector_server <- function(id, r){
       )
     )
 
+
     # When a preset is selected, return corresponding settings
+    # and simulation result if they exist
     observeEvent(input$preset_select, {
       r$preset <- r$presets[[input$preset_select]]
       r$simulation_name <- input$preset_select
     })
 
+
+    observeEvent(input$preset_select, {
+      req(r$all_sim_results)
+      req(input$preset_select)
+      if (input$preset_select %in% names(r$all_sim_results)) {
+        r$result_df <- r$all_sim_results[[input$preset_select]]
+      }
+    })
+
     observeEvent(input$preset_select,{
+      # "custom" is removed from list when preset is selected
       req(input$preset_select != "custom")
-      # Also "custom" is removed from list
+
       updateSelectInput(inputId = "preset_select",
                         choices = names(r$presets),
                         selected = input$preset_select)
@@ -53,6 +66,7 @@ mod_preset_selector_server <- function(id, r){
       req(r$preset)
       req(r$parameters)
 
+      # If current settings are different than the selected preset, then switch to "custom"
       if (all.equal.list(modifyList(r$parameters, r$preset), r$parameters) != TRUE) {
         updateSelectInput(inputId = "preset_select",
                           choices = c(names(r$presets), "custom"),
