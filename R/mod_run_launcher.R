@@ -23,7 +23,6 @@ mod_run_launcher_server <- function(id, r){
     ns <- session$ns
 
     observeEvent(input$run_simulation_btn,{
-      message("Run simulation button pressed")
       r$run_simulation <- input$run_simulation_btn
     })
 

@@ -27,13 +27,15 @@ mod_settings_importer_server <- function(id, r){
     ns <- session$ns
 
     observeEvent(input$import_settings,{
+      message("Import setting file(s)")
       for (file in input$import_settings$datapath) {
         json_data <- jsonlite::read_json(path = file)
         for (name in names(json_data)) {
           r$presets[[name]] <- json_data[[name]]
-          showNotification(ui = paste(name, "settings was imported successfully"),
-                           type = "message")
         }
+        showNotification(ui = paste(input$import_settings$name,
+                                    "settings file was imported successfully"),
+                         type = "message")
       }
     })
 

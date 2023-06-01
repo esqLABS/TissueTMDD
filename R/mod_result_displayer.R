@@ -39,7 +39,7 @@ mod_result_displayer_server <- function(id, r){
       req(r$result_df)
       req(input$output_path_select)
 
-      message("Plotting simulation results")
+      message("Plot simulation results")
 
 
       ggplot2::ggplot(r$result_df,

@@ -26,7 +26,7 @@ mod_simulation_runner_server <- function(id, r){
 
 
     observeEvent(r$run_simulation, {
-      message("Running simulation")
+      message("Run simulation")
       r$simulation_results <- ospsuite::runSimulation(r$model)
     })
 
@@ -45,7 +45,7 @@ load_default_model <- function() {
                                  package = "TissueTMDD",
                                  mustWork = TRUE)
   model <- ospsuite::loadSimulation(simulation_path)
-  message("simulation loaded")
+  message("Load model file")
   return(model)
 }
 
