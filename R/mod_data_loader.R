@@ -22,6 +22,8 @@ mod_data_loader_server <- function(id, r){
     ns <- session$ns
 
     message("Load default simulation results")
+
+    default_data$name <- "default"
     r$all_sim_results <- list("default" = default_data)
 
   })

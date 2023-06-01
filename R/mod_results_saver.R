@@ -10,7 +10,6 @@
 mod_results_saver_ui <- function(id){
   ns <- NS(id)
   tagList(
-
   )
 }
 
@@ -21,12 +20,27 @@ mod_results_saver_server <- function(id, r){
   moduleServer( id, function(input, output, session){
     ns <- session$ns
 
-    observeEvent(r$save_settings,{
-      req(r$result_df)
+    # When a
+    observeEvent(r$save_simulation, {
       req(r$simulation_name)
-      r$all_sim_results[[r$simulation_name]] <- r$result_df
+      message("Save simulation result as ", r$simulation_name)
+      # if ("tmp" %in% names(r$all_sim_results)) {
+        r$result_df$name <- r$simulation_name
+        r$all_sim_results[[r$simulation_name]] <-  r$result_df
+        # names(r$all_sim_results)[names(r$all_sim_results) == "tmp"] <- r$simulation_name
+      # }
     })
   })
+
+  # When a preset is loaded, the simulation results are automatically using
+  # the name of the preset
+  observeEvent(r$result_df, ignoreInit = TRUE, {
+    if (r$simulation_name != "custom") {
+      isolate(r$result_df$name <- r$simulation_name)
+      r$all_sim_results[[r$simulation_name]] <- r$result_df
+    }
+  })
+
 }
 
 ## To be copied in the UI

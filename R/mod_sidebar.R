@@ -16,11 +16,17 @@ mod_sidebar_ui <- function(id){
                    fixed = TRUE,
                    mod_introduction_provider_ui(ns("introduction_provider_1")),
                    mod_input_handler_ui(ns("input_handler_1")),
-                   fluidRow(
-                     column(7, mod_run_launcher_ui(ns("run_launcher_1"))),
-                     column(4, mod_settings_saver_ui(ns("settings_saver_1"))),
-                   )
+                   bs4Dash::box(title = "Run Simulation",
+                                width = 12,
+                                fluidRow(
+                                  column(7, mod_run_launcher_ui(ns("run_launcher_1"))),
+                                  column(4, mod_simulation_saver_ui(ns("simulation_saver_1"))),
+                                )),
+                   bs4Dash::box(title = "Compare Simulations",
+                                width = 12,
+                                mod_comparison_handler_ui(ns("comparison_handler_1"))
 
+                   )
   )
 }
 
@@ -33,7 +39,8 @@ mod_sidebar_server <- function(id, r){
 
     mod_input_handler_server("input_handler_1", r)
     mod_run_launcher_server("run_launcher_1", r)
-    mod_settings_saver_server("settings_saver_1", r)
+    mod_simulation_saver_server("simulation_saver_1", r)
+    mod_comparison_handler_server("comparison_handler_1", r)
   })
 }
 

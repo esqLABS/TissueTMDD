@@ -41,14 +41,24 @@ mod_result_displayer_server <- function(id, r){
 
       message("Plot simulation results")
 
+      if (r$compare_sim_toggle && length(r$compared_sim) > 0) {
+        ggplot2::ggplot(r$comparison_df,
+                        aes(x = Time,
+                            y= .data[[input$output_path_select]],
+                            color = name)) +
+          geom_line() +
+          labs(x = "Time (s)",
+               y = names(output_paths()[output_paths() == input$output_path_select]))
+      } else {
 
-      ggplot2::ggplot(r$result_df,
-                      aes(x = Time,
-                          y= .data[[input$output_path_select]])) +
-        geom_line() +
-        labs(x = "Time (s)",
-             y = names(output_paths()[output_paths() == input$output_path_select]))
-
+        ggplot2::ggplot(
+          r$result_df,
+          aes(x = Time,
+              y= .data[[input$output_path_select]])) +
+          geom_line() +
+          labs(x = "Time (s)",
+               y = names(output_paths()[output_paths() == input$output_path_select]))
+      }
     },
     res = 96,
     height = 600)

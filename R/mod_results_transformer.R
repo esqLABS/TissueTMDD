@@ -20,10 +20,13 @@ mod_results_transformer_server <- function(id, r){
 
 
     observeEvent(r$simulation_results, {
-      r$result_df <-
-        ospsuite::getOutputValues(r$simulation_results,
+      result_df <- ospsuite::getOutputValues(r$simulation_results,
                                   quantitiesOrPaths = output_paths()
         )$data
+
+      result_df$name <- "Current Simulation"
+
+      r$result_df <- result_df
     })
 
   })
