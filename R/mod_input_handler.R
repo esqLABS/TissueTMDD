@@ -9,7 +9,7 @@
 #' @importFrom shiny NS tagList
 mod_input_handler_ui <- function(id){
   ns <- NS(id)
-  bs4Dash::box(title = "Settings",
+  bs4Dash::box(title = "Simulation Settings",
                width = 12,
                collapsible = FALSE,
                fluidRow(
@@ -124,7 +124,6 @@ update_parameter <- function(model, parameter_path, value){
   current <- ospsuite::getParameter(path = parameter_path, container = model)
 
   if (current$value != value) {
-    message("new value for ", parameter_path, ": ", value, " (previous value:", current$value, ")")
     ospsuite::setParameterValues(parameters = current, values = value)
   }
 }
