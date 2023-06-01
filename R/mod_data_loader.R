@@ -21,17 +21,8 @@ mod_data_loader_server <- function(id, r){
   moduleServer( id, function(input, output, session){
     ns <- session$ns
 
-    r$all_sim_results <- list()
-
-    data("default_data")
-
-    observe({
-      message("default_data loaded")
-      r$all_sim_results[["default"]] <- default_data
-      r$result_df <- default_data
-    },
-    autoDestroy = TRUE
-    )
+    message("Load default simulation results")
+    r$all_sim_results <- list("default" = default_data)
 
   })
 }
