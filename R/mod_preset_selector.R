@@ -34,33 +34,6 @@ mod_preset_selector_server <- function(id, r){
       )
     )
 
-
-    # When a preset is selected, return corresponding settings
-    # and simulation result if they exist
-    observeEvent(input$preset_select, {
-      r$preset <- r$presets[[input$preset_select]]
-      r$simulation_name <- input$preset_select
-    })
-
-
-    observeEvent(input$preset_select, {
-      req(r$all_sim_results)
-      req(input$preset_select)
-      if (input$preset_select %in% names(r$all_sim_results)) {
-        r$result_df <- r$all_sim_results[[input$preset_select]]
-      }
-    })
-
-    observeEvent(input$preset_select,{
-      # "custom" is removed from list when preset is selected
-      req(input$preset_select != "custom")
-
-      updateSelectInput(inputId = "preset_select",
-                        choices = names(r$presets),
-                        selected = input$preset_select)
-
-    })
-
     observeEvent(r$parameters, ignoreInit = TRUE, {
       req(input$preset_select != "custom")
       req(r$preset)
@@ -71,7 +44,33 @@ mod_preset_selector_server <- function(id, r){
         updateSelectInput(inputId = "preset_select",
                           choices = c(names(r$presets), "custom"),
                           selected = "custom")
+        r$simulation_name <- "custom"
       }
+    })
+
+    # When a preset is selected, return corresponding settings
+    # and set simulation name to the selected preset
+    observeEvent(input$preset_select, {
+      req(input$preset_select)
+      req(r$all_sim_results)
+      r$preset <- r$presets[[input$preset_select]]
+      if (input$preset_select != "custom") {
+        r$simulation_name <- input$preset_select
+      }
+      if (input$preset_select %in% names(r$all_sim_results)) {
+        r$result_df <- r$all_sim_results[[input$preset_select]]
+      }
+    })
+
+
+    observeEvent(input$preset_select,{
+      # "custom" is removed from list when preset is selected
+      req(input$preset_select != "custom")
+
+      updateSelectInput(inputId = "preset_select",
+                        choices = names(r$presets),
+                        selected = input$preset_select)
+
     })
 
     # When presets are changed (when user save a simulation), then the dropdown is updated.

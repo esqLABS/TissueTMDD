@@ -110,6 +110,22 @@ mod_input_handler_server <- function(id, r){
       }
     })
 
+
+
+    observeEvent(r$simulation_name,{
+      if (r$simulation_name == "custom") {
+        r$result_df <- NULL
+      }
+    })
+
+
+    observeEvent(r$parameters,{
+      req(r$result_df)
+      if (r$simulation_name == "custom"){
+        r$result_df <- NULL
+      }
+    })
+
   })
 }
 
