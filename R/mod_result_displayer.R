@@ -9,12 +9,15 @@
 #' @importFrom shiny NS tagList
 mod_result_displayer_ui <- function(id){
   ns <- NS(id)
-  bs4Dash::box(title = "Simulation Results",
-               collapsible = FALSE,
-               width = 12,
-               height = "75vh",
-               plotOutput(ns("plot")),
-               sidebar = mod_result_sidebar_handler_ui(ns("result_sidebar_handler_1"))
+  tagList(
+    bs4Dash::box(title = "Simulation Results",
+                 collapsible = FALSE,
+                 width = 12,
+                 height = "75vh",
+                 plotOutput(ns("myplot"),
+                            height = "100%"),
+                 sidebar = mod_result_sidebar_handler_ui(ns("result_sidebar_handler_1"))
+    )
   )
 }
 
@@ -27,7 +30,16 @@ mod_result_displayer_server <- function(id, r){
 
     mod_result_sidebar_handler_server("result_sidebar_handler_1", r)
 
-    output$plot <- renderPlot({
+
+    observeEvent(r$run_simulation,{
+      r$w <- Waitress$new(selector = paste0("#",ns("myplot")),
+                          theme = "overlay-percent",
+                          infinite = TRUE,
+                          hide_on_render = TRUE)
+      r$w$start()
+    })
+
+    output$myplot <- renderPlot({
       req(r$result_df)
       req(r$plot_settings$output_path_select)
       req(r$plot_settings$yaxis_scale)
@@ -36,28 +48,29 @@ mod_result_displayer_server <- function(id, r){
 
       path <- names(output_paths())[output_paths() == r$plot_settings$output_path_select]
 
-
       plot <-
-        ggplot(r$comparison_df,
-               aes(x = Time,
-                   y= .data[[r$plot_settings$output_path_select]])) +
+        ggplot(r$comparison_df %||% r$result_df,
+               aes(x = .data$Time,
+                   y = .data[[r$plot_settings$output_path_select]])) +
         labs(x = "Time (s)",
              y = path,
              title = paste0("Simulation of ",
-                            path,
-                            " (Simulation settings: ",
-                            r$simulation_name,
-                            " )")
+                            path),
+             subtitle = paste0("Simulation settings: ",
+                               r$simulation_name)
         )
 
       if (r$compare_sim_toggle && length(r$compared_sim) > 0) {
         plot <- plot +
           geom_line(aes(color = name)) +
           labs(title = paste0("Simulation of ",
-                              path,
-                              " (Simulation settings: ",
-                              paste(r$simulation_name, r$compared_sim, collapse = ", "),
-                              " )"))
+                              path),
+               subtitle =  paste0("Simulation settings: ",
+                                  paste(r$simulation_name,
+                                        r$compared_sim,
+                                        sep= ", ",
+                                        collapse = ", ")),
+               color = "Simulation Name")
 
       } else {
         plot <- plot + geom_line()
@@ -69,11 +82,16 @@ mod_result_displayer_server <- function(id, r){
           labs(y = paste(path, "(log)"))
       }
 
-      return(plot)
+      on.exit({
+        if (!is.null(r$w)) {
+          r$w$close()
+        }
+      })
 
+
+      return(plot)
     },
-    res = 96,
-    height = 600)
+    res = 96)
 
 
   })

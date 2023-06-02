@@ -10,8 +10,10 @@ app_ui <- function(request) {
     # Leave this function for adding external resources
     golem_add_external_resources(),
     useShinyjs(),
+    useWaitress(),
     # Your application UI logic
     bs4Dash::dashboardPage(
+      preloader = list(html = tagList(spin_1(), "Loading TissueTMDD"), color = "#333e48"),
       bs4Dash::dashboardHeader(title = "TissueTMDD"),
       mod_sidebar_ui("sidebar_1"),
       mod_body_ui("body_1"),

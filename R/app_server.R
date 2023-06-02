@@ -12,6 +12,7 @@
 #' @import magrittr
 #' @import jsonlite
 #' @import shinyjs
+#' @import waiter
 #' @noRd
 app_server <- function(input, output, session) {
   # Your application server logic
