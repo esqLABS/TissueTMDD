@@ -45,9 +45,6 @@ mod_comparison_handler_server <- function(id, r){
       })
 
     observeEvent(list(input$compare_sim_select, input$compare_sim_toggle, r$result_df), ignoreNULL = FALSE, {
-
-      message("Simulations to compare: ", paste(input$compare_sim_select, collapse = ", "))
-
       comparison_df <- r$result_df
 
       for (simulation in input$compare_sim_select) {
@@ -65,8 +62,6 @@ mod_comparison_handler_server <- function(id, r){
       if (input$compare_sim_toggle == FALSE) {
         updateSelectizeInput(inputId = "compare_sim_select",
                              selected = NULL)
-        # r$comparison_df <- NULL
-        # r$compared_sim <- NULL
       }
     })
 

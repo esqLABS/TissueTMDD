@@ -22,6 +22,8 @@ mod_run_launcher_server <- function(id, r){
   moduleServer( id, function(input, output, session){
     ns <- session$ns
 
+
+
     observeEvent(input$run_simulation_btn,{
       r$run_simulation <- input$run_simulation_btn
     })
