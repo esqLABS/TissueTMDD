@@ -23,8 +23,8 @@ app_server <- function(input, output, session) {
   mod_body_server("body_1", r)
 
   # Backend modules
+  mod_model_loader_server("model_loader_1", r)
   mod_data_loader_server("data_loader_1", r)
-  mod_simulation_runner_server("simulation_runner_1", r)
   mod_results_transformer_server("results_transformer_1", r)
   mod_results_saver_server("results_saver_1", r)
 }

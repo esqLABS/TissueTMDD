@@ -28,7 +28,7 @@ golem::add_module(name = "introduction_provider", with_test = TRUE) # Name of th
 golem::add_module(name = "preset_selector", with_test = TRUE)
 golem::add_module(name = "settings_importer", with_test = TRUE)
 golem::add_module(name = "input_handler", with_test = TRUE)
-golem::add_module(name = "run_launcher", with_test = TRUE)
+golem::add_module(name = "simulation_launcher", with_test = TRUE)
 golem::add_module(name = "settings_saver", with_test = TRUE)
 golem::add_module(name = "comparison_handler", with_test = TRUE)
 golem::add_module(name = "tooltip_handler", with_test = TRUE)
@@ -39,7 +39,7 @@ golem::add_module(name = "result_displayer", with_test = TRUE)
 golem::add_module(name = "result_sidebar_handler", with_test = TRUE)
 
 ### Backend modules
-golem::add_module(name = "simulation_runner", with_test = TRUE)
+golem::add_module(name = "model_loader", with_test = TRUE)
 golem::add_module(name = "results_transformer", with_test = TRUE)
 golem::add_module(name = "simulation_saver", with_test = TRUE)
 golem::add_module(name = "settings_exporter", with_test = TRUE)

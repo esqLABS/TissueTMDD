@@ -19,7 +19,7 @@ mod_sidebar_ui <- function(id){
                    bs4Dash::box(title = "Run Simulation",
                                 width = 12,
                                 fluidRow(
-                                  column(7, mod_run_launcher_ui(ns("run_launcher_1"))),
+                                  column(7, mod_simulation_launcher_ui(ns("simulation_launcher_1"))),
                                   column(4, mod_simulation_saver_ui(ns("simulation_saver_1"))),
                                 )),
                    bs4Dash::box(title = "Compare Simulations",
@@ -38,7 +38,7 @@ mod_sidebar_server <- function(id, r){
     ns <- session$ns
 
     mod_input_handler_server("input_handler_1", r)
-    mod_run_launcher_server("run_launcher_1", r)
+    mod_simulation_launcher_server("simulation_launcher_1", r)
     mod_simulation_saver_server("simulation_saver_1", r)
     mod_comparison_handler_server("comparison_handler_1", r)
   })

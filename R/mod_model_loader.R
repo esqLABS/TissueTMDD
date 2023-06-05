@@ -1,4 +1,4 @@
-#' simulation_runner UI Function
+#' model_loader UI Function
 #'
 #' @description A shiny Module.
 #'
@@ -7,38 +7,30 @@
 #' @noRd
 #'
 #' @importFrom shiny NS tagList
-mod_simulation_runner_ui <- function(id){
+mod_model_loader_ui <- function(id){
   ns <- NS(id)
   tagList(
 
   )
 }
 
-#' simulation_runner Server Functions
+#' model_loader Server Functions
 #'
 #' @noRd
-mod_simulation_runner_server <- function(id, r){
+mod_model_loader_server <- function(id, r){
   moduleServer( id, function(input, output, session){
     ns <- session$ns
 
     r$model <- load_default_model()
 
-
-
-    observeEvent(r$run_simulation, {
-      message("Run simulation")
-      r$simulation_results <- ospsuite::runSimulation(r$model)
-    })
-
   })
 }
 
 ## To be copied in the UI
-# mod_simulation_runner_ui("simulation_runner_1")
+# mod_model_loader_ui("model_loader_1")
 
 ## To be copied in the server
-# mod_simulation_runner_server("simulation_runner_1")
-
+# mod_model_loader_server("model_loader_1")
 
 load_default_model <- function() {
   simulation_path <- system.file("extdata", "Large molecule Human default.pkml",
