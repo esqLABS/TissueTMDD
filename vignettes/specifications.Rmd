@@ -23,7 +23,10 @@ As a user, I need TissueTMDD app to be able to:
   - Pick the output path I want,
   - Export and import simulation settings,
   - Display simulation result as concentration over time plot,
-  - Compare at least two simulations results graphically.
+  - Compare at least two simulations results graphically,
+  - Compare at least two simulations parameters,
+  - Change from log (default) to linear scale on y axis,
+
   
 # Graphical User Interface Prototype
 
