@@ -2224,15 +2224,19 @@
     },
     "waiter": {
       "Package": "waiter",
-      "Version": "0.2.5",
-      "Source": "Repository",
-      "Repository": "CRAN",
+      "Version": "0.2.5.9000",
+      "Source": "GitHub",
+      "RemoteType": "github",
+      "RemoteHost": "api.github.com",
+      "RemoteRepo": "waiter",
+      "RemoteUsername": "JohnCoene",
+      "RemoteRef": "HEAD",
+      "RemoteSha": "6e5e60e77a8c95b66f0ffcac3a5b8f67ead82584",
       "Requirements": [
-        "R6",
         "htmltools",
         "shiny"
       ],
-      "Hash": "93e6b6c8ae3f81d4be77a0dc74e5cf5e"
+      "Hash": "5f85b1344e43d25ec25957e954f443f5"
     },
     "waldo": {
       "Package": "waldo",
