@@ -36,12 +36,15 @@ golem::add_module(name = "tooltip_handler", with_test = TRUE)
 
 ### Body modules
 golem::add_module(name = "result_displayer", with_test = TRUE)
+golem::add_module(name = "result_sidebar_handler", with_test = TRUE)
 
 ### Backend modules
 golem::add_module(name = "simulation_runner", with_test = TRUE)
 golem::add_module(name = "results_transformer", with_test = TRUE)
-golem::add_module(name = "results_saver", with_test = TRUE)
+golem::add_module(name = "simulation_saver", with_test = TRUE)
+golem::add_module(name = "settings_exporter", with_test = TRUE)
 golem::add_module(name = "data_loader", with_test = TRUE)
+
 
 ## Add helper functions ----
 ## Creates fct_* and utils_*
