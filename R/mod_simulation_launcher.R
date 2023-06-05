@@ -23,11 +23,11 @@ mod_simulation_launcher_server <- function(id, r){
     ns <- session$ns
 
 
-    observeEvent(input$run_simulation_btn,{
-      r$run_simulation <- input$run_simulation_btn
-    })
+    observeEvent(input$run_simulation_btn, {
+      req(r$plot_id)
 
-    observeEvent(r$run_simulation, {
+      start_loading_bar(r, target_id = r$plot_id)
+
       message("Run simulation")
       r$simulation_results <- ospsuite::runSimulation(r$model)
     })

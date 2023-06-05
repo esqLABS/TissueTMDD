@@ -30,14 +30,7 @@ mod_result_displayer_server <- function(id, r){
 
     mod_result_sidebar_handler_server("result_sidebar_handler_1", r)
 
-
-    observeEvent(r$run_simulation,{
-      r$w <- Waitress$new(selector = paste0("#",ns("myplot")),
-                          theme = "overlay-percent",
-                          infinite = TRUE,
-                          hide_on_render = TRUE)
-      r$w$start()
-    })
+    r$plot_id <- paste0("#", ns("myplot"))
 
     output$myplot <- renderPlot({
       req(r$result_df)
@@ -82,11 +75,7 @@ mod_result_displayer_server <- function(id, r){
           labs(y = paste(path, "(log)"))
       }
 
-      on.exit({
-        if (!is.null(r$w)) {
-          r$w$close()
-        }
-      })
+      on.exit(stop_loading_bar(r, target_id = r$plot_id))
 
 
       return(plot)
