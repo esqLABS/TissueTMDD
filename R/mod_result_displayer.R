@@ -9,16 +9,7 @@
 #' @importFrom shiny NS tagList
 mod_result_displayer_ui <- function(id){
   ns <- NS(id)
-  tagList(
-    bs4Dash::box(title = "Simulation Results",
-                 collapsible = FALSE,
-                 width = 12,
-                 height = "75vh",
-                 plotOutput(ns("myplot"),
-                            height = "100%"),
-                 sidebar = mod_result_sidebar_handler_ui(ns("result_sidebar_handler_1"))
-    )
-  )
+  uiOutput(ns("result_area"))
 }
 
 #' result_displayer Server Functions
@@ -30,9 +21,42 @@ mod_result_displayer_server <- function(id, r){
 
     mod_result_sidebar_handler_server("result_sidebar_handler_1", r)
 
-    r$plot_id <- paste0("#", ns("myplot"))
+    r$plot_id <- paste0("#", ns("result_area"))
 
-    output$myplot <- renderPlot({
+    # r$plot_id <- paste0("#body_1-result_displayer_1-body")
+
+    output$result_area <- renderUI({
+
+      result_df_isnull <- is.null(r$result_df)
+
+      if (result_df_isnull) {
+        bs4Dash::box(title = "",
+                     headerBorder = FALSE,
+                     collapsible = FALSE,
+                     width = 12,
+                     height = "80vh",
+                     column(width = 6,
+                            offset = 3,
+                            bs4Dash::callout("Please, run the simulation",
+                                             title = "No data",
+                                             status = "danger",
+                                             width = 12),
+                            style = "margin-top: 30vh;" )
+        )
+      } else {
+        bs4Dash::box(title = "Simulation Results",
+                     collapsible = FALSE,
+                     width = 12,
+                     height = "80vh",
+                     plotOutput(ns("plot"), height = "100%"),
+                     sidebar = mod_result_sidebar_handler_ui(ns("result_sidebar_handler_1"))
+        )
+
+      }
+
+    })
+
+    output$plot <- renderPlot({
       req(r$result_df)
       req(r$plot_settings$output_path_select)
       req(r$plot_settings$yaxis_scale)
@@ -90,8 +114,6 @@ mod_result_displayer_server <- function(id, r){
       return(plot)
     },
     res = 96)
-
-
   })
 }
 

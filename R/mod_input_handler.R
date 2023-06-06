@@ -113,7 +113,10 @@ mod_input_handler_server <- function(id, r){
 
 
     observeEvent(r$simulation_name,{
-      if (r$simulation_name == "custom") {
+      # if (r$simulation_name == "custom") {
+      #   r$result_df <- NULL
+      # }
+      if (!(r$simulation_name %in% names(r$all_sim_results))) {
         r$result_df <- NULL
       }
     })
