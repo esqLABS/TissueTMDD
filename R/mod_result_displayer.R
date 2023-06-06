@@ -41,10 +41,19 @@ mod_result_displayer_server <- function(id, r){
 
       path <- names(output_paths())[output_paths() == r$plot_settings$output_path_select]
 
-      plot <-
-        ggplot(r$comparison_df %||% r$result_df,
-               aes(x = .data$Time,
-                   y = .data[[r$plot_settings$output_path_select]])) +
+      if (r$compare_sim_toggle) {
+        plot <-
+          ggplot(r$comparison_df,
+                 aes(x = .data$Time,
+                     y = .data[[r$plot_settings$output_path_select]]))
+      } else {
+        plot <-
+          ggplot( r$result_df,
+                  aes(x = .data$Time,
+                      y = .data[[r$plot_settings$output_path_select]]))
+      }
+
+      plot <- plot +
         labs(x = "Time (s)",
              y = path,
              title = paste0("Simulation of ",
