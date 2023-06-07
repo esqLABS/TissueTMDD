@@ -42,13 +42,7 @@ mod_settings_exporter_server <- function(id, r){
         paste(r$simulation_name, "_tissuetmdd_settings", ".json", sep="")
       },
       content = function(file) {
-        to_export <- list()
-        # Only values are exported
-        to_export[[r$simulation_name]] <- purrr::map(r$presets[[r$simulation_name]],
-                                                     ~purrr::keep_at(.x, "value"))
-        write(jsonlite::toJSON(to_export,
-                               pretty = TRUE,
-                               auto_unbox = TRUE),
+        write(get_settings_values_to_json(r$presets[r$simulation_name]),
               file)
       }
     )
@@ -63,3 +57,12 @@ mod_settings_exporter_server <- function(id, r){
 
 ## To be copied in the server
 # mod_settings_exporter_server("settings_exporter_1")
+
+get_settings_values_to_json <- function(settings) {
+
+  only_values <- purrr::map(settings, ~purrr::map(.x, ~purrr::keep_at(.x, "value")))
+
+  jsonlite::toJSON(only_values,
+                   pretty = TRUE,
+                   auto_unbox = TRUE)
+}
