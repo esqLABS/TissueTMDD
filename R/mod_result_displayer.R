@@ -47,7 +47,9 @@ mod_result_displayer_server <- function(id, r){
                      width = 12,
                      height = "80vh",
                      plotOutput(ns("plot"), height = "100%"),
-                     sidebar = mod_result_sidebar_handler_ui(ns("result_sidebar_handler_1"))
+                     sidebar = mod_result_sidebar_handler_ui(ns("result_sidebar_handler_1"),
+                                                             selected_output_path = r$plot_settings$selected_output_path,
+                                                             selected_y_scale = r$plot_settings$selected_y_scale)
         )
 
       }
@@ -56,23 +58,21 @@ mod_result_displayer_server <- function(id, r){
 
     output$plot <- renderPlot({
       req(r$result_df)
-      req(r$plot_settings$output_path_select)
-      req(r$plot_settings$yaxis_scale)
 
       message("Plot simulation results")
 
-      path <- names(output_paths())[output_paths() == r$plot_settings$output_path_select]
+      path <- names(output_paths())[output_paths() == r$plot_settings$selected_output_path]
 
       if (r$compare_sim_toggle) {
         plot <-
           ggplot(r$comparison_df,
                  aes(x = .data$Time,
-                     y = .data[[r$plot_settings$output_path_select]]))
+                     y = .data[[r$plot_settings$selected_output_path]]))
       } else {
         plot <-
           ggplot( r$result_df,
                   aes(x = .data$Time,
-                      y = .data[[r$plot_settings$output_path_select]]))
+                      y = .data[[r$plot_settings$selected_output_path]]))
       }
 
       plot <- plot +
@@ -100,7 +100,7 @@ mod_result_displayer_server <- function(id, r){
         plot <- plot + geom_line()
       }
 
-      if (r$plot_settings$yaxis_scale == "log") {
+      if (r$plot_settings$selected_y_scale == "log") {
         plot <- plot +
           scale_y_log10() +
           labs(y = paste(path, "(log)"))

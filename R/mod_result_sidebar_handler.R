@@ -7,7 +7,7 @@
 #' @noRd
 #'
 #' @importFrom shiny NS tagList
-mod_result_sidebar_handler_ui <- function(id){
+mod_result_sidebar_handler_ui <- function(id, selected_output_path, selected_y_scale){
   ns <- NS(id)
   boxSidebar(
     id = ns("plot-sidebar"),
@@ -17,13 +17,14 @@ mod_result_sidebar_handler_ui <- function(id){
              selectInput(ns("output_path_select"),
                          label = "Output Path to Display",
                          choices = output_paths(),
+                         selected = selected_output_path,
                          width = "83%"),
              column(1)),
     fluidRow(column(1),
-             radioButtons(ns("yaxis_scale"),
+             radioButtons(ns("y_scale"),
                          label = "Scale Type",
                          choices = c("log", "linear"),
-                         selected = "log"),
+                         selected = selected_y_scale),
              column(1)),
   )
 }
@@ -35,15 +36,16 @@ mod_result_sidebar_handler_server <- function(id, r){
   moduleServer( id, function(input, output, session){
     ns <- session$ns
 
-    r$plot_settings <- list()
+    r$plot_settings <- list(selected_output_path = output_paths()[1],
+                            selected_y_scale = "log")
 
     observeEvent(input$output_path_select, {
-      r$plot_settings$output_path_select <- input$output_path_select
+      r$plot_settings$selected_output_path <- input$output_path_select
     })
 
 
-    observeEvent(input$yaxis_scale, {
-      r$plot_settings$yaxis_scale <- input$yaxis_scale
+    observeEvent(input$y_scale, {
+      r$plot_settings$selected_y_scale <- input$y_scale
     })
 
   })
