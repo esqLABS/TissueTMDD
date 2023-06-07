@@ -21,7 +21,7 @@ start_loading_bar <- function(r, target_id) {
 #' @param target_id the html selector of the object where to display the loading
 #' bar
 #'
-#' @examples
+#' @noRd
 stop_loading_bar <- function(r, target_id){
   loading_bar_id <- paste("loading_bar", target_id, sep = "_")
   if (!is.null(r[[loading_bar_id]])) {
