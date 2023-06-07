@@ -6,7 +6,6 @@
 #'
 #' @noRd
 start_loading_bar <- function(r, target_id) {
-  # browser()
   loading_bar_id <- paste("loading_bar", target_id, sep = "_")
   r[[loading_bar_id]] <- Waitress$new(selector = target_id,
                                       theme = "overlay-percent",
