@@ -48,21 +48,31 @@ mod_preset_selector_server <- function(id, r){
       }
     })
 
-    # When a preset is selected, return corresponding settings
-    # and set simulation name to the selected preset
+    # When a preset is selected, return corresponding settings,
+    # set simulation name to the selected preset and load existing simulation
+    # results if available
     observeEvent(input$preset_select, {
       req(input$preset_select)
       req(r$all_sim_results)
+
+      # load preset settings
       r$preset <- r$presets[[input$preset_select]]
+
       if (input$preset_select != "custom") {
+        # set simulation name
         r$simulation_name <- input$preset_select
-      }
-      if (input$preset_select %in% names(r$all_sim_results)) {
-        r$result_df <- r$all_sim_results[[input$preset_select]]
+        if (input$preset_select %in% names(r$all_sim_results)) {
+          # load stored results
+          r$result_df <- r$all_sim_results[[input$preset_select]]
+        } else {
+          # reset result_df
+          r$result_df <- NULL
+        }
       }
     })
 
 
+    # When a preset is selected, remove custom from dropdown
     observeEvent(input$preset_select,{
       # "custom" is removed from list when preset is selected
       req(input$preset_select != "custom")

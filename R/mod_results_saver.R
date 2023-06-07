@@ -20,7 +20,7 @@ mod_results_saver_server <- function(id, r){
   moduleServer( id, function(input, output, session){
     ns <- session$ns
 
-    # When a
+    # When save simulation button is clicked,
     observeEvent(r$save_simulation, {
       req(r$simulation_name)
       req(r$result_df)
@@ -31,7 +31,7 @@ mod_results_saver_server <- function(id, r){
     })
   })
 
-  # When a preset is loaded, the simulation results are automatically using
+  # When a preset is loaded, the simulation results are automatically loaded using
   # the name of the preset
   observeEvent(r$result_df, ignoreInit = TRUE, {
     if (r$simulation_name != "custom") {

@@ -61,21 +61,7 @@ mod_input_handler_server <- function(id, r){
     mod_preset_selector_server("preset_selector_1", r)
     mod_settings_importer_server("settings_importer_1", r)
 
-    r$parameters <- list(kdeg = list(type = "slider",
-                                     value = 0.0017,
-                                     path = "Target degradation|kdeg"),
-                         kd = list(type = "slider",
-                                   value = 0.001,
-                                   path = "Large Molecule Drug-Target-default|Kd"),
-                         koff = list(type = "slider",
-                                     value = 1,
-                                     path = "Large Molecule Drug-Target-default|koff"),
-                         target_c = list(type = "numeric",
-                                         value = 0.1,
-                                         path = "Target|Reference concentration"),
-                         dose = list(type = "numeric",
-                                     value = 5e-6,
-                                     path = "Applications|single IV|Application_1|ProtocolSchemaItem|DosePerBodyWeight"))
+    r$parameters <- init_parameters()
 
     # When any input changes, updates parameters value
     observe({
@@ -86,48 +72,22 @@ mod_input_handler_server <- function(id, r){
       r$parameters$dose$value <- input$param_dose
     })
 
-    # When preset is selected, update inputs
-    observeEvent(r$preset, ignoreInit = TRUE, {
-      # r$parameters <- modifyList(r$parameters, r$preset)
-      for (parameter in names(r$preset)) {
-        inputId <-  paste0("param_", parameter)
-        value <- r$preset[[parameter]]$value
-        switch (r$parameters[[parameter]]$type,
-                "slider" = updateSliderInput(inputId = inputId ,
-                                             value = value),
-                "numeric" = updateNumericInput(inputId = inputId,
-                                               value = value)
-        )
-      }
-    })
 
-    # when parameters are changed, update model
+    # when parameters are changed, update model parameters
     observeEvent(r$parameters, ignoreInit = TRUE, {
       for (p in r$parameters) {
-        update_parameter(r$model,
-                         parameter_path = p$path,
-                         value = p$value)
+        update_model_parameters(r$model,
+                                parameter_path = p$path,
+                                value = p$value)
       }
     })
 
 
-
-    observeEvent(r$simulation_name,{
-      # if (r$simulation_name == "custom") {
-      #   r$result_df <- NULL
-      # }
-      if (!(r$simulation_name %in% names(r$all_sim_results))) {
-        r$result_df <- NULL
-      }
+    # When preset is selected, update inputs
+    observeEvent(r$preset, ignoreInit = TRUE, {
+      purrr::imap(r$preset, ~update_input(parameter_name = .y, value = .x$value))
     })
 
-
-    observeEvent(r$parameters,{
-      req(r$result_df)
-      if (r$simulation_name == "custom"){
-        r$result_df <- NULL
-      }
-    })
 
   })
 }
@@ -139,12 +99,43 @@ mod_input_handler_server <- function(id, r){
 # mod_input_handler_server("input_handler_1")
 
 
-update_parameter <- function(model, parameter_path, value){
+init_parameters <- function(){
+  return(
+    list(kdeg = list(type = "slider",
+                     value = 0.0017,
+                     path = "Target degradation|kdeg"),
+         kd = list(type = "slider",
+                   value = 0.001,
+                   path = "Large Molecule Drug-Target-default|Kd"),
+         koff = list(type = "slider",
+                     value = 1,
+                     path = "Large Molecule Drug-Target-default|koff"),
+         target_c = list(type = "numeric",
+                         value = 0.1,
+                         path = "Target|Reference concentration"),
+         dose = list(type = "numeric",
+                     value = 5e-6,
+                     path = "Applications|single IV|Application_1|ProtocolSchemaItem|DosePerBodyWeight"))
+  )
+
+}
+
+update_model_parameters <- function(model, parameter_path, value){
   current <- ospsuite::getParameter(path = parameter_path, container = model)
 
   if (current$value != value) {
     ospsuite::setParameterValues(parameters = current, values = value)
   }
+}
+
+update_input <- function(parameter_name, value) {
+  inputId <-  paste0("param_", parameter_name)
+  switch (init_parameters()[[parameter_name]]$type,
+          "slider" = updateSliderInput(inputId = inputId ,
+                                       value = value),
+          "numeric" = updateNumericInput(inputId = inputId,
+                                         value = value)
+  )
 }
 
 
