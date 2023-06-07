@@ -25,13 +25,34 @@ mod_simulation_saver_server <- function(id, r){
 
     mod_settings_exporter_server("settings_exporter_1", r)
 
-
-
-    observeEvent(input$save_simulation_btn, {
-      showModal(dataModal())
+    # Disable save button when there is not simulation data
+    observeEvent(r$result_df,ignoreNULL = FALSE, {
+      if (is.null(r$result_df)) {
+        shinyjs::disable("save_simulation_btn")
+      } else {
+        shinyjs::enable("save_simulation_btn")
+      }
     })
 
-    dataModal <- function(failed = FALSE){
+    # Display modal when button is clicked
+    observeEvent(input$save_simulation_btn, {
+      showModal(generate_modal())
+    })
+
+    # Save settings and close modal when confirm button is clicked if
+    # simulation_name is not empty, otherwise, warn the user.
+    observeEvent(input$confirm, {
+      if (!is.null(input$simulation_name) && nzchar(input$simulation_name)) {
+        r$presets[[input$simulation_name]] <- r$parameters
+        r$simulation_name <- input$simulation_name
+        r$save_simulation <- Sys.time()
+        removeModal()
+      } else {
+        showModal(generate_modal(failed = TRUE))
+      }
+    })
+
+    generate_modal <- function(failed = FALSE){
       modalDialog(title = "Save Simulation Settings",
                   fluidRow(column(1),
                            textInput(ns("simulation_name"),
@@ -40,25 +61,18 @@ mod_simulation_saver_server <- function(id, r){
                            column(1)),
                   mod_settings_exporter_ui(ns("settings_exporter_1")),
                   if (failed)
-                    div(tags$b("Please Give a name to the simulation", style = "color: red;")),
-
+                    fluidRow(
+                      column(8,
+                             offset = 2,
+                             bs4Dash::callout("Please Give a name to the simulation",
+                                              title = "No simulation name",
+                                              status = "danger",width = 12))),
                   footer = tagList(
                     fluidRow(modalButton("Cancel", icon = icon("cancel")),
-                             actionButton(ns("ok_btn"), "OK",icon = icon("check")))
+                             actionButton(ns("confirm"), "OK", icon = icon("check")))
                   )
       )
     }
-
-    observeEvent(input$ok_btn, {
-      if (!is.null(input$simulation_name) && nzchar(input$simulation_name)) {
-        r$presets[[input$simulation_name]] <- r$parameters
-        r$simulation_name <- input$simulation_name
-        r$save_simulation <- Sys.time()
-        removeModal()
-      } else {
-        showModal(dataModal(failed = TRUE))
-      }
-    })
 
   })
 }

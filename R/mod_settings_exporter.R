@@ -11,13 +11,13 @@ mod_settings_exporter_ui <- function(id){
   ns <- NS(id)
   # Hidden button, necessary for download to work
   tagList(
+    # Hidden button because download file only works through button
+    downloadButton(ns("download_settings"), "Download", style = "visibility: hidden;height: 0px;"),
     fluidRow(column(4),
              checkboxInput(ns("export_checkbox"),
                            label = "Export Settings",
                            width = "33%"),
-             column(4)),
-    # Hidden button because download file only works through button
-    downloadButton(ns("download_settings"), "Download", style = "visibility: hidden;")
+             column(4))
   )
 }
 

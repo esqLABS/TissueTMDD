@@ -23,12 +23,11 @@ mod_results_saver_server <- function(id, r){
     # When a
     observeEvent(r$save_simulation, {
       req(r$simulation_name)
+      req(r$result_df)
       message("Save simulation result as ", r$simulation_name)
-      # if ("tmp" %in% names(r$all_sim_results)) {
-        r$result_df$name <- r$simulation_name
-        r$all_sim_results[[r$simulation_name]] <-  r$result_df
-        # names(r$all_sim_results)[names(r$all_sim_results) == "tmp"] <- r$simulation_name
-      # }
+
+      r$result_df$name <- r$simulation_name
+      r$all_sim_results[[r$simulation_name]] <-  r$result_df
     })
   })
 
