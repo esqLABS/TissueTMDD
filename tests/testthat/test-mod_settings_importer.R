@@ -24,8 +24,8 @@ testServer(
     # expect_true(r$x == 1)
     # - Testing output
     # expect_true(inherits(output$tbl$html, "html"))
-})
- 
+  })
+
 test_that("module ui works", {
   ui <- mod_settings_importer_ui(id = "test")
   golem::expect_shinytaglist(ui)
@@ -35,4 +35,11 @@ test_that("module ui works", {
     expect_true(i %in% names(fmls))
   }
 })
- 
+
+test_that("read_settings_from_fileInput works", {
+  file_df <- data.frame(name = "max_koff_tissuetmdd_settings.json",
+                        datapath = system.file("extdata/presets/max_koff_tissuetmdd_settings.json",
+                                               package = "TissueTMDD"))
+  expect_snapshot(read_settings_from_fileInput(file_df))
+})
+

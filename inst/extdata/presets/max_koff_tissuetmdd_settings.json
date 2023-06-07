@@ -1,0 +1,19 @@
+{
+  "max_koff": {
+    "kdeg": {
+      "value": 0.0017
+    },
+    "kd": {
+      "value": 0.001
+    },
+    "koff": {
+      "value": 10
+    },
+    "target_c": {
+      "value": 0.1
+    },
+    "dose": {
+      "value": 5e-06
+    }
+  }
+}

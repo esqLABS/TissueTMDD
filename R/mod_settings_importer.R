@@ -32,6 +32,10 @@ mod_settings_importer_server <- function(id, r){
 
       imported_settings <- read_settings_from_fileInput(input$import_settings)
 
+      showNotification(ui = paste(names(imported_settings),
+                                  "settings was imported successfully"),
+                       type = "message")
+
       r$presets <- append(r$presets, imported_settings)
 
     })
@@ -61,9 +65,6 @@ read_settings_from_fileInput <- function(file_df) {
   for (file_name in names(file_list)) {
     file_settings <- jsonlite::read_json(path = file_list[[file_name]])
     imported_settings <- append(imported_settings, file_settings)
-    showNotification(ui = paste(file_name,
-                                "settings file was imported successfully"),
-                     type = "message")
   }
   return(imported_settings)
 }
