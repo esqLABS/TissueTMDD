@@ -27,16 +27,13 @@ mod_settings_importer_server <- function(id, r){
     ns <- session$ns
 
     observeEvent(input$import_settings,{
+
       message("Import setting file(s)")
-      for (file in input$import_settings$datapath) {
-        json_data <- jsonlite::read_json(path = file)
-        for (name in names(json_data)) {
-          r$presets[[name]] <- json_data[[name]]
-        }
-        showNotification(ui = paste(input$import_settings$name,
-                                    "settings file was imported successfully"),
-                         type = "message")
-      }
+
+      imported_settings <- read_settings_from_fileInput(input$import_settings)
+
+      r$presets <- append(r$presets, imported_settings)
+
     })
 
   })
@@ -47,3 +44,26 @@ mod_settings_importer_server <- function(id, r){
 
 ## To be copied in the server
 # mod_settings_importer_server("settings_importer_1")
+
+#' Read settings from json files
+#'
+#' @param file_df the file dataframe returned by import_settings fileInput
+#'
+#' @return a list of settings
+read_settings_from_fileInput <- function(file_df) {
+
+  imported_settings <- list()
+
+  # transform return file df to a list
+  file_list <- split(x = file_df$datapath,
+                     f = file_df$name)
+
+  for (file_name in names(file_list)) {
+    file_settings <- jsonlite::read_json(path = file_list[[file_name]])
+    imported_settings <- append(imported_settings, file_settings)
+    showNotification(ui = paste(file_name,
+                                "settings file was imported successfully"),
+                     type = "message")
+  }
+  return(imported_settings)
+}
