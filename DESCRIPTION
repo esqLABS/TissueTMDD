@@ -1,7 +1,7 @@
 Package: TissueTMDD
 Title: A shiny Application to Interact with drug-target binding in tissue
     interstitial space model
-Version: 0.0.0.9000
+Version: 0.1.0
 Authors@R: 
     person("Felix", "MIL", , "felix.mil@esqlabs.com", role = c("cre", "aut"))
 Description: PKG_DESC.
@@ -31,7 +31,7 @@ Suggests:
     testthat (>= 3.0.0)
 VignetteBuilder: 
     knitr
-Remotes:  
+Remotes: 
     esqLABS/esqlabsR
 Config/testthat/edition: 3
 Encoding: UTF-8
