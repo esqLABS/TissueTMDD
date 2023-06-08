@@ -24,7 +24,7 @@ mod_input_handler_ui <- function(id){
                            step = 0.0001
                ),
                sliderInput(ns("param_kd"),
-                           "Kd, [µmol/l]",
+                           "Kd, [\u00B5mol/l]",
                            min = 0,
                            max = 0.01,
                            value = 0.001,
@@ -39,7 +39,7 @@ mod_input_handler_ui <- function(id){
                            step = 1
                ),
                numericInput(ns("param_target_c"),
-                            "Target Concentration, [µmol/l]",
+                            "Target Concentration, [\u00B5mol/l]",
                             value = 0.1,
                             min = 0,
                             step = 0.1),
