@@ -38,6 +38,7 @@ mod_settings_importer_server <- function(id, r){
 
       r$presets <- append(r$presets, imported_settings)
 
+      r$last_imported_setting <- tail(names(imported_settings), 1)
     })
 
   })

@@ -58,7 +58,7 @@ mod_preset_selector_server <- function(id, r){
       # load preset settings
       r$preset <- r$presets[[input$preset_select]]
 
-      if (input$preset_select != "custom") {
+      # if (input$preset_select != "custom") {
         # set simulation name
         r$simulation_name <- input$preset_select
         if (input$preset_select %in% names(r$all_sim_results)) {
@@ -68,7 +68,7 @@ mod_preset_selector_server <- function(id, r){
           # reset result_df
           r$result_df <- NULL
         }
-      }
+      # }
     })
 
 
@@ -89,6 +89,12 @@ mod_preset_selector_server <- function(id, r){
                         choices = names(r$presets),
                         selected = r$simulation_name)
 
+    })
+
+    # When a setting is imported, select it in preset_select
+    observeEvent(r$last_imported_setting, {
+      updateSelectInput(inputId = "preset_select",
+                        selected = r$last_imported_setting)
     })
 
   })
