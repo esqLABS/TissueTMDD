@@ -31,6 +31,8 @@ mod_comparison_handler_server <- function(id, r){
   moduleServer( id, function(input, output, session){
     ns <- session$ns
 
+    # When simulation name changes or new simulation is saved, update selectInput
+    # so choices contains only **other** simulation names
     observeEvent(
       list(r$simulation_name, names(r$all_sim_results)),
       ignoreInit = TRUE, {
@@ -44,7 +46,9 @@ mod_comparison_handler_server <- function(id, r){
                              selected = input$compare_sim_select)
       })
 
-    observeEvent(list(input$compare_sim_select, input$compare_sim_toggle, r$result_df), ignoreNULL = FALSE, {
+    # When current results or selected simulation changes,
+    # Refresh the dataframe containing all simulation results to compare
+    observeEvent(list(input$compare_sim_select, r$result_df), ignoreNULL = FALSE, {
       comparison_df <- r$result_df
 
       for (simulation in input$compare_sim_select) {
@@ -56,12 +60,14 @@ mod_comparison_handler_server <- function(id, r){
       r$compared_sim <- input$compare_sim_select
     })
 
+    # When comparison is toggled, update the selectInput to select none of the
+    # other simulations
     observeEvent(input$compare_sim_toggle,  {
       r$compare_sim_toggle <- input$compare_sim_toggle
 
       if (input$compare_sim_toggle == FALSE) {
         updateSelectizeInput(inputId = "compare_sim_select",
-                             selected = NULL)
+                             selected = NA)
       }
     })
 

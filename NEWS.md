@@ -8,6 +8,7 @@
 
 * Imported settings are automatically selected in the preset input
 * Use `bs4Dash::toast` instead of native shiny notifications
+* When comparison is deactivated, reset the comparison select input
   
 # TissueTMDD 0.1.0
 
