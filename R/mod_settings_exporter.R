@@ -42,8 +42,21 @@ mod_settings_exporter_server <- function(id, r){
         paste(r$simulation_name, "_tissuetmdd_settings", ".json", sep="")
       },
       content = function(file) {
-        write(get_settings_values_to_json(r$presets[r$simulation_name]),
-              file)
+        tryCatch({
+          write(get_settings_values_to_json(r$presets[r$simulation_name]),
+                file)
+          generate_toast(title = "Settings Exported",
+                         body = paste(r$simulation_name, "successfully exported to json file"),
+                         icon = "fas fa-upload",
+                         status = "success")
+        },
+        error = function(e){
+          generate_toast(title = "Settings Export Failed",
+                         body = paste("Error:", e),
+                         icon = "fas fa-xmak",
+                         status = "danger")
+        }
+        )
       }
     )
 
