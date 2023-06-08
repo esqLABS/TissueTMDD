@@ -20,7 +20,8 @@ mod_results_saver_server <- function(id, r){
   moduleServer( id, function(input, output, session){
     ns <- session$ns
 
-    # When save simulation button is clicked,
+    # When save simulation button is clicked, add simulation name to result_df
+    # and save simulation results in r$all_sim_results
     observeEvent(r$save_simulation, {
       req(r$simulation_name)
       req(r$result_df)
