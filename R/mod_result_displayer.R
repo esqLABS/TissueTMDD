@@ -48,8 +48,10 @@ mod_result_displayer_server <- function(id, r){
                      height = "80vh",
                      plotOutput(ns("plot"), height = "100%"),
                      sidebar = mod_result_sidebar_handler_ui(ns("result_sidebar_handler_1"),
+                                                             plot_sidebar_state = r$plot_sidebar_state,
                                                              selected_output_path = r$plot_settings$selected_output_path,
-                                                             selected_y_scale = r$plot_settings$selected_y_scale)
+                                                             selected_y_scale = r$plot_settings$selected_y_scale,
+                                                             selected_time_range = r$plot_settings$selected_time_range)
         )
 
       }
@@ -76,6 +78,7 @@ mod_result_displayer_server <- function(id, r){
       }
 
       plot <- plot +
+        coord_cartesian(xlim = r$plot_settings$selected_time_range) +
         labs(x = "Time (s)",
              y = path,
              title = paste0("Simulation of ",
