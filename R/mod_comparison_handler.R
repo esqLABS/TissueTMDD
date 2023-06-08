@@ -12,15 +12,22 @@ mod_comparison_handler_ui <- function(id){
   fluidRow(
     column(5,
            br(),
-           checkboxInput(ns("compare_sim_toggle"),
-                         label = "Compare with",
-                         width = "100%")),
-    selectizeInput(ns("compare_sim_select"),
-                   label = "",
-                   multiple = TRUE,
-                   width = "58%",
-                   choices = c(NULL),
-                   selected = NULL)
+           tooltip(
+             checkboxInput(ns("compare_sim_toggle"),
+                           label = "Compare with",
+                           width = "100%"),
+             title = "Compare with other simulation results",
+             placement = "top")),
+    tooltip(
+      selectizeInput(ns("compare_sim_select"),
+                     label = "",
+                     multiple = TRUE,
+                     width = "58%",
+                     choices = c(NULL),
+                     selected = NULL),
+      title = "Pick the simulation you want to compare",
+      placement = "top"
+    )
   )
 }
 

@@ -9,12 +9,17 @@
 #' @importFrom shiny NS tagList
 mod_preset_selector_ui <- function(id){
   ns <- NS(id)
-  selectInput(ns("preset_select"),
-              "Presets",
-              multiple = FALSE,
-              choices = c("default"),
-              width = "50%"
+  tooltip(
+    selectInput(ns("preset_select"),
+                "Presets",
+                multiple = FALSE,
+                choices = c("default"),
+                width = "50%"
+    ),
+    "Preconfigured settings",
+    "top"
   )
+
 }
 
 #' preset_selector Server Functions
@@ -59,15 +64,15 @@ mod_preset_selector_server <- function(id, r){
       r$preset <- r$presets[[input$preset_select]]
 
       # if (input$preset_select != "custom") {
-        # set simulation name
-        r$simulation_name <- input$preset_select
-        if (input$preset_select %in% names(r$all_sim_results)) {
-          # load stored results
-          r$result_df <- r$all_sim_results[[input$preset_select]]
-        } else {
-          # reset result_df
-          r$result_df <- NULL
-        }
+      # set simulation name
+      r$simulation_name <- input$preset_select
+      if (input$preset_select %in% names(r$all_sim_results)) {
+        # load stored results
+        r$result_df <- r$all_sim_results[[input$preset_select]]
+      } else {
+        # reset result_df
+        r$result_df <- NULL
+      }
       # }
     })
 
