@@ -26,21 +26,35 @@ mod_settings_importer_server <- function(id, r){
   moduleServer( id, function(input, output, session){
     ns <- session$ns
 
+
+    # When file(s) is selected are uploaded using fileInput, read them and
+    # add them to the list of presets
     observeEvent(input$import_settings,{
 
       message("Import setting file(s)")
 
-      imported_settings <- read_settings_from_fileInput(input$import_settings)
+      tryCatch({
 
-      showNotification(ui = paste(names(imported_settings),
-                                  "settings was imported successfully"),
-                       type = "message")
+        imported_settings <- read_settings_from_fileInput(input$import_settings)
+
+        generate_toast(title = "Settings Imported",
+                       body = paste("settings",
+                                    paste(names(imported_settings),collapse = ", "),
+                                    "imported successfully"),
+                       icon = "fas fa-download",
+                       status = "success")
+      },
+      error = function(e){
+        generate_toast(title = "Import Failed",
+                       body = paste("Error:", e),
+                       icon = "fas fa-xmark",
+                       status = "danger")
+      })
 
       r$presets <- append(r$presets, imported_settings)
 
       r$last_imported_setting <- tail(names(imported_settings), 1)
     })
-
   })
 }
 
