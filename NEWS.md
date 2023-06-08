@@ -1,6 +1,17 @@
 # TissueTMDD (development version)
 
+## New Features
+
+* Plot's time range can filtered in the plot option sidebar
+
+## Bug fixes and minor improvements
+
+* Imported settings are automatically selected in the preset input
+* Use `bs4Dash::toast` instead of native shiny notifications
+  
 # TissueTMDD 0.1.0
+
+First release of the app (experimental)
 
 # TissueTMDD 0.0.0.9000
 
