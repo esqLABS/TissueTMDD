@@ -20,7 +20,7 @@ mod_input_handler_ui <- function(id) {
     ),
     tooltip(
       shinyWidgets::sliderTextInput(ns("param_kdeg"),
-        "Kdef [/h]",
+        "Kdeg [/h]",
         choices = c(0.001, 0.003, 0.01, 0.03, 0.1, 0.3, 1, 3, 10),
         selected = 0.001,
         grid = T
