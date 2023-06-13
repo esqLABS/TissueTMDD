@@ -7,36 +7,30 @@
 #' @noRd
 #'
 #' @importFrom shiny NS tagList
-mod_preset_selector_ui <- function(id){
+mod_preset_selector_ui <- function(id) {
   ns <- NS(id)
   tooltip(
     selectInput(ns("preset_select"),
-                "Presets",
-                multiple = FALSE,
-                choices = c("default"),
-                width = "50%"
+      "Presets",
+      multiple = FALSE,
+      choices = c("default"),
+      width = "50%"
     ),
     "Preconfigured settings",
     "top"
   )
-
 }
 
 #' preset_selector Server Functions
 #'
 #' @noRd
-mod_preset_selector_server <- function(id, r){
-  moduleServer( id, function(input, output, session){
+mod_preset_selector_server <- function(id, r) {
+  moduleServer(id, function(input, output, session) {
     ns <- session$ns
 
 
     r$presets <- list(
-      "default" = list(kdeg = list(value = 0.0017),
-                       kd = list(value = 0.001),
-                       koff = list(value = 1L),
-                       target_c = list(value = 0.1),
-                       dose = list(value = 5e-6)
-      )
+      "default" = purrr::map(init_parameters(), ~ purrr::keep_at(.x, "value"))
     )
 
     observeEvent(r$parameters, ignoreInit = TRUE, {
@@ -44,11 +38,14 @@ mod_preset_selector_server <- function(id, r){
       req(r$preset)
       req(r$parameters)
 
+
       # If current settings are different than the selected preset, then switch to "custom"
       if (all.equal.list(modifyList(r$parameters, r$preset), r$parameters) != TRUE) {
-        updateSelectInput(inputId = "preset_select",
-                          choices = c(names(r$presets), "custom"),
-                          selected = "custom")
+        updateSelectInput(
+          inputId = "preset_select",
+          choices = c(names(r$presets), "custom"),
+          selected = "custom"
+        )
         r$simulation_name <- "custom"
       }
     })
@@ -66,6 +63,7 @@ mod_preset_selector_server <- function(id, r){
       # if (input$preset_select != "custom") {
       # set simulation name
       r$simulation_name <- input$preset_select
+
       if (input$preset_select %in% names(r$all_sim_results)) {
         # load stored results
         r$result_df <- r$all_sim_results[[input$preset_select]]
@@ -78,30 +76,33 @@ mod_preset_selector_server <- function(id, r){
 
 
     # When a preset is selected, remove custom from dropdown
-    observeEvent(input$preset_select,{
+    observeEvent(input$preset_select, {
       # "custom" is removed from list when preset is selected
       req(input$preset_select != "custom")
 
-      updateSelectInput(inputId = "preset_select",
-                        choices = names(r$presets),
-                        selected = input$preset_select)
-
+      updateSelectInput(
+        inputId = "preset_select",
+        choices = names(r$presets),
+        selected = input$preset_select
+      )
     })
 
     # When presets are changed (when user save a simulation), then the dropdown is updated.
     observeEvent(r$presets, ignoreInit = TRUE, {
-      updateSelectInput(inputId = "preset_select",
-                        choices = names(r$presets),
-                        selected = r$simulation_name)
-
+      updateSelectInput(
+        inputId = "preset_select",
+        choices = names(r$presets),
+        selected = r$simulation_name
+      )
     })
 
     # When a setting is imported, select it in preset_select
     observeEvent(r$last_imported_setting, {
-      updateSelectInput(inputId = "preset_select",
-                        selected = r$last_imported_setting)
+      updateSelectInput(
+        inputId = "preset_select",
+        selected = r$last_imported_setting
+      )
     })
-
   })
 }
 

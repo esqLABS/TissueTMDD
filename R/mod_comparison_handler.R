@@ -7,24 +7,29 @@
 #' @noRd
 #'
 #' @importFrom shiny NS tagList
-mod_comparison_handler_ui <- function(id){
+mod_comparison_handler_ui <- function(id) {
   ns <- NS(id)
   fluidRow(
-    column(5,
-           br(),
-           tooltip(
-             checkboxInput(ns("compare_sim_toggle"),
-                           label = "Compare with",
-                           width = "100%"),
-             title = "Compare with other simulation results",
-             placement = "top")),
+    column(
+      5,
+      br(),
+      tooltip(
+        checkboxInput(ns("compare_sim_toggle"),
+          label = "Compare with",
+          width = "100%"
+        ),
+        title = "Compare with other simulation results",
+        placement = "top"
+      )
+    ),
     tooltip(
       selectizeInput(ns("compare_sim_select"),
-                     label = "",
-                     multiple = TRUE,
-                     width = "58%",
-                     choices = c(NULL),
-                     selected = NULL),
+        label = "",
+        multiple = TRUE,
+        width = "58%",
+        choices = c(NULL),
+        selected = NULL
+      ),
       title = "Pick the simulation you want to compare",
       placement = "top"
     )
@@ -34,24 +39,28 @@ mod_comparison_handler_ui <- function(id){
 #' comparison_handler Server Functions
 #'
 #' @noRd
-mod_comparison_handler_server <- function(id, r){
-  moduleServer( id, function(input, output, session){
+mod_comparison_handler_server <- function(id, r) {
+  moduleServer(id, function(input, output, session) {
     ns <- session$ns
 
     # When simulation name changes or new simulation is saved, update selectInput
     # so choices contains only **other** simulation names
     observeEvent(
       list(r$simulation_name, names(r$all_sim_results)),
-      ignoreInit = TRUE, {
+      ignoreInit = TRUE,
+      {
         available_sims <- names(r$all_sim_results)
         if (r$simulation_name %in% names(r$all_sim_results)) {
           available_sims <- available_sims[available_sims != r$simulation_name & available_sims != "tmp"]
         }
 
-        updateSelectizeInput(inputId = "compare_sim_select",
-                             choices = c(NULL, available_sims),
-                             selected = input$compare_sim_select)
-      })
+        updateSelectizeInput(
+          inputId = "compare_sim_select",
+          choices = c(NULL, available_sims),
+          selected = input$compare_sim_select
+        )
+      }
+    )
 
     # When current results or selected simulation changes,
     # Refresh the dataframe containing all simulation results to compare
@@ -69,15 +78,16 @@ mod_comparison_handler_server <- function(id, r){
 
     # When comparison is toggled, update the selectInput to select none of the
     # other simulations
-    observeEvent(input$compare_sim_toggle,  {
+    observeEvent(input$compare_sim_toggle, {
       r$compare_sim_toggle <- input$compare_sim_toggle
 
       if (input$compare_sim_toggle == FALSE) {
-        updateSelectizeInput(inputId = "compare_sim_select",
-                             selected = NA)
+        updateSelectizeInput(
+          inputId = "compare_sim_select",
+          selected = NA
+        )
       }
     })
-
   })
 }
 

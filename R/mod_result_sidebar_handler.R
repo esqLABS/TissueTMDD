@@ -7,35 +7,43 @@
 #' @noRd
 #'
 #' @importFrom shiny NS tagList
-mod_result_sidebar_handler_ui <- function(id, plot_sidebar_state, selected_output_path, selected_y_scale, selected_time_range){
+mod_result_sidebar_handler_ui <- function(id, plot_sidebar_state, selected_output_path, selected_y_scale, selected_time_range) {
   ns <- NS(id)
   boxSidebar(
     id = ns("plot_sidebar"),
     width = 33,
     startOpen = plot_sidebar_state,
     h3("Plot Settings"),
-    fluidRow(column(1),
-             selectInput(ns("output_path_select"),
-                         label = "Output Path to Display",
-                         choices = output_paths(),
-                         selected = selected_output_path,
-                         width = "83%"),
-             column(1)),
-    fluidRow(column(1),
-             radioButtons(ns("y_scale"),
-                          label = "Scale Type",
-                          choices = c("log", "linear"),
-                          selected = selected_y_scale,
-                          width = "83%"),
-             column(1)),
-    fluidRow(column(1),
-             sliderInput(ns("time_range"),
-                         label = "Time Range",
-                         min = 0,
-                         max = 40000,
-                         value = selected_time_range,
-                         width = "83%"),
-             column(1)
+    fluidRow(
+      column(1),
+      selectInput(ns("output_path_select"),
+        label = "Output Path to Display",
+        choices = output_paths(),
+        selected = selected_output_path,
+        width = "83%"
+      ),
+      column(1)
+    ),
+    fluidRow(
+      column(1),
+      radioButtons(ns("y_scale"),
+        label = "Scale Type",
+        choices = c("log", "linear"),
+        selected = selected_y_scale,
+        width = "83%"
+      ),
+      column(1)
+    ),
+    fluidRow(
+      column(1),
+      sliderInput(ns("time_range"),
+        label = "Time Range",
+        min = 0,
+        max = 40000,
+        value = selected_time_range,
+        width = "83%"
+      ),
+      column(1)
     )
   )
 }
@@ -43,14 +51,16 @@ mod_result_sidebar_handler_ui <- function(id, plot_sidebar_state, selected_outpu
 #' result_sidebar_handler Server Functions
 #'
 #' @noRd
-mod_result_sidebar_handler_server <- function(id, r){
-  moduleServer( id, function(input, output, session){
+mod_result_sidebar_handler_server <- function(id, r) {
+  moduleServer(id, function(input, output, session) {
     ns <- session$ns
 
     r$plot_sidebar_state <- FALSE
-    r$plot_settings <- list(selected_output_path = output_paths()[1],
-                            selected_y_scale = "log",
-                            selected_time_range = c(0,40000))
+    r$plot_settings <- list(
+      selected_output_path = output_paths()[1],
+      selected_y_scale = "log",
+      selected_time_range = c(0, 40000)
+    )
 
     observeEvent(input$plot_sidebar, {
       r$plot_sidebar_state <- input$plot_sidebar
@@ -68,8 +78,6 @@ mod_result_sidebar_handler_server <- function(id, r){
     observeEvent(input$time_range, {
       r$plot_settings$selected_time_range <- input$time_range
     })
-
-
   })
 }
 

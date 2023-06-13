@@ -7,7 +7,7 @@
 #' @noRd
 #'
 #' @importFrom shiny NS tagList
-mod_body_ui <- function(id){
+mod_body_ui <- function(id) {
   ns <- NS(id)
   dashboardBody(
     mod_result_displayer_ui(ns("result_displayer_1"))
@@ -17,12 +17,11 @@ mod_body_ui <- function(id){
 #' body Server Functions
 #'
 #' @noRd
-mod_body_server <- function(id, r){
-  moduleServer( id, function(input, output, session){
+mod_body_server <- function(id, r) {
+  moduleServer(id, function(input, output, session) {
     ns <- session$ns
 
-    mod_result_displayer_server("result_displayer_1", r )
-
+    mod_result_displayer_server("result_displayer_1", r)
   })
 }
 

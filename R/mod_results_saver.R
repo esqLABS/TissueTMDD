@@ -7,17 +7,16 @@
 #' @noRd
 #'
 #' @importFrom shiny NS tagList
-mod_results_saver_ui <- function(id){
+mod_results_saver_ui <- function(id) {
   ns <- NS(id)
-  tagList(
-  )
+  tagList()
 }
 
 #' results_saver Server Functions
 #'
 #' @noRd
-mod_results_saver_server <- function(id, r){
-  moduleServer( id, function(input, output, session){
+mod_results_saver_server <- function(id, r) {
+  moduleServer(id, function(input, output, session) {
     ns <- session$ns
 
     # When save simulation button is clicked, add simulation name to result_df
@@ -28,7 +27,7 @@ mod_results_saver_server <- function(id, r){
       message("Save simulation result as ", r$simulation_name)
 
       r$result_df$name <- r$simulation_name
-      r$all_sim_results[[r$simulation_name]] <-  r$result_df
+      r$all_sim_results[[r$simulation_name]] <- r$result_df
     })
   })
 
@@ -40,7 +39,6 @@ mod_results_saver_server <- function(id, r){
       r$all_sim_results[[r$simulation_name]] <- r$result_df
     }
   })
-
 }
 
 ## To be copied in the UI

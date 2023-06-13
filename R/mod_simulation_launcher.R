@@ -7,22 +7,25 @@
 #' @noRd
 #'
 #' @importFrom shiny NS tagList
-mod_simulation_launcher_ui <- function(id){
+mod_simulation_launcher_ui <- function(id) {
   ns <- NS(id)
   tooltip(
-  bs4Dash::actionButton(inputId = ns("run_simulation_btn"),
-                        label = "Run",
-                        icon = icon("play"),
-                        width = "100%"),
-  title = "Use this button to start the simulation",
-  placement = "top")
+    bs4Dash::actionButton(
+      inputId = ns("run_simulation_btn"),
+      label = "Run",
+      icon = icon("play"),
+      width = "100%"
+    ),
+    title = "Use this button to start the simulation",
+    placement = "top"
+  )
 }
 
 #' simulation_launcher Server Functions
 #'
 #' @noRd
-mod_simulation_launcher_server <- function(id, r){
-  moduleServer( id, function(input, output, session){
+mod_simulation_launcher_server <- function(id, r) {
+  moduleServer(id, function(input, output, session) {
     ns <- session$ns
 
 
@@ -34,7 +37,6 @@ mod_simulation_launcher_server <- function(id, r){
       message("Run simulation")
       r$simulation_results <- ospsuite::runSimulation(r$model)
     })
-
   })
 }
 
