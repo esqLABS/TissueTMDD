@@ -53,6 +53,7 @@ golem::add_utils("helpers", with_test = TRUE)
 
 golem::add_utils("loading_bar", with_test = TRUE)
 golem::add_utils("toast", with_test = TRUE)
+golem::add_utils("plot-colors", with_test = TRUE)
 
 ## External resources
 ## Creates .js and .css files at inst/app/www

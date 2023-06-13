@@ -105,7 +105,7 @@ mod_input_handler_server <- function(id, r) {
 
     # When preset is selected, update inputs
     observeEvent(r$preset, ignoreInit = TRUE, {
-      purrr::imap(r$preset, ~ update_input(parameter_name = .y, value = .x$value))
+      purrr::imap(r$preset, ~ update_input(parameter_name = .y, value = .x$value, session = session))
     })
   })
 }
@@ -136,7 +136,7 @@ init_parameters <- function() {
         path = "Large Molecule Drug-Target-default|koff"
       ),
       target_c = list(
-        type = "numeric",
+        type = "slider",
         value = 1,
         path = "Target|Reference concentration"
       ),
@@ -157,12 +157,13 @@ update_model_parameters <- function(model, parameter_path, value) {
   }
 }
 
-update_input <- function(parameter_name, value) {
+update_input <- function(parameter_name, value, session) {
   inputId <- paste0("param_", parameter_name)
   switch(init_parameters()[[parameter_name]]$type,
-    "slider" = updateSliderInput(
+    "slider" = shinyWidgets::updateSliderTextInput(
+      session = session,
       inputId = inputId,
-      value = value
+      selected = value
     ),
     "numeric" = updateNumericInput(
       inputId = inputId,

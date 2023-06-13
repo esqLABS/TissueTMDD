@@ -24,7 +24,7 @@ mod_results_transformer_server <- function(id, r) {
         quantitiesOrPaths = output_paths()
       )$data
 
-      result_df$name <- "Current Simulation"
+      result_df$name <- r$simulation_name
 
       r$result_df <- result_df
     })
