@@ -13,6 +13,7 @@ mod_input_handler_ui <- function(id) {
     title = "Simulation Settings",
     width = 12,
     collapsible = FALSE,
+    icon = icon("sliders"),
     fluidRow(
       mod_preset_selector_ui(ns("preset_selector_1")),
       mod_settings_importer_ui(ns("settings_importer_1")),

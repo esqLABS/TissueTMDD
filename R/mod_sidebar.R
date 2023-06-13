@@ -21,6 +21,7 @@ mod_sidebar_ui <- function(id) {
       title = "Run Simulation",
       width = 12,
       collapsible = FALSE,
+      icon = icon("play"),
       fluidRow(
         column(7, mod_simulation_launcher_ui(ns("simulation_launcher_1"))),
         column(4, mod_simulation_saver_ui(ns("simulation_saver_1"))),
@@ -30,6 +31,7 @@ mod_sidebar_ui <- function(id) {
       title = "Compare Simulations",
       width = 12,
       collapsible = FALSE,
+      icon = icon("arrow-right-arrow-left"),
       mod_comparison_handler_ui(ns("comparison_handler_1"))
     )
   )
