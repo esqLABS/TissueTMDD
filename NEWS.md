@@ -1,5 +1,11 @@
 # TissueTMDD (development version)
 
+## New Features
+
+## Bug fixes and minor improvements
+
+* Tooltips to help user using the app.
+
 # TissueTMDD 0.1.1
 
 ## New Features

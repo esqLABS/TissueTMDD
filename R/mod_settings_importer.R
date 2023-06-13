@@ -9,13 +9,15 @@
 #' @importFrom shiny NS tagList
 mod_settings_importer_ui <- function(id){
   ns <- NS(id)
-  tagList(
+  tooltip(
     fileInput(ns("import_settings"),
               label = "Import",
               buttonLabel = icon("upload"),
               multiple = TRUE,
               accept = ".json",
-              width = "50%")
+              width = "50%"),
+    title = "Import a `.json` setting file",
+    placement = "top"
   )
 }
 

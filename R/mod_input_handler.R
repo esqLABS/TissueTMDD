@@ -16,38 +16,52 @@ mod_input_handler_ui <- function(id){
                  mod_preset_selector_ui(ns("preset_selector_1")),
                  mod_settings_importer_ui(ns("settings_importer_1")),
                ),
-               sliderInput(ns("param_kdeg"),
-                           "Target Degradation (Kdeg, [1/min])",
-                           min = 0,
-                           max = 0.01,
-                           value = 0.0017,
-                           step = 0.0001
-               ),
-               sliderInput(ns("param_kd"),
-                           "Kd, [\u00B5mol/l]",
-                           min = 0,
-                           max = 0.01,
-                           value = 0.001,
-                           step = 0.001
-               ),
 
-               sliderInput(ns("param_koff"),
-                           "Koff, [1/min]",
-                           min = 0,
-                           max = 10,
-                           value = 1L,
-                           step = 1
-               ),
-               numericInput(ns("param_target_c"),
-                            "Target Concentration, [\u00B5mol/l]",
-                            value = 0.1,
-                            min = 0,
-                            step = 0.1),
+               tooltip(
+                 sliderInput(ns("param_kdeg"),
+                             "Target Degradation (Kdeg, [1/min])",
+                             min = 0,
+                             max = 0.01,
+                             value = 0.0017,
+                             step = 0.0001),
+                 title = "Target degradation constant",
+                 placement = "top"),
+               tooltip(
+                 sliderInput(ns("param_kd"),
+                             "Kd, [\u00B5mol/l]",
+                             min = 0,
+                             max = 0.01,
+                             value = 0.001,
+                             step = 0.001
+                 ),
+                 title = "Equilibrium dissociation constant",
+                 placement = "top"),
+               tooltip(
+                 sliderInput(ns("param_koff"),
+                             "Koff, [1/min]",
+                             min = 0,
+                             max = 10,
+                             value = 1L,
+                             step = 1
+                 ),
+                 title = "Drug-Target Dissociation constant",
+                 placement = "top"),
+               tooltip(
+                 numericInput(ns("param_target_c"),
+                              "Target Concentration, [\u00B5mol/l]",
+                              value = 0.1,
+                              min = 0,
+                              step = 0.1),
+                 title = "Target Concentration",
+                 placement = "top"),
+               tooltip(
                numericInput(ns("param_dose"),
                             "Dose, [kg/kg]",
                             value = 5e-6,
                             min = 0,
-                            step = 0.001)
+                            step = 0.001),
+               title = "Drug dose",
+               placement = "top")
   )
 }
 

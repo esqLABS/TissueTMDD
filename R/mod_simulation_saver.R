@@ -9,10 +9,13 @@
 #' @importFrom shiny NS tagList
 mod_simulation_saver_ui <- function(id){
   ns <- NS(id)
-  actionButton(inputId = ns("save_simulation_btn"),
-               label = "Save",
-               icon = icon("save"),
-               width = "100%")
+  tooltip(
+    actionButton(inputId = ns("save_simulation_btn"),
+                 label = "Save",
+                 icon = icon("save"),
+                 width = "100%"),
+    title = "Save simulation settings and results",
+    placement = "top")
 }
 
 #' simulation_saver Server Functions
@@ -36,7 +39,9 @@ mod_simulation_saver_server <- function(id, r){
 
     # Display modal when button is clicked
     observeEvent(input$save_simulation_btn, {
-      showModal(generate_modal())
+      showModal(
+        generate_modal()
+      )
     })
 
     # Save settings and close modal when confirm button is clicked if
@@ -58,6 +63,7 @@ mod_simulation_saver_server <- function(id, r){
                            textInput(ns("simulation_name"),
                                      label = "Simulation Name",
                                      width = "83%"),
+
                            column(1)),
                   mod_settings_exporter_ui(ns("settings_exporter_1")),
                   if (failed)
