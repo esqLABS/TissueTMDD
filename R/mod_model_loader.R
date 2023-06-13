@@ -7,22 +7,19 @@
 #' @noRd
 #'
 #' @importFrom shiny NS tagList
-mod_model_loader_ui <- function(id){
+mod_model_loader_ui <- function(id) {
   ns <- NS(id)
-  tagList(
-
-  )
+  tagList()
 }
 
 #' model_loader Server Functions
 #'
 #' @noRd
-mod_model_loader_server <- function(id, r){
-  moduleServer( id, function(input, output, session){
+mod_model_loader_server <- function(id, r) {
+  moduleServer(id, function(input, output, session) {
     ns <- session$ns
 
     r$model <- load_default_model()
-
   })
 }
 
@@ -34,10 +31,10 @@ mod_model_loader_server <- function(id, r){
 
 load_default_model <- function() {
   simulation_path <- system.file("extdata", "Large molecule Human default.pkml",
-                                 package = "TissueTMDD",
-                                 mustWork = TRUE)
+    package = "TissueTMDD",
+    mustWork = TRUE
+  )
   model <- ospsuite::loadSimulation(simulation_path)
   message("Load model file")
   return(model)
 }
-

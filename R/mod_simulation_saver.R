@@ -7,29 +7,32 @@
 #' @noRd
 #'
 #' @importFrom shiny NS tagList
-mod_simulation_saver_ui <- function(id){
+mod_simulation_saver_ui <- function(id) {
   ns <- NS(id)
   tooltip(
-    actionButton(inputId = ns("save_simulation_btn"),
-                 label = "Save",
-                 icon = icon("save"),
-                 width = "100%"),
+    actionButton(
+      inputId = ns("save_simulation_btn"),
+      label = "Save",
+      icon = icon("save"),
+      width = "100%"
+    ),
     title = "Save simulation settings and results",
-    placement = "top")
+    placement = "top"
+  )
 }
 
 #' simulation_saver Server Functions
 #'
 #' @noRd
-mod_simulation_saver_server <- function(id, r){
-  moduleServer( id, function(input, output, session){
+mod_simulation_saver_server <- function(id, r) {
+  moduleServer(id, function(input, output, session) {
     ns <- session$ns
 
 
     mod_settings_exporter_server("settings_exporter_1", r)
 
     # Disable save button when there is not simulation data
-    observeEvent(r$result_df,ignoreNULL = FALSE, {
+    observeEvent(r$result_df, ignoreNULL = FALSE, {
       if (is.null(r$result_df)) {
         shinyjs::disable("save_simulation_btn")
       } else {
@@ -57,29 +60,37 @@ mod_simulation_saver_server <- function(id, r){
       }
     })
 
-    generate_modal <- function(failed = FALSE){
-      modalDialog(title = "Save Simulation Settings",
-                  fluidRow(column(1),
-                           textInput(ns("simulation_name"),
-                                     label = "Simulation Name",
-                                     width = "83%"),
-
-                           column(1)),
-                  mod_settings_exporter_ui(ns("settings_exporter_1")),
-                  if (failed)
-                    fluidRow(
-                      column(8,
-                             offset = 2,
-                             bs4Dash::callout("Please Give a name to the simulation",
-                                              title = "No simulation name",
-                                              status = "danger",width = 12))),
-                  footer = tagList(
-                    fluidRow(modalButton("Cancel", icon = icon("cancel")),
-                             actionButton(ns("confirm"), "OK", icon = icon("check")))
-                  )
+    generate_modal <- function(failed = FALSE) {
+      modalDialog(
+        title = "Save Simulation Settings",
+        fluidRow(
+          column(1),
+          textInput(ns("simulation_name"),
+            label = "Simulation Name",
+            width = "83%"
+          ),
+          column(1)
+        ),
+        mod_settings_exporter_ui(ns("settings_exporter_1")),
+        if (failed) {
+          fluidRow(
+            column(8,
+              offset = 2,
+              bs4Dash::callout("Please Give a name to the simulation",
+                title = "No simulation name",
+                status = "danger", width = 12
+              )
+            )
+          )
+        },
+        footer = tagList(
+          fluidRow(
+            modalButton("Cancel", icon = icon("cancel")),
+            actionButton(ns("confirm"), "OK", icon = icon("check"))
+          )
+        )
       )
     }
-
   })
 }
 

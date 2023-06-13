@@ -7,25 +7,25 @@
 #' @noRd
 #'
 #' @importFrom shiny NS tagList
-mod_introduction_provider_ui <- function(id){
+mod_introduction_provider_ui <- function(id) {
   ns <- NS(id)
-  bs4Dash::box(title = "Introduction",
-               icon = icon("info"),
-               width = 12,
-               collapsible = TRUE,
-               tags$small(
-                 shinipsum::random_text(nwords = 50)
-               )
+  bs4Dash::box(
+    title = "Introduction",
+    icon = icon("info"),
+    width = 12,
+    collapsible = TRUE,
+    tags$small(
+      shinipsum::random_text(nwords = 50)
+    )
   )
 }
 
 #' introduction_provider Server Functions
 #'
 #' @noRd
-mod_introduction_provider_server <- function(id){
-  moduleServer( id, function(input, output, session){
+mod_introduction_provider_server <- function(id) {
+  moduleServer(id, function(input, output, session) {
     ns <- session$ns
-
   })
 }
 

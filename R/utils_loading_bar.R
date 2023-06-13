@@ -7,10 +7,12 @@
 #' @noRd
 start_loading_bar <- function(r, target_id) {
   loading_bar_id <- paste("loading_bar", target_id, sep = "_")
-  r[[loading_bar_id]] <- Waitress$new(selector = target_id,
-                                      theme = "overlay-percent",
-                                      infinite = TRUE,
-                                      hide_on_render = TRUE)
+  r[[loading_bar_id]] <- Waitress$new(
+    selector = target_id,
+    theme = "overlay-percent",
+    infinite = TRUE,
+    hide_on_render = TRUE
+  )
 
   r[[loading_bar_id]]$start()
 }
@@ -22,7 +24,7 @@ start_loading_bar <- function(r, target_id) {
 #' bar
 #'
 #' @noRd
-stop_loading_bar <- function(r, target_id){
+stop_loading_bar <- function(r, target_id) {
   loading_bar_id <- paste("loading_bar", target_id, sep = "_")
   if (!is.null(r[[loading_bar_id]])) {
     r[[loading_bar_id]]$close()
