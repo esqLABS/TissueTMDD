@@ -28,7 +28,8 @@ mod_comparison_handler_ui <- function(id) {
         multiple = TRUE,
         width = "58%",
         choices = c(NULL),
-        selected = NULL
+        selected = NULL,
+        options = list(maxItems = 7)
       ),
       title = "Pick the simulation you want to compare",
       placement = "top"
@@ -74,6 +75,12 @@ mod_comparison_handler_server <- function(id, r) {
       }
       r$comparison_df <- comparison_df
       r$compared_sim <- input$compare_sim_select
+    })
+
+    # When current simulation result or available simulation result change, update palette
+    observeEvent(list(r$result_df, names(r$all_sim_results)),{
+      req(r$result_df)
+      r$palette <- c(main_color(unique(r$result_df$name)), compared_color(names(r$all_sim_results)))
     })
 
     # When comparison is toggled, update the selectInput to select none of the

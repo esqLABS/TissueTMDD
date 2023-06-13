@@ -77,7 +77,8 @@ mod_result_displayer_server <- function(id, r) {
                 x = .data$Time,
                 y = .data[[r$plot_settings$selected_output_path]]
               )
-            )
+            ) +
+            scale_color_manual(values = r$palette)
         } else {
           plot <-
             ggplot(
@@ -86,7 +87,8 @@ mod_result_displayer_server <- function(id, r) {
                 x = .data$Time,
                 y = .data[[r$plot_settings$selected_output_path]]
               )
-            )
+            ) +
+            scale_color_manual(values = main_color(unique(r$result_df$name)))
         }
 
         plot <- plot +
@@ -123,7 +125,8 @@ mod_result_displayer_server <- function(id, r) {
               color = "Simulation Name"
             )
         } else {
-          plot <- plot + geom_line()
+          plot <- plot + geom_line(aes(color = name),
+                                   show.legend = FALSE)
         }
 
         if (r$plot_settings$selected_y_scale == "log") {
