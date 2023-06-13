@@ -60,9 +60,9 @@ mod_input_handler_ui <- function(id) {
     tooltip(
       numericInput(ns("param_dose"),
         "Dose, [mg/kg]",
-        value = 5,
+        value = 10,
         min = 0,
-        step = 0.1
+        step = 1
       ),
       title = "Drug dose",
       placement = "top"
@@ -142,7 +142,7 @@ init_parameters <- function() {
       ),
       dose = list(
         type = "numeric",
-        value = 5,
+        value = 10,
         path = "Applications|single IV|Application_1|ProtocolSchemaItem|DosePerBodyWeight"
       )
     )
