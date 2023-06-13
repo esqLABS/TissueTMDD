@@ -31,18 +31,14 @@ mod_preset_selector_server <- function(id, r){
 
 
     r$presets <- list(
-      "default" = list(kdeg = list(value = 0.0017),
-                       kd = list(value = 0.001),
-                       koff = list(value = 1L),
-                       target_c = list(value = 0.1),
-                       dose = list(value = 5e-6)
+      "default" = purrr::map(init_parameters(), ~purrr::keep_at(.x, "value"))
       )
-    )
 
     observeEvent(r$parameters, ignoreInit = TRUE, {
       req(input$preset_select != "custom")
       req(r$preset)
       req(r$parameters)
+
 
       # If current settings are different than the selected preset, then switch to "custom"
       if (all.equal.list(modifyList(r$parameters, r$preset), r$parameters) != TRUE) {
@@ -66,6 +62,7 @@ mod_preset_selector_server <- function(id, r){
       # if (input$preset_select != "custom") {
       # set simulation name
       r$simulation_name <- input$preset_select
+
       if (input$preset_select %in% names(r$all_sim_results)) {
         # load stored results
         r$result_df <- r$all_sim_results[[input$preset_select]]
