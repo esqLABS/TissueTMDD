@@ -22,12 +22,14 @@ Imports:
     shinipsum,
     shiny (>= 1.7.4),
     shinyjs,
+    shinyWidgets,
     tidyr,
     waiter (>= 0.2.5)
 Suggests: 
     knitr,
     rmarkdown,
     spelling,
+    styler,
     testthat (>= 3.0.0)
 VignetteBuilder: 
     knitr
