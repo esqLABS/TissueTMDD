@@ -37,9 +37,9 @@ mod_result_displayer_server <- function(id, r) {
             width = 6,
             offset = 3,
             bs4Dash::callout("Please, run the simulation",
-              title = "No data",
-              status = "danger",
-              width = 12
+                             title = "No data",
+                             status = "danger",
+                             width = 12
             ),
             style = "margin-top: 30vh;"
           )
@@ -52,10 +52,10 @@ mod_result_displayer_server <- function(id, r) {
           height = "80vh",
           plotOutput(ns("plot"), height = "100%"),
           sidebar = mod_result_sidebar_handler_ui(ns("result_sidebar_handler_1"),
-            plot_sidebar_state = r$plot_sidebar_state,
-            selected_output_path = r$plot_settings$selected_output_path,
-            selected_y_scale = r$plot_settings$selected_y_scale,
-            selected_time_range = r$plot_settings$selected_time_range
+                                                  plot_sidebar_state = r$plot_sidebar_state,
+                                                  selected_output_path = r$plot_settings$selected_output_path,
+                                                  selected_y_scale = r$plot_settings$selected_y_scale,
+                                                  selected_time_range = r$plot_settings$selected_time_range
           )
         )
       }
@@ -94,15 +94,11 @@ mod_result_displayer_server <- function(id, r) {
         plot <- plot +
           coord_cartesian(xlim = r$plot_settings$selected_time_range) +
           labs(
-            x = "Time (s)",
+            x = "Time [s]",
             y = path,
             title = paste0(
               "Simulation of ",
               path
-            ),
-            subtitle = paste0(
-              "Simulation settings: ",
-              r$simulation_name
             )
           )
 
@@ -117,9 +113,9 @@ mod_result_displayer_server <- function(id, r) {
               subtitle = paste0(
                 "Simulation settings: ",
                 paste(r$simulation_name,
-                  r$compared_sim,
-                  sep = ", ",
-                  collapse = ", "
+                      r$compared_sim,
+                      sep = ", ",
+                      collapse = ", "
                 )
               ),
               color = "Simulation Name"
@@ -132,8 +128,18 @@ mod_result_displayer_server <- function(id, r) {
         if (r$plot_settings$selected_y_scale == "log") {
           plot <- plot +
             scale_y_log10() +
-            labs(y = paste(path, "(log)"))
+            labs(y = paste(path, "[log]"))
         }
+
+        plot <- plot +
+          ggthemes::theme_economist() +
+          theme(panel.background = element_blank(),
+                plot.background = element_blank(),
+                panel.grid.major.y = element_line(colour = "grey40", linewidth = 0.2),
+                axis.text.y = element_text(hjust = 1),
+                axis.title.y = element_text(margin = margin(t = 0, r = 15, b = 0, l = 0)),
+                axis.title.x = element_text(margin = margin(t = 15, r = 0, b = 0, l = 0)),
+                legend.position = "right")
 
         on.exit(stop_loading_bar(r, target_id = r$plot_id))
 
