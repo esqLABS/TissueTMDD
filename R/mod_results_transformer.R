@@ -39,8 +39,8 @@ mod_results_transformer_server <- function(id, r) {
 
 output_paths <- function() {
   c(
-    "Plasma concentration of drug" = "Organism|PeripheralVenousBlood|Large Molecule Drug|Plasma (Peripheral Venous Blood)",
-    "Tissue interstitial concentration of drug" = "Organism|Skin|Interstitial|Large Molecule Drug|Concentration in container",
+    "Plasma concentration" = "Organism|PeripheralVenousBlood|Large Molecule Drug|Plasma (Peripheral Venous Blood)",
+    "Tissue interstitial concentration" = "Organism|Skin|Interstitial|Large Molecule Drug|Concentration in container",
     "Target occupancy" = "Organism|Skin|Interstitial|Large Molecule Drug-Target-default Complex|Receptor Occupancy-Large Molecule Drug-Target-default Complex"
   )
 }

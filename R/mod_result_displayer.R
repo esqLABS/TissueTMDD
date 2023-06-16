@@ -106,10 +106,7 @@ mod_result_displayer_server <- function(id, r) {
           plot <- plot +
             geom_line(aes(color = name)) +
             labs(
-              title = paste0(
-                "Simulation of ",
-                path
-              ),
+              title = path,
               subtitle = paste0(
                 "Simulation settings: ",
                 paste(r$simulation_name,
