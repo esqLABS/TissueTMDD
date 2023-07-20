@@ -30,7 +30,7 @@ mod_model_loader_server <- function(id, r) {
 # mod_model_loader_server("model_loader_1")
 
 load_default_model <- function() {
-  simulation_path <- system.file("extdata", "Large molecule Human default.pkml",
+  simulation_path <- system.file("extdata", "repeated dose model.pkml",
     package = "TissueTMDD",
     mustWork = TRUE
   )
