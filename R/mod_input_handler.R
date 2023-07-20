@@ -81,7 +81,7 @@ mod_input_handler_server <- function(id, r) {
     mod_preset_selector_server("preset_selector_1", r)
     mod_settings_importer_server("settings_importer_1", r)
 
-    r$parameters <- init_parameters()
+    r$parameters <- default_parameters()
 
     # When any input changes, updates parameters value
     observe({
@@ -117,38 +117,70 @@ mod_input_handler_server <- function(id, r) {
 ## To be copied in the server
 # mod_input_handler_server("input_handler_1")
 
-
-init_parameters <- function() {
+default_parameters <- function() {
   return(
     list(
-      kdeg = list(
-        type = "slider",
-        value = 0.001,
-        path = "Target degradation|kdeg"
-      ),
-      kd = list(
-        type = "slider",
-        value = 0.001,
-        path = "Large Molecule Drug-Target-default|Kd"
-      ),
-      koff = list(
-        type = "slider",
-        value = 1,
-        path = "Large Molecule Drug-Target-default|koff"
-      ),
-      target_c = list(
-        type = "slider",
-        value = 1,
-        path = "Target|Reference concentration"
-      ),
-      dose = list(
-        type = "numeric",
-        value = 10,
-        path = "Applications|single IV|Application_1|ProtocolSchemaItem|DosePerBodyWeight"
-      )
-    )
+      kdeg = list(type = "slider",
+                  value = 0.01666667,
+                  path = "Target Degradation|kdeg"),
+      kd = list(type = "slider",
+                value = 0.001,
+                path = "mAb-Target-Test1|Kd"),
+      koff = list(type = "slider",
+                  value = 0.1666667,
+                  path = "mAb-Target-Test1|koff"),
+      target_c = list(type = "slider",
+                      value = 0.1,
+                      path = "Target|Reference concentration"),
+      kint_kdeg_ratio = list(type = "slider",
+                             value = 1,
+                             path = "Complex Internalization|kint_kdeg_ratio"),
+      mol_w = list(type = "numeric",
+                   value = 0.00015,
+                   path = "mAb|Molecular weight"),
+      mol_radius = list(type = "numeric",
+                        value = 5.126966e-08,
+                        path = "mAb|Radius (solute)"),
+      dose_1 = list(type = "numeric",
+                    value = 1e-06,
+                    path = "Applications|3 months, 1 mg/kg|Application_1|ProtocolSchemaItem|DosePerBodyWeight"),
+      dose_2 = list(type = "numeric",
+                    value = 1e-06,
+                    path = "Applications|3 months, 1 mg/kg|Application_2|ProtocolSchemaItem|DosePerBodyWeight"),
+      dose_3 = list(type = "numeric",
+                    value = 1e-06,
+                    path = "Applications|3 months, 1 mg/kg|Application_3|ProtocolSchemaItem|DosePerBodyWeight"),
+      dose_4 = list(type = "numeric",
+                    value = 1e-06,
+                    path = "Applications|3 months, 1 mg/kg|Application_4|ProtocolSchemaItem|DosePerBodyWeight"),
+      dose_5 = list(type = "numeric",
+                    value = 1e-06,
+                    path = "Applications|3 months, 1 mg/kg|Application_5|ProtocolSchemaItem|DosePerBodyWeight"),
+      dose_6 = list(type = "numeric",
+                    value = 1e-06,
+                    path = "Applications|3 months, 1 mg/kg|Application_6|ProtocolSchemaItem|DosePerBodyWeight"),
+      dose_7 = list(type = "numeric",
+                    value = 1e-06,
+                    path = "Applications|3 months, 1 mg/kg|Application_7|ProtocolSchemaItem|DosePerBodyWeight"))
   )
 }
+
+get_parameters_id <- function(){
+  names(default_parameters())
+}
+
+get_parameters_paths <- function(){
+  purrr::map(default_parameters(), "path")
+}
+
+get_parameters_default_value <- function(){
+  purrr::map(default_parameters(), "value")
+}
+
+get_parameters_type <- function(){
+  purrr::map(default_parameters(), "type")
+}
+
 
 update_model_parameters <- function(model, parameter_path, value) {
   current <- ospsuite::getParameter(path = parameter_path, container = model)
@@ -160,15 +192,15 @@ update_model_parameters <- function(model, parameter_path, value) {
 
 update_input <- function(parameter_name, value, session) {
   inputId <- paste0("param_", parameter_name)
-  switch(init_parameters()[[parameter_name]]$type,
-    "slider" = shinyWidgets::updateSliderTextInput(
-      session = session,
-      inputId = inputId,
-      selected = value
-    ),
-    "numeric" = updateNumericInput(
-      inputId = inputId,
-      value = value
-    )
+  switch(default_parameters()[[parameter_name]]$type,
+         "slider" = shinyWidgets::updateSliderTextInput(
+           session = session,
+           inputId = inputId,
+           selected = value
+         ),
+         "numeric" = updateNumericInput(
+           inputId = inputId,
+           value = value
+         )
   )
 }
