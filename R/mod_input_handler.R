@@ -59,20 +59,67 @@ mod_input_handler_ui <- function(id) {
       placement = "top"
     ),
     tooltip(
-      numericInput(ns("param_dose"),
-                   "Dose, [mg/kg]",
-                   value = get_parameters_default_value()["dose_1"],
-                   min = 0,
-                   step = 1
+      shinyWidgets::sliderTextInput(ns("param_kint_kdeg_ratio"),
+                                    "Kint Ratio",
+                                    choices = seq(0.1, 1, by = 0.1),
+                                    selected = get_parameters_default_value()["kint_kdeg_ratio"],
+                                    grid = T
       ),
-      title = "Drug dose",
+      title = "Kint Ratio",
       placement = "top"
+    ),
+    fluidRow(
+      column(6,
+             tooltip(
+               numericInput(ns("param_mol_w"),
+                            "Molecular Weight",
+                            value = get_parameters_default_value()["mol_w"],
+               ),
+               title = "Molecular Weight Drug",
+               placement = "top"
+             )),
+      column(6,
+             tooltip(
+               numericInput(ns("param_mol_radius"),
+                            "Molecular Radius (Solute)",
+                            value = get_parameters_default_value()["mol_radius"],
+               ),
+               title = "Molecular Radius (Solute)",
+               placement = "top"
+             ))),
+    fluidRow(
+      column(8,
+             tooltip(
+               numericInput(ns("param_dose"),
+                            "Dose, [mg/kg]",
+                            value = get_parameters_default_value()["dose_1"],
+                            min = 0,
+                            step = 1
+               ),
+               title = "Drug dose",
+               placement = "top"
+             )
+      ),
+      column(width = 4,
+             br(),
+             br(),
+             tooltip(
+               checkboxInput(ns("param_repeat_dose"),
+                             label = "Repeat Dose",
+                             value = as.logical(get_parameters_default_value()["repeat_dose"]),
+                             width = "100%"
+               ),
+               title = "Check this box for repeated dose over time",
+               placement = "top"
+             )
+      )
     ),
     tooltip(
       selectInput(ns("organ"),
                   "Organ",
                   choices = get_organs(),
-                  multiple = FALSE
+                  multiple = FALSE,
+                  selected = get_parameters_default_value()["organ"]
       ),
       title = "Organ to simulate",
       placement = "top"
@@ -98,24 +145,40 @@ mod_input_handler_server <- function(id, r) {
       r$parameters$kd$value <- as.numeric(input$param_kd)
       r$parameters$koff$value <- as.numeric(input$param_koff)
       r$parameters$target_c$value <- as.numeric(input$param_target_c)
+      r$parameters$kint_kdeg_ratio$value <- as.numeric(input$param_kint_kdeg_ratio)
+      r$parameters$mol_w$value <- as.numeric(input$param_mol_w)
+      r$parameters$mol_radius$value <- as.numeric(input$param_mol_radius)
+
+      r$parameters$repeat_dose$value <- as.logical(input$param_repeat_dose)
       r$parameters$dose_1$value <- as.numeric(input$param_dose)
-      r$parameters$dose_2$value <- as.numeric(input$param_dose)
-      r$parameters$dose_3$value <- as.numeric(input$param_dose)
-      r$parameters$dose_4$value <- as.numeric(input$param_dose)
-      r$parameters$dose_5$value <- as.numeric(input$param_dose)
-      r$parameters$dose_6$value <- as.numeric(input$param_dose)
-      r$parameters$dose_7$value <- as.numeric(input$param_dose)
-      r$parameters$organ <- input$organ
+
+      if (input$param_repeat_dose) {
+        r$parameters$dose_2$value <- as.numeric(input$param_dose)
+        r$parameters$dose_3$value <- as.numeric(input$param_dose)
+        r$parameters$dose_4$value <- as.numeric(input$param_dose)
+        r$parameters$dose_5$value <- as.numeric(input$param_dose)
+        r$parameters$dose_6$value <- as.numeric(input$param_dose)
+        r$parameters$dose_7$value <- as.numeric(input$param_dose)
+      } else {
+        r$parameters$dose_2$value <- 0
+        r$parameters$dose_3$value <- 0
+        r$parameters$dose_4$value <- 0
+        r$parameters$dose_5$value <- 0
+        r$parameters$dose_6$value <- 0
+        r$parameters$dose_7$value <- 0
+      }
+
+      r$parameters$organ$value <- input$organ
     })
 
     # Add outputs corresponding to the selected organ
-    observeEvent(r$parameters$organ,{
+    observeEvent(r$parameters$organ$value, {
 
       output_paths <- vector(mode = "character", length = length(defaut_output_paths()))
 
       for (i in seq_along(defaut_output_paths())) {
         if (stringr::str_detect(defaut_output_paths()[i], "Organism",negate = TRUE)) {
-          output_paths[i] <- glue::glue("Organism|{r$parameters$organ}|{defaut_output_paths()[i]}")
+          output_paths[i] <- glue::glue("Organism|{r$parameters$organ$value}|{defaut_output_paths()[i]}")
         } else {
           output_paths[i] <- defaut_output_paths()[i]
         }
@@ -185,8 +248,11 @@ default_parameters <- function() {
       dose_7 = list(type = "numeric",
                     value = 1e-06,
                     path = "Applications|3 months, 1 mg/kg|Application_7|ProtocolSchemaItem|DosePerBodyWeight"),
-
-      organ = "Heart")
+      repeat_dose = list(type = "logical",
+                         value = TRUE),
+      organ = list(type = "select",
+                   value = "Heart")
+    )
   )
 }
 
@@ -198,10 +264,14 @@ get_parameters_paths <- function(){
   unlist(purrr::map(default_parameters(), "path"))
 }
 
+
 get_parameters_default_value <- function(){
   unlist(purrr::map(default_parameters(), "value"))
 }
 
+get_parameters_path_default_values <- function(){
+  unlist(purrr::map(purrr::keep(default_parameters(), function(x) "path" %in% names(x)), "value"))
+}
 get_parameters_type <- function(){
   unlist(purrr::map(default_parameters(), "type"))
 }

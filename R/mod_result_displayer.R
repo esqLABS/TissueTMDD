@@ -97,7 +97,7 @@ mod_result_displayer_server <- function(id, r) {
         labs(
           x = "Time [s]",
           y = path,
-          title = glue::glue("Simulation of {path} ({r$parameters$organ})")
+          title = glue::glue("Simulation of {path} ({r$parameters$organ$value})")
         )
 
       if (r$compare_sim_toggle && length(r$compared_sim) > 0) {

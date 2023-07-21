@@ -42,14 +42,14 @@ mod_simulation_launcher_server <- function(id, r) {
 
       # Activate selected Organ and disable others
       parameter_paths <- get_parameters_paths()
-      parameter_values <- unlist(purrr::map(r$parameters, "value"), use.names = F)
+      parameter_values <- unlist(unlist(purrr::map(purrr::keep(r$parameters, function(x) "path" %in% names(x)), "value")), use.names = F)
 
       for (organ in get_organs()) {
         parameter_paths <- c(parameter_paths,
                              glue::glue("Organism|{organ}|Intracellular|Target|Relative expression")
         )
 
-        if (organ != r$parameters$organ) {
+        if (organ != r$parameters$organ$value) {
           parameter_values <- c(parameter_values, 0)
         } else {
           parameter_values <- c(parameter_values, 1)

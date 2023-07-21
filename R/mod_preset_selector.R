@@ -38,7 +38,7 @@ mod_preset_selector_server <- function(id, r) {
       req(r$parameters)
 
       # If current settings are different than the selected preset, then switch to "custom"
-      if (all.equal.list(modifyList(r$parameters, r$preset), r$parameters) != TRUE) {
+      if (!identical(modifyList(r$parameters, r$preset), r$parameters)) {
 
         updateSelectInput(
           inputId = "preset_select",
