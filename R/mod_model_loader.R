@@ -20,6 +20,8 @@ mod_model_loader_server <- function(id, r) {
     ns <- session$ns
 
     r$model <- load_default_model()
+
+
   })
 }
 
@@ -31,10 +33,11 @@ mod_model_loader_server <- function(id, r) {
 
 load_default_model <- function() {
   simulation_path <- system.file("extdata", "repeated dose model.pkml",
-    package = "TissueTMDD",
-    mustWork = TRUE
+                                 package = "TissueTMDD",
+                                 mustWork = TRUE
   )
   model <- ospsuite::loadSimulation(simulation_path)
+  ospsuite::clearOutputs(model)
   message("Load model file")
   return(model)
 }

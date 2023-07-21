@@ -28,14 +28,44 @@ mod_simulation_launcher_server <- function(id, r) {
   moduleServer(id, function(input, output, session) {
     ns <- session$ns
 
-
     observeEvent(input$run_simulation_btn, {
       req(r$plot_id)
 
       start_loading_bar(r, target_id = r$plot_id)
 
+      message("Configuring simulation")
+
+      simulation <- r$model
+
+      # Add Output paths depending on selected Organ
+      ospsuite::addOutputs(r$output_paths, simulation)
+
+      # Activate selected Organ and disable others
+      parameter_paths <- get_parameters_paths()
+      parameter_values <- unlist(purrr::map(r$parameters, "value"), use.names = F)
+
+      for (organ in get_organs()) {
+        parameter_paths <- c(parameter_paths,
+                             glue::glue("Organism|{organ}|Intracellular|Target|Relative expression")
+        )
+
+        if (organ != r$parameters$organ) {
+          parameter_values <- c(parameter_values, 0)
+        } else {
+          parameter_values <- c(parameter_values, 1)
+        }
+      }
+
+      r$simulationBatch <-
+        ospsuite::createSimulationBatch(simulation,
+                                        parametersOrPaths = parameter_paths)
+
+      r$simulationBatch$addRunValues(parameter_values)
+
       message("Run simulation")
-      r$simulation_results <- ospsuite::runSimulation(r$model)
+
+      r$simulation_results <- ospsuite::runSimulationBatches(r$simulationBatch)
+
     })
   })
 }
@@ -45,3 +75,5 @@ mod_simulation_launcher_server <- function(id, r) {
 
 ## To be copied in the server
 # mod_simulation_launcher_server("simulation_launcher_1", r)
+
+

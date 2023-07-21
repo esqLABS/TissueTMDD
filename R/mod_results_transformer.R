@@ -18,11 +18,9 @@ mod_results_transformer_server <- function(id, r) {
   moduleServer(id, function(input, output, session) {
     ns <- session$ns
 
-
     observeEvent(r$simulation_results, {
-      result_df <- ospsuite::getOutputValues(r$simulation_results,
-        quantitiesOrPaths = output_paths()
-      )$data
+
+      result_df <- ospsuite::simulationResultsToDataFrame(r$simulation_results[[1]][[1]])
 
       result_df$name <- r$simulation_name
 
@@ -37,10 +35,4 @@ mod_results_transformer_server <- function(id, r) {
 ## To be copied in the server
 # mod_results_transformer_server("results_transformer_1")
 
-output_paths <- function() {
-  c(
-    "Plasma concentration" = "Organism|PeripheralVenousBlood|Large Molecule Drug|Plasma (Peripheral Venous Blood)",
-    "Tissue interstitial concentration" = "Organism|Skin|Interstitial|Large Molecule Drug|Concentration in container",
-    "Target occupancy" = "Organism|Skin|Interstitial|Large Molecule Drug-Target-default Complex|Receptor Occupancy-Large Molecule Drug-Target-default Complex"
-  )
-}
+

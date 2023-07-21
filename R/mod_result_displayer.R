@@ -24,6 +24,7 @@ mod_result_displayer_server <- function(id, r) {
     r$plot_id <- paste0("#", ns("result_area"))
 
     output$result_area <- renderUI({
+
       result_df_isnull <- is.null(r$result_df)
 
       if (result_df_isnull) {
@@ -53,6 +54,7 @@ mod_result_displayer_server <- function(id, r) {
           plotOutput(ns("plot"), height = "100%"),
           sidebar = mod_result_sidebar_handler_ui(ns("result_sidebar_handler_1"),
                                                   plot_sidebar_state = r$plot_sidebar_state,
+                                                  choices_output_path = r$output_paths,
                                                   selected_output_path = r$plot_settings$selected_output_path,
                                                   selected_y_scale = r$plot_settings$selected_y_scale,
                                                   selected_time_range = r$plot_settings$selected_time_range
@@ -61,89 +63,85 @@ mod_result_displayer_server <- function(id, r) {
       }
     })
 
-    output$plot <- renderPlot(
-      {
-        req(r$result_df)
+    output$plot <- renderPlot({
+      req(r$result_df)
 
-        message("Plot simulation results")
+      message("Plot simulation results")
 
-        path <- names(output_paths())[output_paths() == r$plot_settings$selected_output_path]
+      path <- names(r$output_paths)[r$output_paths == r$plot_settings$selected_output_path]
 
-        if (r$compare_sim_toggle) {
-          plot <-
-            ggplot(
-              r$comparison_df,
-              aes(
-                x = .data$Time,
-                y = .data[[r$plot_settings$selected_output_path]]
-              )
-            ) +
-            scale_color_manual(values = r$palette)
-        } else {
-          plot <-
-            ggplot(
-              r$result_df,
-              aes(
-                x = .data$Time,
-                y = .data[[r$plot_settings$selected_output_path]]
-              )
-            ) +
-            scale_color_manual(values = main_color(unique(r$result_df$name)))
-        }
+      if (r$compare_sim_toggle) {
+        plot <-
+          ggplot(
+            dplyr::filter(r$comparison_df, paths == r$plot_settings$selected_output_path),
+            aes(
+              x = .data$Time,
+              y = simulationValues
+            )
+          ) +
+          scale_color_manual(values = r$palette)
+      } else {
+        plot <-
+          ggplot(
+            dplyr::filter(r$result_df, paths == r$plot_settings$selected_output_path),
+            aes(
+              x = .data$Time,
+              y = simulationValues
+            )
+          ) +
+          scale_color_manual(values = main_color(unique(r$result_df$name)))
+      }
 
+      plot <- plot +
+        coord_cartesian(xlim = r$plot_settings$selected_time_range) +
+        labs(
+          x = "Time [s]",
+          y = path,
+          title = glue::glue("Simulation of {path} ({r$parameters$organ})")
+        )
+
+      if (r$compare_sim_toggle && length(r$compared_sim) > 0) {
         plot <- plot +
-          coord_cartesian(xlim = r$plot_settings$selected_time_range) +
+          geom_line(aes(color = name)) +
           labs(
-            x = "Time [s]",
-            y = path,
-            title = paste0(
-              "Simulation of ",
-              path
-            )
+            title = path,
+            subtitle = paste0(
+              "Simulation settings: ",
+              paste(r$simulation_name,
+                    r$compared_sim,
+                    sep = ", ",
+                    collapse = ", "
+              )
+            ),
+            color = "Simulation Name"
           )
+      } else {
+        plot <- plot + geom_line(aes(color = name),
+                                 show.legend = FALSE)
+      }
 
-        if (r$compare_sim_toggle && length(r$compared_sim) > 0) {
-          plot <- plot +
-            geom_line(aes(color = name)) +
-            labs(
-              title = path,
-              subtitle = paste0(
-                "Simulation settings: ",
-                paste(r$simulation_name,
-                      r$compared_sim,
-                      sep = ", ",
-                      collapse = ", "
-                )
-              ),
-              color = "Simulation Name"
-            )
-        } else {
-          plot <- plot + geom_line(aes(color = name),
-                                   show.legend = FALSE)
-        }
-
-        if (r$plot_settings$selected_y_scale == "log") {
-          plot <- plot +
-            scale_y_log10() +
-            labs(y = paste(path, "[log]"))
-        }
-
+      if (r$plot_settings$selected_y_scale == "log") {
         plot <- plot +
-          ggthemes::theme_economist() +
-          theme(panel.background = element_blank(),
-                plot.background = element_blank(),
-                panel.grid.major.y = element_line(colour = "grey40", linewidth = 0.2),
-                axis.text.y = element_text(hjust = 1),
-                axis.title.y = element_text(margin = margin(t = 0, r = 15, b = 0, l = 0)),
-                axis.title.x = element_text(margin = margin(t = 15, r = 0, b = 0, l = 0)),
-                legend.position = "right")
+          scale_y_log10() +
+          labs(y = paste(path, "[log]"))
+      }
 
-        on.exit(stop_loading_bar(r, target_id = r$plot_id))
+      plot <- plot +
+        ggthemes::theme_economist() +
+        theme(panel.background = element_blank(),
+              plot.background = element_blank(),
+              panel.grid.major.y = element_line(colour = "grey40", linewidth = 0.2),
+              axis.text.y = element_text(hjust = 1),
+              axis.title.y = element_text(margin = margin(t = 0, r = 15, b = 0, l = 0)),
+              axis.title.x = element_text(margin = margin(t = 15, r = 0, b = 0, l = 0)),
+              legend.position = "right")
+
+      on.exit(stop_loading_bar(r, target_id = r$plot_id))
 
 
-        return(plot)
-      },
-      res = 96
+      return(plot)
+    },
+    res = 96
     )
   })
 }
@@ -153,3 +151,4 @@ mod_result_displayer_server <- function(id, r) {
 
 ## To be copied in the server
 # mod_result_displayer_server("result_displayer_1")
+

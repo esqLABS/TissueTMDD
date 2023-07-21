@@ -28,9 +28,8 @@ mod_preset_selector_server <- function(id, r) {
   moduleServer(id, function(input, output, session) {
     ns <- session$ns
 
-
     r$presets <- list(
-      "default" = purrr::map(init_parameters(), ~ purrr::keep_at(.x, "value"))
+      "default" = purrr::map(default_parameters(), ~ purrr::keep_at(.x, "value"))
     )
 
     observeEvent(r$parameters, ignoreInit = TRUE, {
@@ -38,9 +37,9 @@ mod_preset_selector_server <- function(id, r) {
       req(r$preset)
       req(r$parameters)
 
-
       # If current settings are different than the selected preset, then switch to "custom"
       if (all.equal.list(modifyList(r$parameters, r$preset), r$parameters) != TRUE) {
+
         updateSelectInput(
           inputId = "preset_select",
           choices = c(names(r$presets), "custom"),
