@@ -83,6 +83,7 @@ get_settings_values_to_json <- function(settings) {
 
   jsonlite::toJSON(only_values,
     pretty = TRUE,
-    auto_unbox = TRUE
+    auto_unbox = TRUE,
+    digits = NA
   )
 }
