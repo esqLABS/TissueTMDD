@@ -2,9 +2,18 @@
 
 ## New Features
 
+* Latest research version of the PK-Sim model,
+* New model inputs in the GUI,
+* User can now select the target expression tissue to simulate,
+* User can now choose between single or repeated drug dose simulations,
+* Now uses simulationBatches to improve app performances
+
 ## Bug fixes and minor improvements
 
-* Tooltips to help user using the app.
+* New order of Inputs,
+* Tooltips to help user using the app,
+* Settings export is more reliable,
+* Better plot themes,
 
 # TissueTMDD 0.1.1
 
