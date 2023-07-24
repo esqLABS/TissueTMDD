@@ -45,8 +45,9 @@ mod_simulation_launcher_server <- function(id, r) {
       parameter_values <- unlist(unlist(purrr::map(purrr::keep(r$parameters, function(x) "path" %in% names(x)), "value")), use.names = F)
 
       for (organ in get_organs()) {
-        parameter_paths <- c(parameter_paths,
-                             glue::glue("Organism|{organ}|Intracellular|Target|Relative expression")
+        parameter_paths <- c(
+          parameter_paths,
+          glue::glue("Organism|{organ}|Intracellular|Target|Relative expression")
         )
 
         if (organ != r$parameters$organ$value) {
@@ -58,14 +59,14 @@ mod_simulation_launcher_server <- function(id, r) {
 
       r$simulationBatch <-
         ospsuite::createSimulationBatch(simulation,
-                                        parametersOrPaths = parameter_paths)
+          parametersOrPaths = parameter_paths
+        )
 
       r$simulationBatch$addRunValues(parameter_values)
 
       message("Run simulation")
 
       r$simulation_results <- ospsuite::runSimulationBatches(r$simulationBatch)
-
     })
   })
 }
@@ -75,5 +76,3 @@ mod_simulation_launcher_server <- function(id, r) {
 
 ## To be copied in the server
 # mod_simulation_launcher_server("simulation_launcher_1", r)
-
-

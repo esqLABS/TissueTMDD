@@ -17,31 +17,31 @@ mod_result_sidebar_handler_ui <- function(id, plot_sidebar_state, choices_output
     fluidRow(
       column(1),
       selectInput(ns("output_path_select"),
-                  label = "Output Path to Display",
-                  choices = choices_output_paths,
-                  selected = selected_output_path,
-                  width = "83%"
+        label = "Output Path to Display",
+        choices = choices_output_paths,
+        selected = selected_output_path,
+        width = "83%"
       ),
       column(1)
     ),
     fluidRow(
       column(1),
       radioButtons(ns("y_scale"),
-                   label = "Scale Type",
-                   choices = c("log", "linear"),
-                   selected = selected_y_scale,
-                   width = "83%"
+        label = "Scale Type",
+        choices = c("log", "linear"),
+        selected = selected_y_scale,
+        width = "83%"
       ),
       column(1)
     ),
     fluidRow(
       column(1),
       sliderInput(ns("time_range"),
-                  label = "Time Range",
-                  min = 0,
-                  max = 80000,
-                  value = selected_time_range,
-                  width = "83%"
+        label = "Time Range",
+        min = 0,
+        max = 80000,
+        value = selected_time_range,
+        width = "83%"
       ),
       column(1)
     )
@@ -71,9 +71,11 @@ mod_result_sidebar_handler_server <- function(id, r) {
         selected <- r$output_paths[1]
       }
 
-      updateSelectInput(inputId = "output_path_select",
-                        choices = r$output_paths,
-                        selected = selected)
+      updateSelectInput(
+        inputId = "output_path_select",
+        choices = r$output_paths,
+        selected = selected
+      )
     })
 
     observeEvent(input$plot_sidebar, {

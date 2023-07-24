@@ -21,8 +21,10 @@ mod_introduction_provider_ui <- function(id) {
           "This <a href='https://github.com/esqLABS/TissueTMDD/blob/main/inst/extdata/Large%20molecule%20Human%20default.pkml'>model</a>
       is based on the PK-Sim model for large molecules in humans and
       is extended in Mobi with target binding to a target expressed in the
-      interstitial space of an organ.")),
-      HTML( "<br>
+      interstitial space of an organ."
+        )
+      ),
+      HTML("<br>
       The target is degraded with a first-order rate constant \\(k_{deg}\\)
       and synthesized with a zero-order rate constant \\(k_{syn}\\)
       which is calculated as the product of the target concentration in the

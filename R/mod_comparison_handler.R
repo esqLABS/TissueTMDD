@@ -78,7 +78,7 @@ mod_comparison_handler_server <- function(id, r) {
     })
 
     # When current simulation result or available simulation result change, update palette
-    observeEvent(list(r$result_df, names(r$all_sim_results)),{
+    observeEvent(list(r$result_df, names(r$all_sim_results)), {
       req(r$result_df)
       r$palette <- c(main_color(unique(r$result_df$name)), compared_color(names(r$all_sim_results)))
     })

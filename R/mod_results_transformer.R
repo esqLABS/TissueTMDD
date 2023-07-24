@@ -19,7 +19,6 @@ mod_results_transformer_server <- function(id, r) {
     ns <- session$ns
 
     observeEvent(r$simulation_results, {
-
       result_df <- ospsuite::simulationResultsToDataFrame(r$simulation_results[[1]][[1]])
 
       result_df$name <- r$simulation_name
@@ -34,5 +33,3 @@ mod_results_transformer_server <- function(id, r) {
 
 ## To be copied in the server
 # mod_results_transformer_server("results_transformer_1")
-
-
