@@ -55,7 +55,7 @@ mod_input_handler_ui <- function(id) {
         selected = get_parameters_default_value()["kint"],
         grid = T
       ),
-      title = "Complex Internalization Rate Complex",
+      title = "Complex Internalization Rate Constant",
       placement = "top"
     ),
     tooltip(
@@ -83,7 +83,7 @@ mod_input_handler_ui <- function(id) {
         6,
         tooltip(
           textInput(ns("param_mol_w"),
-            "Molecular Weight",
+            "Molecular Weight [kg/µmol]",
             value = get_parameters_default_value()["mol_w"],
           ),
           title = "Molecular Weight Drug",
@@ -94,10 +94,10 @@ mod_input_handler_ui <- function(id) {
         6,
         tooltip(
           textInput(ns("param_mol_radius"),
-            "Hydrodynamic Radius",
+            "Hydrodynamic Radius [μm]",
             value = get_parameters_default_value()["mol_radius"],
           ),
-          title = "Drug Hydrodynamic Radius",
+          title = "Drug Hydrodynamic Radius in μm",
           placement = "top"
         )
       )
