@@ -49,6 +49,16 @@ mod_input_handler_ui <- function(id) {
       placement = "top"
     ),
     tooltip(
+      shinyWidgets::sliderTextInput(ns("param_kint"),
+                                    "Kint",
+                                    choices = sort(c(0.001, 0.003, 0.01, 0.03, 0.1, 0.3, 1, 3, 10)),
+                                    selected = get_parameters_default_value()["kint"],
+                                    grid = T
+      ),
+      title = "Complex Internalization Rate Complex",
+      placement = "top"
+    ),
+    tooltip(
       shinyWidgets::sliderTextInput(ns("param_target_c"),
                                     "Target Concentration, [nM]",
                                     choices = sort(c(0.01, 0.03, 0.1, 0.3, 1, 3, 10, 30, 100)),
@@ -59,42 +69,40 @@ mod_input_handler_ui <- function(id) {
       placement = "top"
     ),
     tooltip(
-      shinyWidgets::sliderTextInput(ns("param_kint_kdeg_ratio"),
-                                    "Kint Ratio",
-                                    choices = seq(0.1, 1, by = 0.1),
-                                    selected = get_parameters_default_value()["kint_kdeg_ratio"],
-                                    grid = T
+      selectInput(ns("organ"),
+                  "Target Expression Tissue",
+                  choices = get_organs(),
+                  multiple = FALSE,
+                  selected = get_parameters_default_value()["organ"]
       ),
-      title = "Kint Ratio",
+      title = "Target Expression Tissue",
       placement = "top"
     ),
     fluidRow(
       column(6,
              tooltip(
-               numericInput(ns("param_mol_w"),
-                            "Molecular Weight",
-                            value = get_parameters_default_value()["mol_w"],
+               textInput(ns("param_mol_w"),
+                         "Molecular Weight",
+                         value = get_parameters_default_value()["mol_w"],
                ),
                title = "Molecular Weight Drug",
                placement = "top"
              )),
       column(6,
              tooltip(
-               numericInput(ns("param_mol_radius"),
-                            "Molecular Radius (Solute)",
-                            value = get_parameters_default_value()["mol_radius"],
+               textInput(ns("param_mol_radius"),
+                         "Hydrodynamic Radius",
+                         value = get_parameters_default_value()["mol_radius"],
                ),
-               title = "Molecular Radius (Solute)",
+               title = "Drug Hydrodynamic Radius",
                placement = "top"
              ))),
     fluidRow(
       column(8,
              tooltip(
-               numericInput(ns("param_dose"),
-                            "Dose, [mg/kg]",
-                            value = get_parameters_default_value()["dose_1"],
-                            min = 0,
-                            step = 1
+               textInput(ns("param_dose"),
+                         "Dose, [mg/kg]",
+                         value = get_parameters_default_value()["dose_1"],
                ),
                title = "Drug dose",
                placement = "top"
@@ -113,16 +121,6 @@ mod_input_handler_ui <- function(id) {
                placement = "top"
              )
       )
-    ),
-    tooltip(
-      selectInput(ns("organ"),
-                  "Organ",
-                  choices = get_organs(),
-                  multiple = FALSE,
-                  selected = get_parameters_default_value()["organ"]
-      ),
-      title = "Organ to simulate",
-      placement = "top"
     )
   )
 }
@@ -145,7 +143,10 @@ mod_input_handler_server <- function(id, r) {
       r$parameters$kd$value <- as.numeric(input$param_kd)
       r$parameters$koff$value <- as.numeric(input$param_koff)
       r$parameters$target_c$value <- as.numeric(input$param_target_c)
-      r$parameters$kint_kdeg_ratio$value <- as.numeric(input$param_kint_kdeg_ratio)
+      r$parameters$kint$value <- as.numeric(input$param_kint)
+
+      r$parameters$kint_kdeg_ratio$value <- r$parameters$kint$value / r$parameters$kdeg$value
+
       r$parameters$mol_w$value <- as.numeric(input$param_mol_w)
       r$parameters$mol_radius$value <- as.numeric(input$param_mol_radius)
 
@@ -218,6 +219,8 @@ default_parameters <- function() {
       target_c = list(type = "slider",
                       value = 0.1,
                       path = "Target|Reference concentration"),
+      kint = list(type = "slider",
+                  value = 0.01),
       kint_kdeg_ratio = list(type = "slider",
                              value = 1,
                              path = "Complex Internalization|kint_kdeg_ratio"),
