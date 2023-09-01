@@ -20,86 +20,72 @@ mod_input_handler_ui <- function(id) {
     ),
     tooltip(
       shinyWidgets::sliderTextInput(ns("param_kdeg"),
-        "Kdeg [/h]",
-        choices = sort(c(0.001, 0.003, 0.01, 0.03, 0.1, 0.3, 1, 3, 10)),
-        selected = get_parameters_default_value()["kdeg"],
-        grid = T
+                                    "Kdeg [/h]",
+                                    choices = sort(c(0.001, 0.003, 0.01, 0.03, 0.1, 0.3, 1, 3, 10)),
+                                    selected = get_parameters_default_value()["kdeg"],
+                                    grid = T
       ),
       title = "Target degradation constant",
       placement = "top"
     ),
     tooltip(
       shinyWidgets::sliderTextInput(ns("param_kd"),
-        "Kd, [nM]",
-        choices = sort(c(0.001, 0.003, 0.01, 0.03, 0.1, 0.3, 1, 3, 10, 30, 100)),
-        selected = get_parameters_default_value()["kd"],
-        grid = T
+                                    "Kd, [nM]",
+                                    choices = sort(c(0.001, 0.003, 0.01, 0.03, 0.1, 0.3, 1, 3, 10, 30, 100)),
+                                    selected = get_parameters_default_value()["kd"],
+                                    grid = T
       ),
       title = "Equilibrium dissociation constant",
       placement = "top"
     ),
     tooltip(
       shinyWidgets::sliderTextInput(ns("param_koff"),
-        "Koff, [/h]",
-        choices = sort(c(0.001, 0.003, 0.01, 0.03, 0.1, 0.3, 1, 3, 10, 30, 100)),
-        selected = get_parameters_default_value()["koff"],
-        grid = T
+                                    "Koff, [/h]",
+                                    choices = sort(c(0.001, 0.003, 0.01, 0.03, 0.1, 0.3, 1, 3, 10, 30, 100)),
+                                    selected = get_parameters_default_value()["koff"],
+                                    grid = T
       ),
       title = "Drug-Target Dissociation constant",
       placement = "top"
     ),
     tooltip(
       shinyWidgets::sliderTextInput(ns("param_kint"),
-        "Kint",
-        choices = sort(c(0.001, 0.003, 0.01, 0.03, 0.1, 0.3, 1, 3, 10)),
-        selected = get_parameters_default_value()["kint"],
-        grid = T
+                                    "Kint",
+                                    choices = sort(c(0.001, 0.003, 0.01, 0.03, 0.1, 0.3, 1, 3, 10)),
+                                    selected = get_parameters_default_value()["kint"],
+                                    grid = T
       ),
       title = "Complex Internalization Rate Constant",
       placement = "top"
     ),
     tooltip(
       shinyWidgets::sliderTextInput(ns("param_target_c"),
-        "Target Concentration, [nM]",
-        choices = sort(c(0.01, 0.03, 0.1, 0.3, 1, 3, 10, 30, 100)),
-        selected = get_parameters_default_value()["target_c"],
-        grid = T
+                                    "Target Concentration, [nM]",
+                                    choices = sort(c(0.01, 0.03, 0.1, 0.3, 1, 3, 10, 30, 100)),
+                                    selected = get_parameters_default_value()["target_c"],
+                                    grid = T
       ),
       title = "Target Concentration",
       placement = "top"
     ),
     tooltip(
       selectInput(ns("organ"),
-        "Target Expression Tissue",
-        choices = get_organs(),
-        multiple = FALSE,
-        selected = get_parameters_default_value()["organ"]
+                  "Target Expression Tissue",
+                  choices = get_organs(),
+                  multiple = FALSE,
+                  selected = get_parameters_default_value()["organ"]
       ),
       title = "Target Expression Tissue",
       placement = "top"
     ),
     fluidRow(
-      column(
-        6,
-        tooltip(
-          textInput(ns("param_mol_w"),
-            "Molecular Weight [kg/µmol]",
-            value = get_parameters_default_value()["mol_w"],
-          ),
-          title = "Molecular Weight Drug",
-          placement = "top"
-        )
-      ),
-      column(
-        6,
-        tooltip(
-          textInput(ns("param_mol_radius"),
-            "Hydrodynamic Radius [μm]",
-            value = get_parameters_default_value()["mol_radius"],
-          ),
-          title = "Drug Hydrodynamic Radius in μm",
-          placement = "top"
-        )
+      tooltip(
+        textInput(ns("param_mol_w"),
+                  "Molecular Weight [kg/µmol]",
+                  value = get_parameters_default_value()["mol_w"],
+        ),
+        title = "Molecular Weight Drug",
+        placement = "top"
       )
     ),
     fluidRow(
@@ -107,8 +93,8 @@ mod_input_handler_ui <- function(id) {
         8,
         tooltip(
           textInput(ns("param_dose"),
-            "Dose, [mg/kg]",
-            value = get_parameters_default_value()["dose_1"],
+                    "Dose, [mg/kg]",
+                    value = get_parameters_default_value()["dose_1"],
           ),
           title = "Drug dose",
           placement = "top"
@@ -120,9 +106,9 @@ mod_input_handler_ui <- function(id) {
         br(),
         tooltip(
           checkboxInput(ns("param_repeat_dose"),
-            label = "Repeat Dose",
-            value = as.logical(get_parameters_default_value()["repeat_dose"]),
-            width = "100%"
+                        label = "Repeat Dose",
+                        value = as.logical(get_parameters_default_value()["repeat_dose"]),
+                        width = "100%"
           ),
           title = "Check this box for repeated dose over time",
           placement = "top"
@@ -155,7 +141,6 @@ mod_input_handler_server <- function(id, r) {
       r$parameters$kint_kdeg_ratio$value <- r$parameters$kint$value / r$parameters$kdeg$value
 
       r$parameters$mol_w$value <- as.numeric(input$param_mol_w)
-      r$parameters$mol_radius$value <- as.numeric(input$param_mol_radius)
 
       r$parameters$repeat_dose$value <- as.logical(input$param_repeat_dose)
       r$parameters$dose_1$value <- as.numeric(input$param_dose)
@@ -247,11 +232,6 @@ default_parameters <- function() {
         value = 0.00015,
         path = "mAb|Molecular weight"
       ),
-      mol_radius = list(
-        type = "numeric",
-        value = 5.126966e-08,
-        path = "mAb|Radius (solute)"
-      ),
       dose_1 = list(
         type = "numeric",
         value = 1e-06,
@@ -338,15 +318,15 @@ get_organs <- function() {
 update_input <- function(parameter_name, value, session) {
   inputId <- paste0("param_", parameter_name)
   switch(default_parameters()[[parameter_name]]$type,
-    "slider" = shinyWidgets::updateSliderTextInput(
-      session = session,
-      inputId = inputId,
-      selected = value
-    ),
-    "numeric" = updateNumericInput(
-      inputId = inputId,
-      value = value
-    )
+         "slider" = shinyWidgets::updateSliderTextInput(
+           session = session,
+           inputId = inputId,
+           selected = value
+         ),
+         "numeric" = updateNumericInput(
+           inputId = inputId,
+           value = value
+         )
   )
 }
 
