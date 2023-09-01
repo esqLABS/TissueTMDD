@@ -37,9 +37,9 @@ mod_result_displayer_server <- function(id, r) {
             width = 6,
             offset = 3,
             bs4Dash::callout("Please, run the simulation",
-              title = "No data",
-              status = "danger",
-              width = 12
+                             title = "No data",
+                             status = "danger",
+                             width = 12
             ),
             style = "margin-top: 30vh;"
           )
@@ -52,99 +52,143 @@ mod_result_displayer_server <- function(id, r) {
           height = "80vh",
           plotOutput(ns("plot"), height = "100%"),
           sidebar = mod_result_sidebar_handler_ui(ns("result_sidebar_handler_1"),
-            plot_sidebar_state = r$plot_sidebar_state,
-            choices_output_path = r$output_paths,
-            selected_output_path = r$plot_settings$selected_output_path,
-            selected_y_scale = r$plot_settings$selected_y_scale,
-            selected_time_range = r$plot_settings$selected_time_range
+                                                  plot_sidebar_state = r$plot_sidebar_state,
+                                                  choices_output_path = r$output_paths,
+                                                  selected_output_path = r$plot_settings$selected_output_path,
+                                                  selected_y_scale = r$plot_settings$selected_y_scale,
+                                                  selected_time_unit = r$plot_settings$selected_time_unit,
+                                                  selected_time_range = r$plot_settings$selected_time_range
           )
         )
       }
     })
 
-    output$plot <- renderPlot(
-      {
-        req(r$result_df)
+    r$plot <- reactiveValues()
 
-        message("Plot simulation results")
+    observeEvent(r$plot_settings$selected_time_unit, {
 
-        path <- names(r$output_paths)[r$output_paths == r$plot_settings$selected_output_path]
 
-        if (r$compare_sim_toggle) {
-          plot <-
-            ggplot(
-              dplyr::filter(r$comparison_df, paths == r$plot_settings$selected_output_path),
-              aes(
-                x = .data$Time,
-                y = simulationValues
-              )
-            ) +
-            scale_color_manual(values = r$palette)
-        } else {
-          plot <-
-            ggplot(
-              dplyr::filter(r$result_df, paths == r$plot_settings$selected_output_path),
-              aes(
-                x = .data$Time,
-                y = simulationValues
-              )
-            ) +
-            scale_color_manual(values = main_color(unique(r$result_df$name)))
+
+
+
+    })
+
+
+
+    observeEvent(r$plot_settings$selected_output_path, {
+
+    })
+
+
+    observeEvent(r$plot_settings$selected_time_range,{
+
+
+    })
+
+    output$plot <- renderPlot({
+
+      req(r$result_df)
+
+      message(glue::glue("Plot simulation results for {r$plot_settings$selected_output_path}"))
+
+      time_unit_duration <-
+        if (r$plot_settings$selected_time_unit == "Days") {
+          lubridate::ddays(1)
+        } else if (r$plot_settings$selected_time_unit == "Minutes"){
+          lubridate::dminutes(1)
         }
 
+      plot_df <-  dplyr::mutate(r$result_df,
+                                  Time = lubridate::duration(Time, units = unique(r$result_df$TimeUnit)) / time_unit_duration)
+
+      r$plot$time_range <- c(min(plot_df$Time), ceiling(max(plot_df$Time)))
+
+
+      plot_df <-  dplyr::filter(plot_df,
+                                  paths == r$plot_settings$selected_output_path)
+
+      path <- names(r$output_paths)[r$output_paths == r$plot_settings$selected_output_path]
+
+      unit <- plot_df %>%
+        distinct(dimension, unit) %>%
+        mutate(unit = case_when(unit == "" ~ dimension,
+                                TRUE ~ unit)) %>%
+        pull(unit)
+
+
+      plot_df <- plot_df %>%
+        dplyr::filter(Time >= r$plot_settings$selected_time_range[1] & Time <=r$plot_settings$selected_time_range[2])
+
+
+
+      plot <-
+        ggplot(plot_df,
+               aes(
+                 x = .data$Time,
+                 y = simulationValues
+               )
+        )
+
+      if (r$compare_sim_toggle) {
         plot <- plot +
-          coord_cartesian(xlim = r$plot_settings$selected_time_range) +
+          scale_color_manual(values = r$palette)
+      } else {
+        plot <- plot +
+          scale_color_manual(values = main_color(unique(r$plot_data$name)))
+      }
+
+      plot <- plot +
+        labs(
+          x = glue::glue("Time [{r$plot_settings$selected_time_unit}]"),
+          y = glue::glue("{path} [{unit}]"),
+          title = glue::glue("Simulation of {path} ({r$parameters$organ$value})")
+        )
+
+      if (r$compare_sim_toggle && length(r$compared_sim) > 0) {
+        plot <- plot +
+          geom_line(aes(color = name)) +
           labs(
-            x = "Time [s]",
-            y = path,
-            title = glue::glue("Simulation of {path} ({r$parameters$organ$value})")
+            title = path,
+            subtitle = paste0(
+              "Simulation settings: ",
+              paste(r$simulation_name,
+                    r$compared_sim,
+                    sep = ", ",
+                    collapse = ", "
+              )
+            ),
+            color = "Simulation Name"
           )
+      } else {
+        plot <- plot + geom_line(aes(color = name),
+                                 show.legend = FALSE
+        )
+      }
 
-        if (r$compare_sim_toggle && length(r$compared_sim) > 0) {
-          plot <- plot +
-            geom_line(aes(color = name)) +
-            labs(
-              title = path,
-              subtitle = paste0(
-                "Simulation settings: ",
-                paste(r$simulation_name,
-                  r$compared_sim,
-                  sep = ", ",
-                  collapse = ", "
-                )
-              ),
-              color = "Simulation Name"
-            )
-        } else {
-          plot <- plot + geom_line(aes(color = name),
-            show.legend = FALSE
-          )
-        }
-
-        if (r$plot_settings$selected_y_scale == "log") {
-          plot <- plot +
-            scale_y_log10() +
-            labs(y = paste(path, "[log]"))
-        }
-
+      if (r$plot_settings$selected_y_scale == "log") {
         plot <- plot +
-          ggthemes::theme_economist() +
-          theme(
-            panel.background = element_blank(),
-            plot.background = element_blank(),
-            panel.grid.major.y = element_line(colour = "grey40", linewidth = 0.2),
-            axis.text.y = element_text(hjust = 1),
-            axis.title.y = element_text(margin = margin(t = 0, r = 15, b = 0, l = 0)),
-            axis.title.x = element_text(margin = margin(t = 15, r = 0, b = 0, l = 0)),
-            legend.position = "right"
-          )
+          scale_y_log10() +
+          labs(y = glue::glue("{path} [{unit} (log)]"))
+      }
 
-        on.exit(stop_loading_bar(r, target_id = r$plot_id))
+      plot <- plot +
+        ggthemes::theme_economist() +
+        theme(
+          panel.background = element_blank(),
+          plot.background = element_blank(),
+          panel.grid.major.y = element_line(colour = "grey40", linewidth = 0.2),
+          axis.text.y = element_text(hjust = 1),
+          axis.title.y = element_text(margin = margin(t = 0, r = 15, b = 0, l = 0)),
+          axis.title.x = element_text(margin = margin(t = 15, r = 0, b = 0, l = 0)),
+          legend.position = "right"
+        )
+
+      on.exit(stop_loading_bar(r, target_id = r$plot_id))
 
 
-        return(plot)
-      },
-      res = 96
+      return(plot)
+    },
+    res = 96
     )
   })
 }

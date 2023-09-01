@@ -17,6 +17,7 @@ Imports:
     ggthemes,
     golem (>= 0.4.0),
     jsonlite,
+    lubridate,
     magrittr,
     ospsuite,
     purrr,
