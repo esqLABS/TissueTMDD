@@ -27,7 +27,7 @@ mod_result_sidebar_handler_ui <- function(id, plot_sidebar_state, choices_output
     fluidRow(
       column(1),
       radioButtons(ns("y_scale"),
-        label = "Y Scale Type",
+        label = "Scale type (Y-axis)",
         choices = c("log", "linear"),
         selected = selected_y_scale,
         width = "83%"
