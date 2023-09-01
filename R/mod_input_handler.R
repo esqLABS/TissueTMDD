@@ -73,46 +73,43 @@ mod_input_handler_ui <- function(id) {
                   "Target Expression Tissue",
                   choices = get_organs(),
                   multiple = FALSE,
-                  selected = get_parameters_default_value()["organ"]
+                  selected = get_parameters_default_value()["organ"],
+                  width = "100%"
       ),
       title = "Target Expression Tissue",
       placement = "top"
     ),
-    fluidRow(
-      tooltip(
-        numericInput(ns("param_mol_w_kda"),
-                     "Molecular Weight [kDa]",
-                     value = get_parameters_default_value()["mol_w_kda"],
-                     min = 1
-        ),
-        title = "Molecular Weight of Drug",
-        placement = "top"
-      )
+    tooltip(
+      numericInput(ns("param_mol_w_kda"),
+                   "Molecular Weight [kDa]",
+                   value = get_parameters_default_value()["mol_w_kda"],
+                   min = 1,
+                   width = "100%"
+      ),
+      title = "Molecular Weight of Drug",
+      placement = "top"
     ),
-    fluidRow(
-      tooltip(
-        textInput(ns("param_dose"),
-                  "Dose, [mg/kg]",
-                  value = get_parameters_default_value()["dose_1"],
-        ),
-        title = "Drug dose",
-        placement = "top"
-      )
+    tooltip(
+      textInput(ns("param_dose"),
+                "Dose, [mg/kg]",
+                value = get_parameters_default_value()["dose_1"],
+                width = "100%"
+      ),
+      title = "Drug dose",
+      placement = "top"
     ),
-    fluidRow(
-      tooltip(
-        selectInput(ns("param_dose_frequency"),
-                    label = "Dose Frequency",
-                    choices = list("Single Dose" = 0,
-                                   "Once a Day" = 1,
-                                   "Once a Week" = 7,
-                                   "Once every two weeks" = 14),
-                    selected = get_parameters_default_value()["dose_frequency"],
-                    width = "100%"
-        ),
-        title = "Check this box for repeated dose over time",
-        placement = "top"
-      )
+    tooltip(
+      selectInput(ns("param_dose_frequency"),
+                  label = "Dose Frequency",
+                  choices = list("Single Dose" = 0,
+                                 "Once a Day" = 1,
+                                 "Once a Week" = 7,
+                                 "Once every two weeks" = 14),
+                  selected = get_parameters_default_value()["dose_frequency"],
+                  width = "100%"
+      ),
+      title = "Chose interval between doses",
+      placement = "top"
     )
   )
 }
