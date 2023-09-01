@@ -81,39 +81,37 @@ mod_input_handler_ui <- function(id) {
     fluidRow(
       tooltip(
         numericInput(ns("param_mol_w_kda"),
-                  "Molecular Weight [kDa]",
-                  value = get_parameters_default_value()["mol_w_kda"],
-                  min = 1
+                     "Molecular Weight [kDa]",
+                     value = get_parameters_default_value()["mol_w_kda"],
+                     min = 1
         ),
         title = "Molecular Weight of Drug",
         placement = "top"
       )
     ),
     fluidRow(
-      column(
-        8,
-        tooltip(
-          textInput(ns("param_dose"),
-                    "Dose, [mg/kg]",
-                    value = get_parameters_default_value()["dose_1"],
-          ),
-          title = "Drug dose",
-          placement = "top"
-        )
-      ),
-      column(
-        width = 4,
-        br(),
-        br(),
-        tooltip(
-          checkboxInput(ns("param_repeat_dose"),
-                        label = "Repeat Dose",
-                        value = as.logical(get_parameters_default_value()["repeat_dose"]),
-                        width = "100%"
-          ),
-          title = "Check this box for repeated dose over time",
-          placement = "top"
-        )
+      tooltip(
+        textInput(ns("param_dose"),
+                  "Dose, [mg/kg]",
+                  value = get_parameters_default_value()["dose_1"],
+        ),
+        title = "Drug dose",
+        placement = "top"
+      )
+    ),
+    fluidRow(
+      tooltip(
+        selectInput(ns("param_dose_frequency"),
+                    label = "Dose Frequency",
+                    choices = list("Single Dose" = 0,
+                                   "Once a Day" = 1,
+                                   "Once a Week" = 7,
+                                   "Once every two weeks" = 14),
+                    selected = get_parameters_default_value()["dose_frequency"],
+                    width = "100%"
+        ),
+        title = "Check this box for repeated dose over time",
+        placement = "top"
       )
     )
   )
@@ -144,26 +142,40 @@ mod_input_handler_server <- function(id, r) {
       r$parameters$mol_w_kda$value <-  as.numeric(input$param_mol_w_kda)
       r$parameters$mol_w$value <- r$parameters$mol_w_kda$value * 1e-6 #transform from KDa to kg/µmol
 
-      r$parameters$repeat_dose$value <- as.logical(input$param_repeat_dose)
       r$parameters$dose_1$value <- as.numeric(input$param_dose)
 
-      if (input$param_repeat_dose) {
-        r$parameters$dose_2$value <- as.numeric(input$param_dose)
-        r$parameters$dose_3$value <- as.numeric(input$param_dose)
-        r$parameters$dose_4$value <- as.numeric(input$param_dose)
-        r$parameters$dose_5$value <- as.numeric(input$param_dose)
-        r$parameters$dose_6$value <- as.numeric(input$param_dose)
-        r$parameters$dose_7$value <- as.numeric(input$param_dose)
-      } else {
+      r$parameters$dose_frequency$value <- as.numeric(input$param_dose_frequency)
+
+      if (input$param_dose_frequency == 0) {
         r$parameters$dose_2$value <- 0
         r$parameters$dose_3$value <- 0
         r$parameters$dose_4$value <- 0
         r$parameters$dose_5$value <- 0
         r$parameters$dose_6$value <- 0
         r$parameters$dose_7$value <- 0
+
+        r$simulation_time <- lubridate::ddays(1) / lubridate::dminutes(1) # simulation of 1 day
+      } else {
+        r$parameters$dose_2$value <- as.numeric(input$param_dose)
+        r$parameters$dose_3$value <- as.numeric(input$param_dose)
+        r$parameters$dose_4$value <- as.numeric(input$param_dose)
+        r$parameters$dose_5$value <- as.numeric(input$param_dose)
+        r$parameters$dose_6$value <- as.numeric(input$param_dose)
+        r$parameters$dose_7$value <- as.numeric(input$param_dose)
+
+        r$simulation_time <- 8 * r$parameters$dose_frequency$value * lubridate::ddays(1) / lubridate::dminutes(1)
       }
 
+      for (i in 1:7) {
+        r$parameters[[paste("starttime",i, sep='_')]]$value <- (i-1) * r$parameters$dose_frequency$value * lubridate::ddays(1) / lubridate::dminutes(1)
+      }
+
+
+
+
+
       r$parameters$organ$value <- input$organ
+
     })
 
     # Add outputs corresponding to the selected organ
@@ -273,9 +285,44 @@ default_parameters <- function() {
         value = 1e-06,
         path = "Applications|3 months, 1 mg/kg|Application_7|ProtocolSchemaItem|DosePerBodyWeight"
       ),
-      repeat_dose = list(
-        type = "logical",
-        value = TRUE
+      dose_frequency = list(
+        type = "select",
+        value = 1
+      ),
+      starttime_1 = list(
+        type = "numeric",
+        value = 0,
+        path = "Applications|3 months, 1 mg/kg|Application_1|ProtocolSchemaItem|Start time"
+      ),
+      starttime_2 = list(
+        type = "numeric",
+        value = 1 * lubridate::ddays(1) / lubridate::dminutes(1),
+        path = "Applications|3 months, 1 mg/kg|Application_2|ProtocolSchemaItem|Start time"
+      ),
+      starttime_3 = list(
+        type = "numeric",
+        value = 2 * lubridate::ddays(1) / lubridate::dminutes(1),
+        path = "Applications|3 months, 1 mg/kg|Application_3|ProtocolSchemaItem|Start time"
+      ),
+      starttime_4 = list(
+        type = "numeric",
+        value = 3 * lubridate::ddays(1) / lubridate::dminutes(1),
+        path = "Applications|3 months, 1 mg/kg|Application_4|ProtocolSchemaItem|Start time"
+      ),
+      starttime_5 = list(
+        type = "numeric",
+        value = 4 * lubridate::ddays(1) / lubridate::dminutes(1),
+        path = "Applications|3 months, 1 mg/kg|Application_5|ProtocolSchemaItem|Start time"
+      ),
+      starttime_6 = list(
+        type = "numeric",
+        value = 5 * lubridate::ddays(1) / lubridate::dminutes(1),
+        path = "Applications|3 months, 1 mg/kg|Application_6|ProtocolSchemaItem|Start time"
+      ),
+      starttime_7 = list(
+        type = "numeric",
+        value = 6 * lubridate::ddays(1) / lubridate::dminutes(1),
+        path = "Applications|3 months, 1 mg/kg|Application_7|ProtocolSchemaItem|Start time"
       ),
       organ = list(
         type = "select",

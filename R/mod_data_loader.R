@@ -22,7 +22,7 @@ mod_data_loader_server <- function(id, r) {
     message("Load default simulation results")
 
     default_data$name <- "default"
-    r$all_sim_results <- list("default" = default_data)
+    r$all_sim_results <- reactiveValues("default" = default_data)
   })
 }
 

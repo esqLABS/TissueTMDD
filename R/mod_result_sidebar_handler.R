@@ -7,7 +7,7 @@
 #' @noRd
 #'
 #' @importFrom shiny NS tagList
-mod_result_sidebar_handler_ui <- function(id, plot_sidebar_state, choices_output_paths, selected_output_path, selected_y_scale,selected_time_unit, selected_time_range) {
+mod_result_sidebar_handler_ui <- function(id, plot_sidebar_state, choices_output_paths, selected_output_path, selected_y_scale,selected_time_unit, selected_time_range, time_range_limits) {
   ns <- NS(id)
   boxSidebar(
     id = ns("plot_sidebar"),
@@ -48,8 +48,8 @@ mod_result_sidebar_handler_ui <- function(id, plot_sidebar_state, choices_output
       column(1),
       sliderInput(ns("time_range"),
                   label = glue::glue("Time Range ({selected_time_unit})"),
-                  min = selected_time_range[1],
-                  max = selected_time_range[2],
+                  min = time_range_limits[1],
+                  max = time_range_limits[2],
                   value = selected_time_range,
                   width = "83%"
       ),
@@ -67,11 +67,12 @@ mod_result_sidebar_handler_server <- function(id, r) {
 
     r$plot_sidebar_state <- FALSE
 
-    r$plot_settings <- list(
+    r$plot_settings <- reactiveValues(
       selected_output_path = defaut_output_paths()[1],
       selected_y_scale = "log",
       selected_time_unit = "Days",
-      selected_time_range = c(0, 100)
+      selected_time_range = c(0, 100),
+      time_range_limits = c(0,100)
     )
 
 
@@ -87,14 +88,6 @@ mod_result_sidebar_handler_server <- function(id, r) {
         choices = r$output_paths,
         selected = selected
       )
-    })
-
-    observeEvent(r$plot$time_range, {
-      freezeReactiveValue(input, "time_range")
-        updateSliderInput(inputId = "time_range",
-                          min = r$plot$time_range[1],
-                          max = r$plot$time_range[2],
-                          value = c(r$plot$time_range[1], r$plot$time_range[2]))
     })
 
     observeEvent(input$plot_sidebar, {

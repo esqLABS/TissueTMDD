@@ -57,39 +57,17 @@ mod_result_displayer_server <- function(id, r) {
                                                   selected_output_path = r$plot_settings$selected_output_path,
                                                   selected_y_scale = r$plot_settings$selected_y_scale,
                                                   selected_time_unit = r$plot_settings$selected_time_unit,
-                                                  selected_time_range = r$plot_settings$selected_time_range
+                                                  selected_time_range = r$plot_settings$selected_time_range,
+                                                  time_range_limits = r$plot_settings$time_range_limits
           )
         )
       }
     })
 
-    r$plot <- reactiveValues()
 
-    observeEvent(r$plot_settings$selected_time_unit, {
-
-
-
-
-
-    })
-
-
-
-    observeEvent(r$plot_settings$selected_output_path, {
-
-    })
-
-
-    observeEvent(r$plot_settings$selected_time_range,{
-
-
-    })
-
-    output$plot <- renderPlot({
+    observe({
 
       req(r$result_df)
-
-      message(glue::glue("Plot simulation results for {r$plot_settings$selected_output_path}"))
 
       time_unit_duration <-
         if (r$plot_settings$selected_time_unit == "Days") {
@@ -98,11 +76,22 @@ mod_result_displayer_server <- function(id, r) {
           lubridate::dminutes(1)
         }
 
-      plot_df <-  dplyr::mutate(r$result_df,
-                                  Time = lubridate::duration(Time, units = unique(r$result_df$TimeUnit)) / time_unit_duration)
+      r$result_df_time_transformed <- dplyr::mutate(r$result_df,
+                                                    Time = lubridate::duration(Time, units = unique(r$result_df$TimeUnit)) / time_unit_duration)
 
-      r$plot$time_range <- c(min(plot_df$Time), ceiling(max(plot_df$Time)))
+      r$plot_settings$time_range_limits <- c(min(r$result_df_time_transformed$Time), ceiling(max(r$result_df_time_transformed$Time)))
 
+      r$plot_settings$selected_time_range <- r$plot_settings$time_range_limits
+
+    })
+
+    output$plot <- renderPlot({
+
+      req(r$result_df_time_transformed)
+
+      message(glue::glue("Plot simulation results for {r$plot_settings$selected_output_path}"))
+
+      plot_df <- r$result_df_time_transformed
 
       plot_df <-  dplyr::filter(plot_df,
                                   paths == r$plot_settings$selected_output_path)
@@ -167,8 +156,7 @@ mod_result_displayer_server <- function(id, r) {
 
       if (r$plot_settings$selected_y_scale == "log") {
         plot <- plot +
-          scale_y_log10() +
-          labs(y = glue::glue("{path} [{unit} (log)]"))
+          scale_y_log10()
       }
 
       plot <- plot +

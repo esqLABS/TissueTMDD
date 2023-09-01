@@ -31,6 +31,14 @@ for (i in seq_along(defaut_output_paths())) {
 
 ospsuite::addOutputs(output_paths, default_model)
 
+
+# Change the Simulation time
+ospsuite::setOutputInterval(default_model,
+                            startTime = 0,
+                            endTime = default_values[names(default_values) == "starttime_7"]/7 * 9,
+                            resolution = 1/15)
+
+
 simBatch <- ospsuite::createSimulationBatch(default_model,
   parametersOrPaths = default_parameters_paths
 )

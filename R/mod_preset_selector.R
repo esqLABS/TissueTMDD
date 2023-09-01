@@ -28,7 +28,7 @@ mod_preset_selector_server <- function(id, r) {
   moduleServer(id, function(input, output, session) {
     ns <- session$ns
 
-    r$presets <- list(
+    r$presets <- reactiveValues(
       "default" = purrr::map(default_parameters(), ~ purrr::keep_at(.x, "value"))
     )
 
