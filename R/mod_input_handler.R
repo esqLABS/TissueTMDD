@@ -80,11 +80,12 @@ mod_input_handler_ui <- function(id) {
     ),
     fluidRow(
       tooltip(
-        textInput(ns("param_mol_w"),
-                  "Molecular Weight [kg/µmol]",
-                  value = get_parameters_default_value()["mol_w"],
+        numericInput(ns("param_mol_w_kda"),
+                  "Molecular Weight [kDa]",
+                  value = get_parameters_default_value()["mol_w_kda"],
+                  min = 1
         ),
-        title = "Molecular Weight Drug",
+        title = "Molecular Weight of Drug",
         placement = "top"
       )
     ),
@@ -140,7 +141,8 @@ mod_input_handler_server <- function(id, r) {
 
       r$parameters$kint_kdeg_ratio$value <- r$parameters$kint$value / r$parameters$kdeg$value
 
-      r$parameters$mol_w$value <- as.numeric(input$param_mol_w)
+      r$parameters$mol_w_kda$value <-  as.numeric(input$param_mol_w_kda)
+      r$parameters$mol_w$value <- r$parameters$mol_w_kda$value * 1e-6 #transform from KDa to kg/µmol
 
       r$parameters$repeat_dose$value <- as.logical(input$param_repeat_dose)
       r$parameters$dose_1$value <- as.numeric(input$param_dose)
@@ -231,6 +233,10 @@ default_parameters <- function() {
         type = "numeric",
         value = 0.00015,
         path = "mAb|Molecular weight"
+      ),
+      mol_w_kda = list(
+        type = "numeric",
+        value = 150
       ),
       dose_1 = list(
         type = "numeric",
