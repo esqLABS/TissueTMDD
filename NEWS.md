@@ -1,5 +1,15 @@
 # TissueTMDD 0.2.1
 
+## New Features
+
+* User can now choose the frequency for repeated dosing
+
+## Bug fixes and minor improvements
+
+* User can now switch Time axis between minutes and days,
+* `Molecular Weight` input is now in kDa,
+* Remove `Hydrodynamic Radius` field
+
 # TissueTMDD 0.2.0
 
 ## New Features
@@ -15,7 +25,7 @@
 * New order of Inputs,
 * Tooltips to help user using the app,
 * Settings export is more reliable,
-* Better plot themes,
+* Better plot themes
 
 # TissueTMDD 0.1.1
 
