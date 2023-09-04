@@ -1,4 +1,4 @@
-# TissueTMDD (development version)
+# TissueTMDD 0.2.1
 
 # TissueTMDD 0.2.0
 
