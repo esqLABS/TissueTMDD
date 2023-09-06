@@ -1,10 +1,18 @@
 ## code to prepare `default` dataset goes here
 devtools::load_all(".")
 
+get_parameters_path_default_values <- function() {
+  unlist(purrr::map(purrr::keep(convert_parameters_unit(default_parameters()), function(x) "path" %in% names(x)), "value"))
+}
+
 default_model <- load_default_model()
 
 default_parameters_paths <- unname(get_parameters_paths())
 default_values <- get_parameters_path_default_values()
+
+for (i in 2:7) {
+  default_values[names(default_values) == paste("dose", i, sep='_')] <-  default_values[names(default_values) == "dose_1"]
+}
 
 for (organ in get_organs()) {
   default_parameters_paths <- c(
@@ -35,7 +43,7 @@ ospsuite::addOutputs(output_paths, default_model)
 # Change the Simulation time
 ospsuite::setOutputInterval(default_model,
                             startTime = 0,
-                            endTime = default_values[names(default_values) == "starttime_7"]/7 * 9,
+                            endTime = 8 * default_parameters()$dose_frequency$value * lubridate::ddays(1) / lubridate::dminutes(1),
                             resolution = 1/15)
 
 

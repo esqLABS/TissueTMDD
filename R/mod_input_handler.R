@@ -124,24 +124,27 @@ mod_input_handler_server <- function(id, r) {
     mod_preset_selector_server("preset_selector_1", r)
     mod_settings_importer_server("settings_importer_1", r)
 
-    r$parameters <- default_parameters()
+
+    observe({
+      parameters <- default_parameters()
+      parameters$kdeg$value <- as.numeric(input$param_kdeg)
+      parameters$kd$value <- as.numeric(input$param_kd)
+      parameters$koff$value <- as.numeric(input$param_koff)
+      parameters$target_c$value <- as.numeric(input$param_target_c)
+      parameters$kint$value <- as.numeric(input$param_kint)
+      parameters$kint_kdeg_ratio$value <- parameters$kint$value / parameters$kdeg$value
+      parameters$mol_w$value <- as.numeric(input$param_mol_w_kda)
+      parameters$dose_1$value <- as.numeric(input$param_dose)
+      parameters$dose_frequency$value <- as.numeric(input$param_dose_frequency)
+
+      r$input_list <- parameters
+
+    })
 
     # When any input changes, updates parameters value
-    observe({
-      r$parameters$kdeg$value <- as.numeric(input$param_kdeg)
-      r$parameters$kd$value <- as.numeric(input$param_kd)
-      r$parameters$koff$value <- as.numeric(input$param_koff)
-      r$parameters$target_c$value <- as.numeric(input$param_target_c)
-      r$parameters$kint$value <- as.numeric(input$param_kint)
+    observeEvent(r$input_list, {
 
-      r$parameters$kint_kdeg_ratio$value <- r$parameters$kint$value / r$parameters$kdeg$value
-
-      r$parameters$mol_w_kda$value <-  as.numeric(input$param_mol_w_kda)
-      r$parameters$mol_w$value <- r$parameters$mol_w_kda$value * 1e-6 #transform from KDa to kg/µmol
-
-      r$parameters$dose_1$value <- as.numeric(input$param_dose)
-
-      r$parameters$dose_frequency$value <- as.numeric(input$param_dose_frequency)
+      r$parameters <- convert_parameters_unit(r$input_list)
 
       if (input$param_dose_frequency == 0) {
         r$parameters$dose_2$value <- 0
@@ -153,12 +156,12 @@ mod_input_handler_server <- function(id, r) {
 
         r$simulation_time <- lubridate::ddays(1) / lubridate::dminutes(1) # simulation of 1 day
       } else {
-        r$parameters$dose_2$value <- as.numeric(input$param_dose)
-        r$parameters$dose_3$value <- as.numeric(input$param_dose)
-        r$parameters$dose_4$value <- as.numeric(input$param_dose)
-        r$parameters$dose_5$value <- as.numeric(input$param_dose)
-        r$parameters$dose_6$value <- as.numeric(input$param_dose)
-        r$parameters$dose_7$value <- as.numeric(input$param_dose)
+        r$parameters$dose_2$value <- r$parameters$dose_1$value
+        r$parameters$dose_3$value <- r$parameters$dose_1$value
+        r$parameters$dose_4$value <- r$parameters$dose_1$value
+        r$parameters$dose_5$value <- r$parameters$dose_1$value
+        r$parameters$dose_6$value <- r$parameters$dose_1$value
+        r$parameters$dose_7$value <- r$parameters$dose_1$value
 
         r$simulation_time <- 8 * r$parameters$dose_frequency$value * lubridate::ddays(1) / lubridate::dminutes(1)
       }
@@ -166,10 +169,6 @@ mod_input_handler_server <- function(id, r) {
       for (i in 1:7) {
         r$parameters[[paste("starttime",i, sep='_')]]$value <- (i-1) * r$parameters$dose_frequency$value * lubridate::ddays(1) / lubridate::dminutes(1)
       }
-
-
-
-
 
       r$parameters$organ$value <- input$organ
 
@@ -240,7 +239,7 @@ default_parameters <- function() {
       ),
       mol_w = list(
         type = "numeric",
-        value = 0.00015,
+        value = 150,
         path = "mAb|Molecular weight"
       ),
       mol_w_kda = list(
@@ -249,37 +248,37 @@ default_parameters <- function() {
       ),
       dose_1 = list(
         type = "numeric",
-        value = 1e-06,
+        value = 1e-6,
         path = "Applications|3 months, 1 mg/kg|Application_1|ProtocolSchemaItem|DosePerBodyWeight"
       ),
       dose_2 = list(
         type = "numeric",
-        value = 1e-06,
+        value = 1e-6,
         path = "Applications|3 months, 1 mg/kg|Application_2|ProtocolSchemaItem|DosePerBodyWeight"
       ),
       dose_3 = list(
         type = "numeric",
-        value = 1e-06,
+        value = 1e-6,
         path = "Applications|3 months, 1 mg/kg|Application_3|ProtocolSchemaItem|DosePerBodyWeight"
       ),
       dose_4 = list(
         type = "numeric",
-        value = 1e-06,
+        value = 1e-6,
         path = "Applications|3 months, 1 mg/kg|Application_4|ProtocolSchemaItem|DosePerBodyWeight"
       ),
       dose_5 = list(
         type = "numeric",
-        value = 1e-06,
+        value = 1e-6,
         path = "Applications|3 months, 1 mg/kg|Application_5|ProtocolSchemaItem|DosePerBodyWeight"
       ),
       dose_6 = list(
         type = "numeric",
-        value = 1e-06,
+        value = 1e-6,
         path = "Applications|3 months, 1 mg/kg|Application_6|ProtocolSchemaItem|DosePerBodyWeight"
       ),
       dose_7 = list(
         type = "numeric",
-        value = 1e-06,
+        value = 1e-6,
         path = "Applications|3 months, 1 mg/kg|Application_7|ProtocolSchemaItem|DosePerBodyWeight"
       ),
       dose_frequency = list(
@@ -342,9 +341,7 @@ get_parameters_default_value <- function() {
   unlist(purrr::map(default_parameters(), "value"))
 }
 
-get_parameters_path_default_values <- function() {
-  unlist(purrr::map(purrr::keep(default_parameters(), function(x) "path" %in% names(x)), "value"))
-}
+
 get_parameters_type <- function() {
   unlist(purrr::map(default_parameters(), "type"))
 }
@@ -388,4 +385,16 @@ defaut_output_paths <- function() {
     "Target interstitial concentration (total)" = "Interstitial|Target|Total target concentration",
     "Target occupancy" = "Interstitial|mAb-Target-Test1 Complex|Receptor Occupancy-mAb-Target-Test1 Complex"
   )
+}
+
+convert_parameters_unit <- function(parameters){
+  # cf. https://github.com/esqLABS/TissueTMDD/issues/36
+  parameters$kdeg$value <- parameters$kdeg$value / 60 # transform from 1/h to 1/min
+  parameters$kd$value <-  parameters$kd$value / 1000 # transform from µmol/l	to nM
+  parameters$koff$value <- parameters$koff$value / 60 # transform from 1/h to 1/min
+  parameters$target_c$value <-parameters$target_c$value / 1000 # transform from µmol/l	to nM
+  parameters$mol_w$value <- parameters$mol_w$value * 1e-6 # transform from KDa to kg/µmol
+  parameters$dose_1$value <- parameters$dose_1$value * 1e-6 # transform from kg/kg to	mg/kg
+
+  return(parameters)
 }

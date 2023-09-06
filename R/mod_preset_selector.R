@@ -32,13 +32,13 @@ mod_preset_selector_server <- function(id, r) {
       "default" = purrr::map(default_parameters(), ~ purrr::keep_at(.x, "value"))
     )
 
-    observeEvent(r$parameters, ignoreInit = TRUE, {
+    observeEvent(r$input_list, ignoreInit = TRUE, {
       req(input$preset_select != "custom")
       req(r$preset)
-      req(r$parameters)
+      req(r$input_list)
 
       # If current settings are different than the selected preset, then switch to "custom"
-      if (!identical(modifyList(r$parameters, r$preset), r$parameters)) {
+      if (!identical(modifyList(r$input_list, r$preset), r$input_list)) {
         updateSelectInput(
           inputId = "preset_select",
           choices = c(names(r$presets), "custom"),
