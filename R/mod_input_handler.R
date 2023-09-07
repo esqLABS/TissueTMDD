@@ -248,37 +248,37 @@ default_parameters <- function() {
       ),
       dose_1 = list(
         type = "numeric",
-        value = 1e-6,
+        value = 1,
         path = "Applications|3 months, 1 mg/kg|Application_1|ProtocolSchemaItem|DosePerBodyWeight"
       ),
       dose_2 = list(
         type = "numeric",
-        value = 1e-6,
+        value = 1,
         path = "Applications|3 months, 1 mg/kg|Application_2|ProtocolSchemaItem|DosePerBodyWeight"
       ),
       dose_3 = list(
         type = "numeric",
-        value = 1e-6,
+        value = 1,
         path = "Applications|3 months, 1 mg/kg|Application_3|ProtocolSchemaItem|DosePerBodyWeight"
       ),
       dose_4 = list(
         type = "numeric",
-        value = 1e-6,
+        value = 1,
         path = "Applications|3 months, 1 mg/kg|Application_4|ProtocolSchemaItem|DosePerBodyWeight"
       ),
       dose_5 = list(
         type = "numeric",
-        value = 1e-6,
+        value = 1,
         path = "Applications|3 months, 1 mg/kg|Application_5|ProtocolSchemaItem|DosePerBodyWeight"
       ),
       dose_6 = list(
         type = "numeric",
-        value = 1e-6,
+        value = 1,
         path = "Applications|3 months, 1 mg/kg|Application_6|ProtocolSchemaItem|DosePerBodyWeight"
       ),
       dose_7 = list(
         type = "numeric",
-        value = 1e-6,
+        value = 1,
         path = "Applications|3 months, 1 mg/kg|Application_7|ProtocolSchemaItem|DosePerBodyWeight"
       ),
       dose_frequency = list(
@@ -390,11 +390,11 @@ defaut_output_paths <- function() {
 convert_parameters_unit <- function(parameters){
   # cf. https://github.com/esqLABS/TissueTMDD/issues/36
   parameters$kdeg$value <- parameters$kdeg$value / 60 # transform from 1/h to 1/min
-  parameters$kd$value <-  parameters$kd$value / 1000 # transform from µmol/l	to nM
+  parameters$kd$value <-  parameters$kd$value / 1000 # transform from nM to µmol/l
   parameters$koff$value <- parameters$koff$value / 60 # transform from 1/h to 1/min
-  parameters$target_c$value <-parameters$target_c$value / 1000 # transform from µmol/l	to nM
+  parameters$target_c$value <-parameters$target_c$value / 1000 # transform from to nM to µmol/l
   parameters$mol_w$value <- parameters$mol_w$value * 1e-6 # transform from KDa to kg/µmol
-  parameters$dose_1$value <- parameters$dose_1$value * 1e-6 # transform from kg/kg to	mg/kg
+  parameters$dose_1$value <- parameters$dose_1$value * 1e-6 # transform from 	mg/kg to kg/kg
 
   return(parameters)
 }
