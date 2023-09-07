@@ -1,7 +1,9 @@
 # TissueTMDD (development version)
 
 ## Bug fixes and minor improvements
+
 * Fix unit conversion between user's input and model units (#36)
+* Default dose is now 1 mg/kg
 
 # TissueTMDD 0.2.1
 
