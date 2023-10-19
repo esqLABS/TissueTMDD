@@ -40,10 +40,11 @@ mod_simulation_launcher_server <- function(id, r) {
       # Add Output paths depending on selected Organ
       ospsuite::addOutputs(r$output_paths, simulation)
 
-      # Activate selected Organ and disable others
+
       parameter_paths <- get_parameters_paths()
       parameter_values <- unlist(unlist(purrr::map(purrr::keep(r$parameters, function(x) "path" %in% names(x)), "value")), use.names = F)
 
+      # Activate selected Organ and disable others
       for (organ in get_organs()) {
         parameter_paths <- c(
           parameter_paths,

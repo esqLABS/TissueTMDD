@@ -24,7 +24,7 @@ mod_result_displayer_server <- function(id, r) {
     r$plot_id <- paste0("#", ns("result_area"))
 
     output$result_area <- renderUI({
-      result_df_isnull <- is.null(r$result_df)
+      result_df_isnull <- is.null(r$comparison_df)
 
       if (result_df_isnull) {
         bs4Dash::box(
@@ -67,7 +67,7 @@ mod_result_displayer_server <- function(id, r) {
 
     observe({
 
-      req(r$result_df)
+      req(r$comparison_df)
 
       time_unit_duration <-
         if (r$plot_settings$selected_time_unit == "Days") {
@@ -76,8 +76,8 @@ mod_result_displayer_server <- function(id, r) {
           lubridate::dhours(1)
         }
 
-      r$result_df_time_transformed <- dplyr::mutate(r$result_df,
-                                                    Time = lubridate::duration(Time, units = unique(r$result_df$TimeUnit)) / time_unit_duration)
+      r$result_df_time_transformed <- dplyr::mutate(r$comparison_df,
+                                                    Time = lubridate::duration(Time, units = unique(r$comparison_df$TimeUnit)) / time_unit_duration)
 
       r$plot_settings$time_range_limits <- c(min(r$result_df_time_transformed$Time), ceiling(max(r$result_df_time_transformed$Time)))
 
