@@ -38,7 +38,7 @@ mod_result_sidebar_handler_ui <- function(id, plot_sidebar_state, choices_output
       column(1),
       selectInput(ns("time_unit"),
                   label = "Time Unit",
-                  choices = c("Minutes", "Days"),
+                  choices = c("Hours", "Days"),
                   selected = selected_time_unit,
                   width = "83%"
       ),

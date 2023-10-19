@@ -72,8 +72,8 @@ mod_result_displayer_server <- function(id, r) {
       time_unit_duration <-
         if (r$plot_settings$selected_time_unit == "Days") {
           lubridate::ddays(1)
-        } else if (r$plot_settings$selected_time_unit == "Minutes"){
-          lubridate::dminutes(1)
+        } else if (r$plot_settings$selected_time_unit == "Hours"){
+          lubridate::dhours(1)
         }
 
       r$result_df_time_transformed <- dplyr::mutate(r$result_df,
