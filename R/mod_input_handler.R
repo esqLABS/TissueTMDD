@@ -20,93 +20,95 @@ mod_input_handler_ui <- function(id) {
     ),
     tooltip(
       shinyWidgets::sliderTextInput(ns("param_kdeg"),
-                                    "Kdeg [/h]",
-                                    choices = sort(c(0.001, 0.003, 0.01, 0.03, 0.1, 0.3, 1, 3, 10)),
-                                    selected = get_parameters_default_value()["kdeg"],
-                                    grid = T
+        "Kdeg [/h]",
+        choices = sort(c(0.001, 0.003, 0.01, 0.03, 0.1, 0.3, 1, 3, 10)),
+        selected = get_parameters_default_value()["kdeg"],
+        grid = T
       ),
       title = "Target degradation constant",
       placement = "top"
     ),
     tooltip(
       shinyWidgets::sliderTextInput(ns("param_kd"),
-                                    "Kd, [nM]",
-                                    choices = sort(c(0.001, 0.003, 0.01, 0.03, 0.1, 0.3, 1, 3, 10, 30, 100)),
-                                    selected = get_parameters_default_value()["kd"],
-                                    grid = T
+        "Kd, [nM]",
+        choices = sort(c(0.001, 0.003, 0.01, 0.03, 0.1, 0.3, 1, 3, 10, 30, 100)),
+        selected = get_parameters_default_value()["kd"],
+        grid = T
       ),
       title = "Equilibrium dissociation constant",
       placement = "top"
     ),
     tooltip(
       shinyWidgets::sliderTextInput(ns("param_koff"),
-                                    "Koff, [/h]",
-                                    choices = sort(c(0.001, 0.003, 0.01, 0.03, 0.1, 0.3, 1, 3, 10, 30, 100)),
-                                    selected = get_parameters_default_value()["koff"],
-                                    grid = T
+        "Koff, [/h]",
+        choices = sort(c(0.001, 0.003, 0.01, 0.03, 0.1, 0.3, 1, 3, 10, 30, 100)),
+        selected = get_parameters_default_value()["koff"],
+        grid = T
       ),
       title = "Drug-Target Dissociation constant",
       placement = "top"
     ),
     tooltip(
       shinyWidgets::sliderTextInput(ns("param_kint"),
-                                    "Kint",
-                                    choices = sort(c(0.001, 0.003, 0.01, 0.03, 0.1, 0.3, 1, 3, 10)),
-                                    selected = get_parameters_default_value()["kint"],
-                                    grid = T
+        "Kint",
+        choices = sort(c(0.001, 0.003, 0.01, 0.03, 0.1, 0.3, 1, 3, 10)),
+        selected = get_parameters_default_value()["kint"],
+        grid = T
       ),
       title = "Complex Internalization Rate Constant",
       placement = "top"
     ),
     tooltip(
       shinyWidgets::sliderTextInput(ns("param_target_c"),
-                                    "Target Concentration, [nM]",
-                                    choices = sort(c(0.01, 0.03, 0.1, 0.3, 1, 3, 10, 30, 100)),
-                                    selected = get_parameters_default_value()["target_c"],
-                                    grid = T
+        "Target Concentration, [nM]",
+        choices = sort(c(0.01, 0.03, 0.1, 0.3, 1, 3, 10, 30, 100)),
+        selected = get_parameters_default_value()["target_c"],
+        grid = T
       ),
       title = "Target Concentration",
       placement = "top"
     ),
     tooltip(
       selectInput(ns("organ"),
-                  "Target Expression Tissue",
-                  choices = get_organs(),
-                  multiple = FALSE,
-                  selected = get_parameters_default_value()["organ"],
-                  width = "100%"
+        "Target Expression Tissue",
+        choices = get_organs(),
+        multiple = FALSE,
+        selected = get_parameters_default_value()["organ"],
+        width = "100%"
       ),
       title = "Target Expression Tissue",
       placement = "top"
     ),
     tooltip(
       numericInput(ns("param_mol_w_kda"),
-                   "Molecular Weight [kDa]",
-                   value = get_parameters_default_value()["mol_w_kda"],
-                   min = 1,
-                   width = "100%"
+        "Molecular Weight [kDa]",
+        value = get_parameters_default_value()["mol_w_kda"],
+        min = 1,
+        width = "100%"
       ),
       title = "Molecular Weight of Drug",
       placement = "top"
     ),
     tooltip(
       textInput(ns("param_dose"),
-                "Dose, [mg/kg]",
-                value = get_parameters_default_value()["dose_1"],
-                width = "100%"
+        "Dose, [mg/kg]",
+        value = get_parameters_default_value()["dose_1"],
+        width = "100%"
       ),
       title = "Drug dose",
       placement = "top"
     ),
     tooltip(
       selectInput(ns("param_dose_frequency"),
-                  label = "Dose Frequency",
-                  choices = list("Single Dose" = 0,
-                                 "Once a Day" = 1,
-                                 "Once a Week" = 7,
-                                 "Once every two weeks" = 14),
-                  selected = get_parameters_default_value()["dose_frequency"],
-                  width = "100%"
+        label = "Dose Frequency",
+        choices = list(
+          "Single Dose" = 0,
+          "Once a Day" = 1,
+          "Once a Week" = 7,
+          "Once every two weeks" = 14
+        ),
+        selected = get_parameters_default_value()["dose_frequency"],
+        width = "100%"
       ),
       title = "Chose interval between doses",
       placement = "top"
@@ -139,13 +141,11 @@ mod_input_handler_server <- function(id, r) {
       parameters$organ$value <- input$organ
 
       r$input_list <- parameters
-
     })
 
     # When any input changes, updates parameters value
     observeEvent(r$input_list, {
-
-      r$parameters <- convert_parameters_unit(r$input_list)
+      r$parameters <- inputs_to_parameters(r$input_list)
 
       if (input$param_dose_frequency == 0) {
         r$parameters$dose_2$value <- 0
@@ -168,7 +168,7 @@ mod_input_handler_server <- function(id, r) {
       }
 
       for (i in 1:7) {
-        r$parameters[[paste("starttime",i, sep='_')]]$value <- (i-1) * r$parameters$dose_frequency$value * lubridate::ddays(1) / lubridate::dminutes(1)
+        r$parameters[[paste("starttime", i, sep = "_")]]$value <- (i - 1) * r$parameters$dose_frequency$value * lubridate::ddays(1) / lubridate::dminutes(1)
       }
     })
 
@@ -363,15 +363,15 @@ get_organs <- function() {
 update_input <- function(parameter_name, value, session) {
   inputId <- paste0("param_", parameter_name)
   switch(default_parameters()[[parameter_name]]$type,
-         "slider" = shinyWidgets::updateSliderTextInput(
-           session = session,
-           inputId = inputId,
-           selected = value
-         ),
-         "numeric" = updateNumericInput(
-           inputId = inputId,
-           value = value
-         )
+    "slider" = shinyWidgets::updateSliderTextInput(
+      session = session,
+      inputId = inputId,
+      selected = value
+    ),
+    "numeric" = updateNumericInput(
+      inputId = inputId,
+      value = value
+    )
   )
 }
 
@@ -385,14 +385,14 @@ defaut_output_paths <- function() {
   )
 }
 
-convert_parameters_unit <- function(parameters){
+inputs_to_parameters <- function(inputs) {
   # cf. https://github.com/esqLABS/TissueTMDD/issues/36
-  parameters$kdeg$value <- parameters$kdeg$value / 60 # transform from 1/h to 1/min
-  parameters$kd$value <-  parameters$kd$value / 1000 # transform from nM to µmol/l
-  parameters$koff$value <- parameters$koff$value / 60 # transform from 1/h to 1/min
-  parameters$target_c$value <-parameters$target_c$value / 1000 # transform from to nM to µmol/l
-  parameters$mol_w$value <- parameters$mol_w$value * 1e-6 # transform from KDa to kg/µmol
-  parameters$dose_1$value <- parameters$dose_1$value * 1e-6 # transform from 	mg/kg to kg/kg
+  inputs$kdeg$value <- inputs$kdeg$value / 60 # transform from 1/h to 1/min
+  inputs$kd$value <- inputs$kd$value / 1000 # transform from nM to µmol/l
+  inputs$koff$value <- inputs$koff$value / 60 # transform from 1/h to 1/min
+  inputs$target_c$value <- inputs$target_c$value / 1000 # transform from to nM to µmol/l
+  inputs$mol_w$value <- inputs$mol_w$value * 1e-6 # transform from KDa to kg/µmol
+  inputs$dose_1$value <- inputs$dose_1$value * 1e-6 # transform from 	mg/kg to kg/kg
 
-  return(parameters)
+  return(inputs)
 }
