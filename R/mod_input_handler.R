@@ -136,6 +136,7 @@ mod_input_handler_server <- function(id, r) {
       parameters$mol_w$value <- as.numeric(input$param_mol_w_kda)
       parameters$dose_1$value <- as.numeric(input$param_dose)
       parameters$dose_frequency$value <- as.numeric(input$param_dose_frequency)
+      parameters$organ$value <- input$organ
 
       r$input_list <- parameters
 
@@ -169,9 +170,6 @@ mod_input_handler_server <- function(id, r) {
       for (i in 1:7) {
         r$parameters[[paste("starttime",i, sep='_')]]$value <- (i-1) * r$parameters$dose_frequency$value * lubridate::ddays(1) / lubridate::dminutes(1)
       }
-
-      r$parameters$organ$value <- input$organ
-
     })
 
     # Add outputs corresponding to the selected organ
