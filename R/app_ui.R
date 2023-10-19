@@ -15,7 +15,10 @@ app_ui <- function(request) {
     bs4Dash::dashboardPage(
       preloader = list(html = tagList(spin_1(), "Loading TissueTMDD"), color = "#333e48"),
       help = TRUE,
-      bs4Dash::dashboardHeader(title = "TissueTMDD"),
+      bs4Dash::dashboardHeader(
+        title = "TissueTMDD",
+        version_badge()
+      ),
       mod_sidebar_ui("sidebar_1"),
       mod_body_ui("body_1"),
       fullscreen = TRUE,
@@ -47,4 +50,16 @@ golem_add_external_resources <- function() {
     # Add here other external resources
     # for example, you can add shinyalert::useShinyalert()
   )
+}
+
+version_badge <- function() {
+  version <- golem::pkg_version()
+  # If version ends with .900X, the badge should be orange, otherwise, green
+  if (grepl("\\.900[0-9]$", version)) {
+    color <- "warning"
+  } else {
+    color <- "success"
+  }
+
+  return(bs4Dash::bs4Badge(paste0("v", version), color = color))
 }
