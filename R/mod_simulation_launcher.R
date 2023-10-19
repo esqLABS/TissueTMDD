@@ -60,9 +60,10 @@ mod_simulation_launcher_server <- function(id, r) {
 
       # Change the Simulation time
       ospsuite::setOutputInterval(simulation,
-                                  startTime = 0,
-                                  endTime = r$simulation_time,
-                                  resolution = 1/15)
+        startTime = 0,
+        endTime = r$simulation_time,
+        resolution = 1 / 15
+      )
 
 
       r$simulationBatch <-

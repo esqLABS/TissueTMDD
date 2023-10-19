@@ -7,7 +7,7 @@
 #' @noRd
 #'
 #' @importFrom shiny NS tagList
-mod_result_sidebar_handler_ui <- function(id, plot_sidebar_state, choices_output_paths, selected_output_path, selected_y_scale,selected_time_unit, selected_time_range, time_range_limits) {
+mod_result_sidebar_handler_ui <- function(id, plot_sidebar_state, choices_output_paths, selected_output_path, selected_y_scale, selected_time_unit, selected_time_range, time_range_limits) {
   ns <- NS(id)
   boxSidebar(
     id = ns("plot_sidebar"),
@@ -17,41 +17,41 @@ mod_result_sidebar_handler_ui <- function(id, plot_sidebar_state, choices_output
     fluidRow(
       column(1),
       selectInput(ns("output_path_select"),
-                  label = "Output Path to Display",
-                  choices = choices_output_paths,
-                  selected = selected_output_path,
-                  width = "83%"
+        label = "Output Path to Display",
+        choices = choices_output_paths,
+        selected = selected_output_path,
+        width = "83%"
       ),
       column(1)
     ),
     fluidRow(
       column(1),
       radioButtons(ns("y_scale"),
-                   label = "Scale type (Y-axis)",
-                   choices = c("log", "linear"),
-                   selected = selected_y_scale,
-                   width = "83%"
+        label = "Scale type (Y-axis)",
+        choices = c("log", "linear"),
+        selected = selected_y_scale,
+        width = "83%"
       ),
       column(1)
     ),
     fluidRow(
       column(1),
       selectInput(ns("time_unit"),
-                  label = "Time Unit",
-                  choices = c("Hours", "Days"),
-                  selected = selected_time_unit,
-                  width = "83%"
+        label = "Time Unit",
+        choices = c("Hours", "Days"),
+        selected = selected_time_unit,
+        width = "83%"
       ),
       column(1)
     ),
     fluidRow(
       column(1),
       sliderInput(ns("time_range"),
-                  label = glue::glue("Time Range ({selected_time_unit})"),
-                  min = time_range_limits[1],
-                  max = time_range_limits[2],
-                  value = selected_time_range,
-                  width = "83%"
+        label = glue::glue("Time Range ({selected_time_unit})"),
+        min = time_range_limits[1],
+        max = time_range_limits[2],
+        value = selected_time_range,
+        width = "83%"
       ),
       column(1)
     )
@@ -72,7 +72,7 @@ mod_result_sidebar_handler_server <- function(id, r) {
       selected_y_scale = "log",
       selected_time_unit = "Days",
       selected_time_range = c(0, 100),
-      time_range_limits = c(0,100)
+      time_range_limits = c(0, 100)
     )
 
 

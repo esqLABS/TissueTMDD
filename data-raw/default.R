@@ -11,7 +11,7 @@ default_parameters_paths <- unname(get_parameters_paths())
 default_values <- get_parameters_path_default_values()
 
 for (i in 2:7) {
-  default_values[names(default_values) == paste("dose", i, sep='_')] <-  default_values[names(default_values) == "dose_1"]
+  default_values[names(default_values) == paste("dose", i, sep = "_")] <- default_values[names(default_values) == "dose_1"]
 }
 
 for (organ in get_organs()) {
@@ -42,9 +42,10 @@ ospsuite::addOutputs(output_paths, default_model)
 
 # Change the Simulation time
 ospsuite::setOutputInterval(default_model,
-                            startTime = 0,
-                            endTime = 8 * default_parameters()$dose_frequency$value * lubridate::ddays(1) / lubridate::dminutes(1),
-                            resolution = 1/15)
+  startTime = 0,
+  endTime = 8 * default_parameters()$dose_frequency$value * lubridate::ddays(1) / lubridate::dminutes(1),
+  resolution = 1 / 15
+)
 
 
 simBatch <- ospsuite::createSimulationBatch(default_model,
