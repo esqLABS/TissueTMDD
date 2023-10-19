@@ -64,6 +64,7 @@ mod_preset_selector_server <- function(id, r) {
           selected = "custom"
         )
         r$simulation_name <- "custom"
+        r$result_df <- NULL
       }
     })
 
@@ -83,9 +84,6 @@ mod_preset_selector_server <- function(id, r) {
       if (input$preset_select %in% names(r$all_sim_results)) {
         # load stored results
         r$result_df <- r$all_sim_results[[input$preset_select]]
-      } else {
-        # reset result_df
-        r$result_df <- NULL
       }
     })
 
