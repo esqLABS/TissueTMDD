@@ -32,13 +32,32 @@ mod_preset_selector_server <- function(id, r) {
       "default" = purrr::map(default_parameters(), ~ purrr::keep_at(.x, "value"))
     )
 
+    # Update the preset selector when the input list changes
     observeEvent(r$input_list, ignoreInit = TRUE, {
-      req(input$preset_select != "custom")
-      req(r$preset)
       req(r$input_list)
 
-      # If current settings are different than the selected preset, then switch to "custom"
-      if (!identical(modifyList(r$input_list, r$preset), r$input_list)) {
+      preset_found <- FALSE
+
+      # If current settings match a preset, select the preset in
+      # the dropdown
+      for (preset_name in names(r$presets)) {
+        if (identical(
+          modifyList(r$input_list, r$presets[[preset_name]]),
+          r$input_list
+        )) {
+          preset_found <- TRUE
+          updateSelectInput(
+            inputId = "preset_select",
+            choices = c(names(r$presets)),
+            selected = preset_name
+          )
+          r$simulation_name <- preset_name
+          break
+        }
+      }
+
+      # otherwise, asign it as custom
+      if (!preset_found) {
         updateSelectInput(
           inputId = "preset_select",
           choices = c(names(r$presets), "custom"),
@@ -58,7 +77,6 @@ mod_preset_selector_server <- function(id, r) {
       # load preset settings
       r$preset <- r$presets[[input$preset_select]]
 
-      # if (input$preset_select != "custom") {
       # set simulation name
       r$simulation_name <- input$preset_select
 
@@ -69,13 +87,11 @@ mod_preset_selector_server <- function(id, r) {
         # reset result_df
         r$result_df <- NULL
       }
-      # }
     })
 
 
     # When a preset is selected, remove custom from dropdown
-    observeEvent(input$preset_select, {
-      # "custom" is removed from list when preset is selected
+    observeEvent(input$preset_select, ignoreInit = TRUE, {
       req(input$preset_select != "custom")
 
       updateSelectInput(
@@ -86,16 +102,20 @@ mod_preset_selector_server <- function(id, r) {
     })
 
     # When presets are changed (when user save a simulation), then the dropdown is updated.
-    observeEvent(r$presets, ignoreInit = TRUE, {
+    observeEvent(r$last_saved_simulation, {
+      req(r$last_saved_simulation)
+
       updateSelectInput(
         inputId = "preset_select",
         choices = names(r$presets),
-        selected = r$simulation_name
+        selected = r$last_saved_simulation
       )
     })
 
     # When a setting is imported, select it in preset_select
     observeEvent(r$last_imported_setting, {
+      req(r$last_imported_setting)
+
       updateSelectInput(
         inputId = "preset_select",
         selected = r$last_imported_setting
