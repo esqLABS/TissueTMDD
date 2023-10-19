@@ -53,7 +53,7 @@ golem_add_external_resources <- function() {
 }
 
 version_badge <- function() {
-  version <- golem::pkg_version()
+  version <- packageVersion("TissueTMDD")
   # If version ends with .900X, the badge should be orange, otherwise, green
   if (grepl("\\.900[0-9]$", version)) {
     color <- "warning"

@@ -1,5 +1,7 @@
 # TissueTMDD (development version)
 
+# TissueTMDD 0.2.2
+
 ## Bug fixes and minor improvements
 
 * Fix unit conversion between user's input and model units (#36)

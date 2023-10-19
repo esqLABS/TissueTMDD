@@ -1,6 +1,6 @@
 default:
   golem_name: TissueTMDD
-  golem_version: 0.2.1.9000
+  golem_version: 0.2.2
   app_prod: no
 production:
   app_prod: yes
