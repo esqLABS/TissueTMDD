@@ -50,9 +50,10 @@ mod_simulation_saver_server <- function(id, r) {
     # Save settings and close modal when confirm button is clicked if
     # simulation_name is not empty, otherwise, warn the user.
     observeEvent(input$confirm, {
-      if (!is.null(input$simulation_name) && nzchar(input$simulation_name)) {
-        r$presets[[input$simulation_name]] <- r$parameters
+      if (!is.null(input$simulation_name) && nzchar(input$simulation_name) && input$simulation_name != "custom") {
         r$simulation_name <- input$simulation_name
+        r$last_saved_simulation <- r$simulation_name
+        r$presets[[r$simulation_name]] <- r$input_list
         r$save_simulation <- Sys.time()
         removeModal()
       } else {
@@ -76,7 +77,7 @@ mod_simulation_saver_server <- function(id, r) {
           fluidRow(
             column(8,
               offset = 2,
-              bs4Dash::callout("Please Give a name to the simulation",
+              bs4Dash::callout("Please Give a name to the simulation (different than 'custom')",
                 title = "No simulation name",
                 status = "danger", width = 12
               )
