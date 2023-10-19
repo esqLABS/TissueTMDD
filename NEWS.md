@@ -4,6 +4,8 @@
 
 * Fix unit conversion between user's input and model units (#36)
 * Default dose is now 1 mg/kg
+* Available time units are now Hours and Days
+* Now display the application version in the header (#26)
 
 # TissueTMDD 0.2.1
 

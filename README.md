@@ -19,16 +19,23 @@ Using TissueTMDD, you can:
 - Compare simulations,
 - Export and import simulation settings
 
-![](vignettes/assets/app-preview.png)
+![](vignettes/assets/tmdd_preview.gif)
 
 ## Installation
 
-You can install the development version of TissueTMDD from
+You can install the latest released version of TissueTMDD from
 [GitHub](https://github.com/) with:
 
 ``` r
-# install.packages("devtools")
-devtools::install_github("esqLABS/TissueTMDD")
+# install.packages("remotes")
+remotes::install_github("esqLABS/TissueTMDD@*release")
+```
+
+To install the latest development version, run:
+
+``` r
+# install.packages("remotes")
+remotes::install_github("esqLABS/TissueTMDD")
 ```
 
 ## Run the App
