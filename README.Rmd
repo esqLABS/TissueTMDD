@@ -32,23 +32,45 @@ Using TissueTMDD, you can:
 
 ## Installation
 
-You can install the latest released version of TissueTMDD from [GitHub](https://github.com/) with:
 
-``` r
-# install.packages("remotes")
-remotes::install_github("esqLABS/TissueTMDD@*release")
+### Install {rClr}
+
+rClr cannot be installed from github or from CRAN directly, use the following code to do so:
+
+```r
+rClrURL <- if (R.Version()$major >= 4) {
+  "https://github.com/Open-Systems-Pharmacology/rClr/releases/download/v0.9.2/rClr_0.9.2.zip"
+} else {
+  "https://github.com/Open-Systems-Pharmacology/rClr/releases/download/v0.9.1-R3/rClr_0.9.1.zip"
+}
+
+install.packages(rClrURL,
+  repos = NULL,
+  type = "binary"
+)
 ```
 
-To install the latest development version, run:
+### Install TissueTMDD
 
-``` r
+```r
 # install.packages("remotes")
 remotes::install_github("esqLABS/TissueTMDD")
 ```
 
+
+## Installation (bis)
+
+If the previous solution did not work, you can try the following
+  
+  1. Download the source code [here](https://github.com/esqLABS/TissueTMDD/archive/refs/heads/main.zip)
+  2. Unzip it and open the `.Rproj` file with RStudio.
+  3. Run `install.packages("renv")` in the R console.
+  4. Run `renv::restore()` in the R console.
+
+
 ## Run the App
 
-```{r example, eval = FALSE}
+```r
 library(TissueTMDD)
 run_app()
 ```
