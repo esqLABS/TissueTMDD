@@ -580,7 +580,7 @@
       "RemoteHost": "api.github.com",
       "RemoteUsername": "esqLABS",
       "RemoteRepo": "esqlabsR",
-      "RemoteRef": "HEAD",
+      "RemoteRef": "main",
       "RemoteSha": "2158d2560bece37fc3701fe8546133bd18bfb5e0",
       "Remotes": "Open-Systems-Pharmacology/OSPSuite.RUtils, Open-Systems-Pharmacology/TLF-Library, Open-Systems-Pharmacology/OSPSuite-R, Open-Systems-Pharmacology/ospsuite.parameteridentification",
       "Requirements": [
@@ -605,7 +605,7 @@
         "vctrs",
         "writexl"
       ],
-      "Hash": "fe14b17b2c18e13978184ddfcbfb832e"
+      "Hash": "f73daae02e08252ee40edc1baf8e20c8"
     },
     "evaluate": {
       "Package": "evaluate",
@@ -1253,13 +1253,14 @@
     "ospsuite": {
       "Package": "ospsuite",
       "Version": "12.0.0",
-      "Source": "GitHub",
-      "RemoteType": "github",
+      "Source": "git",
+      "RemoteType": "git",
+      "RemoteUrl": "https://github.com/Open-Systems-Pharmacology/OSPSuite-R",
+      "RemoteHost": "api.github.com",
       "RemoteUsername": "Open-Systems-Pharmacology",
       "RemoteRepo": "OSPSuite-R",
-      "RemoteRef": "HEAD",
+      "RemoteRef": "develop",
       "RemoteSha": "03a91700577159b7ff71e3d8771094cea4240c96",
-      "RemoteHost": "api.github.com",
       "Requirements": [
         "R",
         "data.table",
@@ -1275,18 +1276,19 @@
         "tlf",
         "xml2"
       ],
-      "Hash": "fc8b2e25154c870eefb1401d332e6a4e"
+      "Hash": "cbd29a8e9fd72983333f7868a78d5665"
     },
     "ospsuite.parameteridentification": {
       "Package": "ospsuite.parameteridentification",
       "Version": "1.3.0",
-      "Source": "GitHub",
-      "RemoteType": "github",
-      "RemoteUsername": "Open-Systems-Pharmacology",
-      "RemoteRepo": "OSPSuite.ParameterIdentification",
-      "RemoteRef": "HEAD",
-      "RemoteSha": "9b33b4a941ca27db877499acf8aff7470b28df9a",
+      "Source": "git",
+      "RemoteType": "git",
+      "RemoteUrl": "https://github.com/Open-Systems-Pharmacology/ospsuite.parameteridentification",
       "RemoteHost": "api.github.com",
+      "RemoteUsername": "Open-Systems-Pharmacology",
+      "RemoteRepo": "ospsuite.parameteridentification",
+      "RemoteRef": "develop",
+      "RemoteSha": "9b33b4a941ca27db877499acf8aff7470b28df9a",
       "Requirements": [
         "DEoptim",
         "R",
@@ -1303,7 +1305,7 @@
         "rClr",
         "tibble"
       ],
-      "Hash": "6bf0553efd1324b1dd0ea17208bba15b"
+      "Hash": "0aed041c625df8fc326f32e25d7246c0"
     },
     "ospsuite.utils": {
       "Package": "ospsuite.utils",
@@ -2370,19 +2372,15 @@
     },
     "waiter": {
       "Package": "waiter",
-      "Version": "0.2.5.9000",
-      "Source": "GitHub",
-      "RemoteType": "github",
-      "RemoteUsername": "JohnCoene",
-      "RemoteRepo": "waiter",
-      "RemoteRef": "HEAD",
-      "RemoteSha": "6e087aa3b19e0bc3075acd85251318cb83197e2c",
-      "RemoteHost": "api.github.com",
+      "Version": "0.2.5",
+      "Source": "Repository",
+      "Repository": "CRAN",
       "Requirements": [
+        "R6",
         "htmltools",
         "shiny"
       ],
-      "Hash": "3f9cdb961d84fa496ae8a6108a6c459d"
+      "Hash": "93e6b6c8ae3f81d4be77a0dc74e5cf5e"
     },
     "waldo": {
       "Package": "waldo",

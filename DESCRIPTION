@@ -37,7 +37,8 @@ Suggests:
 VignetteBuilder: 
     knitr
 Remotes: 
-    esqLABS/esqlabsR@*release
+    esqlabsR=esqLABS/esqlabsR,
+    ospsuite=Open-Systems-Pharmacology/OSPSuite-R
 Config/testthat/edition: 3
 Encoding: UTF-8
 Language: en-US
@@ -45,3 +46,4 @@ LazyData: true
 RoxygenNote: 7.2.3
 Depends: 
     R (>= 2.10)
+
