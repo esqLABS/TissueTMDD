@@ -1253,13 +1253,13 @@
     "ospsuite": {
       "Package": "ospsuite",
       "Version": "12.0.0",
-      "Source": "git",
-      "RemoteType": "git",
-      "RemoteUrl": "https://github.com/Open-Systems-Pharmacology/OSPSuite-R",
+      "Source": "GitHub",
+      "RemoteType": "github",
       "RemoteHost": "api.github.com",
-      "RemoteUsername": "Open-Systems-Pharmacology",
       "RemoteRepo": "OSPSuite-R",
-      "RemoteRef": "develop",
+      "RemoteUsername": "Open-Systems-Pharmacology",
+      "RemotePkgRef": "ospsuite=Open-Systems-Pharmacology/OSPSuite-R",
+      "RemoteRef": "HEAD",
       "RemoteSha": "03a91700577159b7ff71e3d8771094cea4240c96",
       "Requirements": [
         "R",
@@ -1276,7 +1276,7 @@
         "tlf",
         "xml2"
       ],
-      "Hash": "cbd29a8e9fd72983333f7868a78d5665"
+      "Hash": "a5cee5d9258b3f83036db5048ad2f1bd"
     },
     "ospsuite.parameteridentification": {
       "Package": "ospsuite.parameteridentification",
