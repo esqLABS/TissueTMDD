@@ -45,7 +45,7 @@ install.packages(rClrURL,
 
 ``` r
 # install.packages("remotes")
-remotes::install_github("esqLABS/TissueTMDD")
+remotes::install_github("esqLABS/TissueTMDD@release")
 ```
 
 ## Installation (bis)
