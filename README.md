@@ -29,16 +29,8 @@ rClr cannot be installed from github or from CRAN directly, use the
 following code to do so:
 
 ``` r
-rClrURL <- if (R.Version()$major >= 4) {
-  "https://github.com/Open-Systems-Pharmacology/rClr/releases/download/v0.9.2/rClr_0.9.2.zip"
-} else {
-  "https://github.com/Open-Systems-Pharmacology/rClr/releases/download/v0.9.1-R3/rClr_0.9.1.zip"
-}
-
-install.packages(rClrURL,
-  repos = NULL,
-  type = "binary"
-)
+install.packages("https://github.com/Open-Systems-Pharmacology/rClr/releases/download/v0.9.2/rClr_0.9.2.zip", 
+                 type = "binary")
 ```
 
 ### Install TissueTMDD
@@ -46,6 +38,13 @@ install.packages(rClrURL,
 ``` r
 # install.packages("remotes")
 remotes::install_github("esqLABS/TissueTMDD@release")
+```
+
+To install the latest development version, use:
+
+``` r
+# install.packages("remotes")
+remotes::install_github("esqLABS/TissueTMDD")
 ```
 
 ## Installation (bis)
