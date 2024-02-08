@@ -1,4 +1,14 @@
-# TissueTMDD (development version)
+# TissueTMDD 1.0.0
+
+🎉 First stable release of the app !
+
+## Bug fixes and minor improvements
+
+- Available time units are now Hours and Days (#38)
+- All inputs invalidates the simulation when changed (#37)
+- All compared simulations are now displayed (#39),
+- Results are now correctly reset between two simulations with custom settings (#40),
+
 
 # TissueTMDD 0.2.2
 
@@ -6,7 +16,6 @@
 
 * Fix unit conversion between user's input and model units (#36)
 * Default dose is now 1 mg/kg
-* Available time units are now Hours and Days
 * Now display the application version in the header (#26)
 
 # TissueTMDD 0.2.1
