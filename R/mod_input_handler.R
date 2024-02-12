@@ -155,7 +155,7 @@ mod_input_handler_server <- function(id, r) {
         r$parameters$dose_6$value <- 0
         r$parameters$dose_7$value <- 0
 
-        r$simulation_time <- lubridate::ddays(1) / lubridate::dminutes(1) # simulation of 1 day
+        r$simulation_time <- lubridate::dmonths(3) / lubridate::dminutes(1) # simulation of 1 day
       } else {
         r$parameters$dose_2$value <- r$parameters$dose_1$value
         r$parameters$dose_3$value <- r$parameters$dose_1$value
@@ -164,9 +164,11 @@ mod_input_handler_server <- function(id, r) {
         r$parameters$dose_6$value <- r$parameters$dose_1$value
         r$parameters$dose_7$value <- r$parameters$dose_1$value
 
+        # TODO EXPLAIN THAT
         r$simulation_time <- 8 * r$parameters$dose_frequency$value * lubridate::ddays(1) / lubridate::dminutes(1)
       }
 
+      # TODO EXPLAIN THAT
       for (i in 1:7) {
         r$parameters[[paste("starttime", i, sep = "_")]]$value <- (i - 1) * r$parameters$dose_frequency$value * lubridate::ddays(1) / lubridate::dminutes(1)
       }
