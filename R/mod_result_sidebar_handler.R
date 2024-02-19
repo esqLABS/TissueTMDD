@@ -7,19 +7,19 @@
 #' @noRd
 #'
 #' @importFrom shiny NS tagList
-mod_result_sidebar_handler_ui <- function(id, plot_sidebar_state, choices_output_paths, selected_output_path, selected_y_scale, selected_time_unit, selected_time_range, time_range_limits) {
+mod_result_sidebar_handler_ui <- function(id) {
   ns <- NS(id)
   boxSidebar(
     id = ns("plot_sidebar"),
     width = 33,
-    startOpen = plot_sidebar_state,
+    startOpen = FALSE,
     h3("Plot Settings"),
     fluidRow(
       column(1),
       selectInput(ns("output_path_select"),
         label = "Output Path to Display",
-        choices = choices_output_paths,
-        selected = selected_output_path,
+        choices = NA_character_,
+        selected = NA_character_,
         width = "83%"
       ),
       column(1)
@@ -29,7 +29,7 @@ mod_result_sidebar_handler_ui <- function(id, plot_sidebar_state, choices_output
       radioButtons(ns("y_scale"),
         label = "Scale type (Y-axis)",
         choices = c("log", "linear"),
-        selected = selected_y_scale,
+        selected = "log",
         width = "83%"
       ),
       column(1)
@@ -39,7 +39,7 @@ mod_result_sidebar_handler_ui <- function(id, plot_sidebar_state, choices_output
       selectInput(ns("time_unit"),
         label = "Time Unit",
         choices = c("Hours", "Days"),
-        selected = selected_time_unit,
+        selected = "Hours",
         width = "83%"
       ),
       column(1)
@@ -47,10 +47,10 @@ mod_result_sidebar_handler_ui <- function(id, plot_sidebar_state, choices_output
     fluidRow(
       column(1),
       sliderInput(ns("time_range"),
-        label = glue::glue("Time Range ({selected_time_unit})"),
-        min = time_range_limits[1],
-        max = time_range_limits[2],
-        value = selected_time_range,
+        label = textOutput(ns("time_range_label")),
+        min = 0,
+        max = 100,
+        value = c(0, 100),
         width = "83%"
       ),
       column(1)
@@ -65,8 +65,6 @@ mod_result_sidebar_handler_server <- function(id, r) {
   moduleServer(id, function(input, output, session) {
     ns <- session$ns
 
-    r$plot_sidebar_state <- FALSE
-
     r$plot_settings <- reactiveValues(
       selected_output_path = defaut_output_paths()[1],
       selected_y_scale = "log",
@@ -76,11 +74,14 @@ mod_result_sidebar_handler_server <- function(id, r) {
     )
 
 
-    observeEvent(r$output_paths, {
-      if (r$plot_settings$selected_output_path %in% r$output_paths) {
-        selected <- r$plot_settings$selected_output_path
-      } else {
+    # Observers: Data --> Inputs
+
+    # Update output path select input when simulation data is available
+    observeEvent(r$result_df, {
+      if (is.null(input$output_path_select) || !(input$output_path_select %in% r$output_paths)) {
         selected <- r$output_paths[1]
+      } else if (input$output_path_select %in% r$output_paths) {
+        selected <- input$output_path_select
       }
 
       updateSelectInput(
@@ -88,6 +89,37 @@ mod_result_sidebar_handler_server <- function(id, r) {
         choices = r$output_paths,
         selected = selected
       )
+    })
+
+    # Update time range slider when simulation data and transformed to selected time unit
+    observeEvent(r$result_df_time_transformed, {
+      time_range_limits <- range(r$result_df_time_transformed$Time)
+
+      updateSliderInput(
+        inputId = "time_range",
+        min = time_range_limits[1],
+        max = time_range_limits[2],
+        value = time_range_limits
+      )
+    })
+
+    # Observers: Inputs --> Data
+
+    # Transform Time column depending on the time unit selected by user
+    observeEvent(input$time_unit, {
+      req(r$comparison_df)
+
+      time_unit_duration <-
+        if (input$time_unit == "Days") {
+          lubridate::ddays(1)
+        } else if (input$time_unit == "Hours") {
+          lubridate::dhours(1)
+        }
+
+      r$result_df_time_transformed <-
+        dplyr::mutate(r$comparison_df,
+          Time = lubridate::duration(Time, units = unique(r$comparison_df$TimeUnit)) / time_unit_duration
+        )
     })
 
     observeEvent(input$plot_sidebar, {
@@ -109,6 +141,11 @@ mod_result_sidebar_handler_server <- function(id, r) {
 
     observeEvent(input$time_range, {
       r$plot_settings$selected_time_range <- input$time_range
+    })
+
+
+    output$time_range_label <- renderText({
+      glue::glue("Time Range ({input$time_unit})")
     })
   })
 }

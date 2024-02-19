@@ -25,72 +25,35 @@ mod_result_displayer_server <- function(id, r) {
 
     output$result_area <- renderUI({
       if (is.null(r$comparison_df)) {
-        no_results_box
+        bs4Dash::box(
+          title = "",
+          headerBorder = FALSE,
+          collapsible = FALSE,
+          width = 12,
+          height = "80vh",
+          column(
+            width = 6,
+            offset = 3,
+            bs4Dash::callout("Please, run the simulation",
+                             title = "No data",
+                             status = "danger",
+                             width = 12
+            ),
+            style = "margin-top: 30vh;"
+          )
+        )
       } else {
-        result_box()
+        bs4Dash::box(
+          title = "Simulation Results",
+          collapsible = FALSE,
+          width = 12,
+          height = "80vh",
+          plotOutput(ns("plot"), height = "100%"),
+          sidebar = mod_result_sidebar_handler_ui(ns("result_sidebar_handler_1"))
+        )
       }
     })
 
-    no_results_box <-
-      bs4Dash::box(
-        title = "",
-        headerBorder = FALSE,
-        collapsible = FALSE,
-        width = 12,
-        height = "80vh",
-        column(
-          width = 6,
-          offset = 3,
-          bs4Dash::callout("Please, run the simulation",
-            title = "No data",
-            status = "danger",
-            width = 12
-          ),
-          style = "margin-top: 30vh;"
-        )
-      )
-
-    result_box <- reactive({
-      req(r$comparison_df)
-
-      bs4Dash::box(
-        title = "Simulation Results",
-        collapsible = FALSE,
-        width = 12,
-        height = "80vh",
-        plotOutput(ns("plot"), height = "100%"),
-        sidebar = mod_result_sidebar_handler_ui(ns("result_sidebar_handler_1"),
-          plot_sidebar_state = r$plot_sidebar_state,
-          choices_output_path = r$output_paths,
-          selected_output_path = r$plot_settings$selected_output_path,
-          selected_y_scale = r$plot_settings$selected_y_scale,
-          selected_time_unit = r$plot_settings$selected_time_unit,
-          selected_time_range = r$plot_settings$selected_time_range,
-          time_range_limits = r$plot_settings$time_range_limits
-        )
-      )
-    })
-
-    observe({
-
-      req(r$comparison_df)
-
-      time_unit_duration <-
-        if (r$plot_settings$selected_time_unit == "Days") {
-          lubridate::ddays(1)
-        } else if (r$plot_settings$selected_time_unit == "Hours") {
-          lubridate::dhours(1)
-        }
-
-      r$result_df_time_transformed <-
-        dplyr::mutate(r$comparison_df,
-                      Time = lubridate::duration(Time, units = unique(r$comparison_df$TimeUnit)) / time_unit_duration
-      )
-
-      r$plot_settings$time_range_limits <- c(min(r$result_df_time_transformed$Time), ceiling(max(r$result_df_time_transformed$Time)))
-
-      r$plot_settings$selected_time_range <- r$plot_settings$time_range_limits
-    })
 
     output$plot <- renderPlot(
       {
