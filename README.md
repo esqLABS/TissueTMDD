@@ -23,6 +23,13 @@ Using TissueTMDD, you can:
 
 ## Installation
 
+### Prerequisites
+
+- Git Installation and GitHub setup
+  ([instructions](https://gist.github.com/z3tt/3dab3535007acf10839164976640942)),
+- R Installation (\>= 4.3.0),
+- (optional) RTools Installation (for Windows users).
+
 ### Install {rClr}
 
 rClr cannot be installed from github or from CRAN directly, use the
