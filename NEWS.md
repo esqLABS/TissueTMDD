@@ -1,5 +1,10 @@
 # TissueTMDD (development version)
 
+## Bug fixes and minor improvements
+
+- Improve time filtering reactivity.
+
+
 # TissueTMDD 1.0.0
 
 🎉 First stable release of the app !
