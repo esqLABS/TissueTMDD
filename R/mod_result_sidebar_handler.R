@@ -97,8 +97,8 @@ mod_result_sidebar_handler_server <- function(id, r) {
 
       updateSliderInput(
         inputId = "time_range",
-        min = time_range_limits[1],
-        max = time_range_limits[2],
+        min = floor(time_range_limits[1]),
+        max = ceiling(time_range_limits[2]),
         value = time_range_limits
       )
     })
