@@ -28,7 +28,7 @@ Using TissueTMDD, you can:
 - Git Installation and GitHub setup
   ([instructions](https://gist.github.com/z3tt/3dab3535007acf108391649766409421)),
 - R Installation (\>= 4.3.0),
-- (optional) RTools Installation (for Windows users,
+- RTools Installation (for Windows users,
   [instructions](https://cran.r-project.org/bin/windows/Rtools/rtools40.html)).
 
 ### Install {rClr}
