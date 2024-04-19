@@ -64,6 +64,7 @@ If the previous solution did not work, you can try the following
 2.  Unzip it and open the `.Rproj` file with RStudio.
 3.  Run `install.packages("renv")` in the R console.
 4.  Run `renv::restore()` in the R console.
+5. In the top menu bar, click on `Build` > `Install Package`
 
 ## Run the App
 
