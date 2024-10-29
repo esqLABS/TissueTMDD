@@ -4,7 +4,6 @@
 #'     DO NOT REMOVE.
 #' @import shiny
 #' @import shinipsum
-#' @import esqlabsR
 #' @import ggplot2
 #' @import tidyr
 #' @import dplyr

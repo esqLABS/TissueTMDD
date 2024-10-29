@@ -3,7 +3,6 @@
 export(run_app)
 import(bs4Dash)
 import(dplyr)
-import(esqlabsR)
 import(ggplot2)
 import(jsonlite)
 import(magrittr)
