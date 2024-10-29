@@ -1,14 +1,16 @@
 {
   "bioconductor.version": null,
   "external.libraries": [],
-  "ignored.packages": ["TissueTMDD"],
+  "ignored.packages": [],
   "package.dependency.fields": [
     "Imports",
     "Depends",
     "LinkingTo"
   ],
+  "ppm.enabled": null,
+  "ppm.ignored.urls": [],
   "r.version": null,
-  "snapshot.type": "implicit",
+  "snapshot.type": "explicit",
   "use.cache": true,
   "vcs.ignore.cellar": true,
   "vcs.ignore.library": true,

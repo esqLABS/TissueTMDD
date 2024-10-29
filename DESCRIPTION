@@ -1,48 +1,48 @@
 Package: TissueTMDD
 Title: A shiny Application to Interact with drug-target binding in tissue
     interstitial space model
-Version: 1.0.0.9000
+Version: 1.1.0
 Authors@R: 
     person("Felix", "MIL", , "felix.mil@esqlabs.com", role = c("cre", "aut"))
 Description: PKG_DESC.
 License: MIT + file LICENSE
 URL: https://github.com/esqLABS/TissueTMDD
 BugReports: https://github.com/esqLABS/TissueTMDD/issues
+Depends: 
+    R (>= 4.0.0)
 Imports: 
     bs4Dash,
     config (>= 0.3.1),
     dplyr,
-    esqlabsR,
     ggplot2,
     ggthemes,
+    glue,
     golem (>= 0.4.0),
     jsonlite,
     lubridate,
     magrittr,
     ospsuite,
+    pkgload,
     purrr,
     shinipsum,
     shiny (>= 1.7.4),
     shinyjs,
     shinyWidgets,
-    tidyr,
+    stringr,
     thematic,
+    tidyr,
     waiter (>= 0.2.5)
 Suggests: 
     knitr,
     rmarkdown,
     spelling,
-    styler,
     testthat (>= 3.0.0)
 VignetteBuilder: 
     knitr
 Remotes: 
-    esqlabsR=esqLABS/esqlabsR,
     ospsuite=Open-Systems-Pharmacology/OSPSuite-R
 Config/testthat/edition: 3
 Encoding: UTF-8
 Language: en-US
 LazyData: true
-RoxygenNote: 7.3.1
-Depends: 
-    R (>= 4.0.0)
+RoxygenNote: 7.3.2

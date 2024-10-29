@@ -1,4 +1,9 @@
-# TissueTMDD (development version)
+# TissueTMDD 1.1.0
+
+## New Features
+
+- Updated all dependencies to latest version. Including {ospsuite}. Thus the app can now run on Linux.
+- Add a Dockerfile to create a docker image of the app.
 
 ## Bug fixes and minor improvements
 
