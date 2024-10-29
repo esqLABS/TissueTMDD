@@ -902,12 +902,13 @@
     "ospsuite": {
       "Package": "ospsuite",
       "Version": "12.1.0.9006",
-      "Source": "GitHub",
-      "RemoteType": "github",
+      "Source": "git",
+      "RemoteType": "git",
+      "RemoteUrl": "https://github.com/Open-Systems-Pharmacology/OSPSuite-R",
       "RemoteHost": "api.github.com",
-      "RemotePackage": "ospsuite",
-      "RemoteRepo": "OSPSuite-R",
       "RemoteUsername": "Open-Systems-Pharmacology",
+      "RemoteRepo": "OSPSuite-R",
+      "RemoteRef": "main",
       "RemoteSha": "bdc96654c9b94436f908cfd299af08f6e7bbc2ff",
       "Requirements": [
         "R",
@@ -928,17 +929,18 @@
         "tlf",
         "xml2"
       ],
-      "Hash": "7475196a74575c201b7cd10ae226dacd"
+      "Hash": "92a5855a8f02cda1f4c5e8de71ea5064"
     },
     "ospsuite.utils": {
       "Package": "ospsuite.utils",
       "Version": "1.5.0",
-      "Source": "GitHub",
-      "RemoteType": "github",
+      "Source": "git",
+      "RemoteType": "git",
+      "RemoteUrl": "https://github.com/Open-Systems-Pharmacology/OSPSuite.RUtils",
       "RemoteHost": "api.github.com",
-      "RemotePackage": "ospsuite.utils",
-      "RemoteRepo": "OSPSuite.RUtils",
       "RemoteUsername": "Open-Systems-Pharmacology",
+      "RemoteRepo": "OSPSuite.RUtils",
+      "RemoteRef": "develop",
       "RemoteSha": "940a4da26b0b75473821ba4d60aa997dbdc1b1c2",
       "Requirements": [
         "R",
@@ -946,7 +948,7 @@
         "purrr",
         "stringi"
       ],
-      "Hash": "ed8dfb1dfec8408acadc937225fb80e1"
+      "Hash": "367fd049721de49155a954a15c8d3426"
     },
     "patchwork": {
       "Package": "patchwork",
@@ -1097,15 +1099,16 @@
       "Source": "GitHub",
       "RemoteType": "github",
       "RemoteHost": "api.github.com",
-      "RemoteRepo": "rSharp",
       "RemoteUsername": "Open-Systems-Pharmacology",
+      "RemoteRepo": "rSharp",
+      "RemoteRef": "main",
       "RemoteSha": "f33f2c0094fd3e26ad8ccf8fe661e38bb1e98439",
       "Requirements": [
         "R",
         "R6",
         "methods"
       ],
-      "Hash": "b453201eb020af6c1808469149fda19b"
+      "Hash": "91eba942477bd151a96474eb474e7503"
     },
     "rappdirs": {
       "Package": "rappdirs",
@@ -1496,12 +1499,13 @@
     "tlf": {
       "Package": "tlf",
       "Version": "1.5.0",
-      "Source": "GitHub",
-      "RemoteType": "github",
+      "Source": "git",
+      "RemoteType": "git",
+      "RemoteUrl": "https://github.com/Open-Systems-Pharmacology/TLF-Library",
       "RemoteHost": "api.github.com",
-      "RemotePackage": "tlf",
-      "RemoteRepo": "TLF-Library",
       "RemoteUsername": "Open-Systems-Pharmacology",
+      "RemoteRepo": "TLF-Library",
+      "RemoteRef": "develop",
       "RemoteSha": "68df1f5bef28bf10141261cebfd011566f266d8e",
       "Requirements": [
         "R",
@@ -1515,7 +1519,7 @@
         "rlang",
         "stringr"
       ],
-      "Hash": "8290ea2e6c4b1fe93b6c7368accc596d"
+      "Hash": "fcd459dc06731db2151fdfbcfd240f96"
     },
     "tzdb": {
       "Package": "tzdb",
