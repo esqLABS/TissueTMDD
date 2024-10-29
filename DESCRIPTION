@@ -12,7 +12,6 @@ Imports:
     bs4Dash,
     config (>= 0.3.1),
     dplyr,
-    esqlabsR,
     ggplot2,
     ggthemes,
     golem (>= 0.4.0),
@@ -29,6 +28,7 @@ Imports:
     thematic,
     waiter (>= 0.2.5)
 Suggests: 
+    devtools,
     knitr,
     rmarkdown,
     spelling,
@@ -37,7 +37,6 @@ Suggests:
 VignetteBuilder: 
     knitr
 Remotes: 
-    esqlabsR=esqLABS/esqlabsR,
     ospsuite=Open-Systems-Pharmacology/OSPSuite-R
 Config/testthat/edition: 3
 Encoding: UTF-8
