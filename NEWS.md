@@ -2,7 +2,8 @@
 
 ## Bug fixes and minor improvements
 
-- Fixed a bug where comparing simulation would lead to empty plot.
+- Fixed a bug where comparing simulation would lead to empty plot. (#46)
+- Fixed a bug where previously saved settings could not be loaded properly. (#48)
 
 # TissueTMDD 1.1.0
 
