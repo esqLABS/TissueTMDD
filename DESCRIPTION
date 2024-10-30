@@ -1,7 +1,7 @@
 Package: TissueTMDD
 Title: A shiny Application to Interact with drug-target binding in tissue
     interstitial space model
-Version: 1.1.0.9000
+Version: 1.1.1
 Authors@R: 
     person("Felix", "MIL", , "felix.mil@esqlabs.com", role = c("cre", "aut"))
 Description: PKG_DESC.

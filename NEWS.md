@@ -1,4 +1,8 @@
-# TissueTMDD (development version)
+# TissueTMDD 1.1.1
+
+## Bug fixes and minor improvements
+
+- Fixed a bug where comparing simulation would lead to empty plot.
 
 # TissueTMDD 1.1.0
 
