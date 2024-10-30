@@ -176,6 +176,7 @@ mod_input_handler_server <- function(id, r) {
 
     # Add outputs corresponding to the selected organ
     observeEvent(r$parameters$organ$value, {
+
       output_paths <- vector(mode = "character", length = length(defaut_output_paths()))
 
       for (i in seq_along(defaut_output_paths())) {
@@ -187,6 +188,7 @@ mod_input_handler_server <- function(id, r) {
       }
 
       # return paths to r$ so it is updated in result_sidebar_handler module
+
       names(output_paths) <- names(defaut_output_paths())
       r$output_paths <- output_paths
     })

@@ -66,14 +66,15 @@ mod_comparison_handler_server <- function(id, r) {
     # When current results or selected simulation changes,
     # Refresh the dataframe containing all simulation results to compare
     observeEvent(list(input$compare_sim_select, r$result_df), ignoreNULL = FALSE, {
-      comparison_df <- r$result_df
+
+      display_df <- r$result_df
 
       for (simulation in input$compare_sim_select) {
         sr <- r$all_sim_results[[simulation]]
         sr$name <- as.character(simulation)
-        comparison_df <- bind_rows(comparison_df, sr)
+        display_df <- bind_rows(display_df, sr)
       }
-      r$comparison_df <- comparison_df
+      r$display_df <- display_df
       r$compared_sim <- input$compare_sim_select
     })
 
