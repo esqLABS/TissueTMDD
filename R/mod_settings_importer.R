@@ -37,6 +37,7 @@ mod_settings_importer_server <- function(id, r) {
 
       tryCatch(
         {
+
           imported_settings <- read_settings_from_fileInput(input$import_settings)
 
           generate_toast(
@@ -60,9 +61,11 @@ mod_settings_importer_server <- function(id, r) {
         }
       )
 
-      r$presets <- append(r$presets, imported_settings)
+      for (preset in names(imported_settings)) {
+        r$presets[[preset]] <- imported_settings[[preset]]
+      }
 
-      r$last_imported_setting <- tail(names(imported_settings), 1)
+      r$last_imported_setting <- preset
     })
   })
 }
@@ -88,7 +91,7 @@ read_settings_from_fileInput <- function(file_df) {
   )
 
   for (file_name in names(file_list)) {
-    file_settings <- jsonlite::read_json(path = file_list[[file_name]])
+    file_settings <- jsonlite::read_json(path = file_list[[file_name]], digits = NA)
     imported_settings <- append(imported_settings, file_settings)
   }
   return(imported_settings)

@@ -28,7 +28,7 @@ mod_preset_selector_server <- function(id, r) {
   moduleServer(id, function(input, output, session) {
     ns <- session$ns
 
-    r$presets <- reactiveValues(
+    r$presets <- list(
       "default" = purrr::map(default_parameters(), ~ purrr::keep_at(.x, "value"))
     )
 
@@ -41,10 +41,10 @@ mod_preset_selector_server <- function(id, r) {
       # If current settings match a preset, select the preset in
       # the dropdown
       for (preset_name in names(r$presets)) {
-        if (identical(
+        if (all.equal(
           modifyList(r$input_list, r$presets[[preset_name]]),
           r$input_list
-        )) {
+        ) == TRUE) {
           preset_found <- TRUE
           updateSelectInput(
             inputId = "preset_select",
@@ -112,11 +112,13 @@ mod_preset_selector_server <- function(id, r) {
 
     # When a setting is imported, select it in preset_select
     observeEvent(r$last_imported_setting, {
+
       req(r$last_imported_setting)
 
       updateSelectInput(
         inputId = "preset_select",
-        selected = r$last_imported_setting
+        selected = r$last_imported_setting,
+        choices = names(r$presets)
       )
     })
   })

@@ -48,7 +48,7 @@ mod_settings_exporter_server <- function(id, r) {
         tryCatch(
           {
             write(
-              get_settings_values_to_json(r$presets[[r$simulation_name]]),
+              get_settings_values_to_json(r$simulation_name, r$presets[[r$simulation_name]]),
               file
             )
             generate_toast(
@@ -78,10 +78,15 @@ mod_settings_exporter_server <- function(id, r) {
 ## To be copied in the server
 # mod_settings_exporter_server("settings_exporter_1")
 
-get_settings_values_to_json <- function(settings) {
-  only_values <- purrr::map(settings, ~ purrr::map(.x, ~ purrr::keep_at(.x, "value")))
+get_settings_values_to_json <- function(simulation_name, settings) {
 
-  jsonlite::toJSON(only_values,
+  only_values <- purrr::map(settings, ~ purrr::keep_at(.x, "value"))
+
+  to_export <- list()
+
+  to_export[[simulation_name]] <- only_values
+
+  jsonlite::toJSON(to_export,
     pretty = TRUE,
     auto_unbox = TRUE,
     digits = NA
