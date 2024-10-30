@@ -77,7 +77,8 @@ mod_result_sidebar_handler_server <- function(id, r) {
     # Observers: Data --> Inputs
 
     # Update output path select input when simulation data is available
-    observeEvent(r$result_df, {
+    observeEvent(r$display_df, {
+
       if (is.null(input$output_path_select) || !(input$output_path_select %in% r$output_paths)) {
         selected <- r$output_paths[1]
       } else if (input$output_path_select %in% r$output_paths) {
@@ -106,8 +107,9 @@ mod_result_sidebar_handler_server <- function(id, r) {
     # Observers: Inputs --> Data
 
     # Transform Time column depending on the time unit selected by user
-    observeEvent(input$time_unit, {
-      req(r$comparison_df)
+    observe({
+      req(r$display_df)
+      req(input$time_unit)
 
       time_unit_duration <-
         if (input$time_unit == "Days") {
@@ -117,8 +119,8 @@ mod_result_sidebar_handler_server <- function(id, r) {
         }
 
       r$result_df_time_transformed <-
-        dplyr::mutate(r$comparison_df,
-          Time = lubridate::duration(Time, units = unique(r$comparison_df$TimeUnit)) / time_unit_duration
+        dplyr::mutate(r$display_df,
+          Time = lubridate::duration(Time, units = unique(r$display_df$TimeUnit)) / time_unit_duration
         )
     })
 

@@ -24,7 +24,7 @@ mod_result_displayer_server <- function(id, r) {
     r$plot_id <- paste0("#", ns("result_area"))
 
     output$result_area <- renderUI({
-      if (is.null(r$comparison_df)) {
+      if (is.null(r$display_df)) {
         bs4Dash::box(
           title = "",
           headerBorder = FALSE,
