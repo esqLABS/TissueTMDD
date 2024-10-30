@@ -48,7 +48,7 @@ mod_settings_exporter_server <- function(id, r) {
         tryCatch(
           {
             write(
-              get_settings_values_to_json(r$presets[r$simulation_name]),
+              get_settings_values_to_json(r$presets[[r$simulation_name]]),
               file
             )
             generate_toast(
