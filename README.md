@@ -19,6 +19,9 @@ Using TissueTMDD, you can:
 - Compare simulations,
 - Export and import simulation settings
 
+[**Try the Web Application Here
+↗️**](https://tissuetmdd.azurewebsites.net/)
+
 ![](vignettes/assets/tmdd_preview.gif)
 
 ## Installation
@@ -28,18 +31,8 @@ Using TissueTMDD, you can:
 - Git Installation and GitHub setup
   ([instructions](https://gist.github.com/z3tt/3dab3535007acf108391649766409421)),
 - R Installation (\>= 4.3.0),
-- RTools Installation (for Windows users,
+- (optional) RTools Installation (for Windows users,
   [instructions](https://cran.r-project.org/bin/windows/Rtools/rtools40.html)).
-
-### Install {rClr}
-
-rClr cannot be installed from github or from CRAN directly, use the
-following code to do so:
-
-``` r
-install.packages("https://github.com/Open-Systems-Pharmacology/rClr/releases/download/v0.9.2/rClr_0.9.2.zip", 
-                 type = "binary")
-```
 
 ### Install TissueTMDD
 
@@ -54,17 +47,6 @@ To install the latest development version, use:
 # install.packages("remotes")
 remotes::install_github("esqLABS/TissueTMDD")
 ```
-
-## Installation (bis)
-
-If the previous solution did not work, you can try the following
-
-1.  Download the source code
-    [here](https://github.com/esqLABS/TissueTMDD/archive/refs/heads/main.zip)
-2.  Unzip it and open the `.Rproj` file with RStudio.
-3.  Run `install.packages("renv")` in the R console.
-4.  Run `renv::restore()` in the R console.
-5. In the top menu bar, click on `Build` > `Install Package`
 
 ## Run the App
 
