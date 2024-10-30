@@ -4,6 +4,7 @@
 
 - Updated all dependencies to latest version. Including {ospsuite}. Thus the app can now run on Linux.
 - Add a Dockerfile to create a docker image of the app.
+- Add a github action that builds docker image and send to ESQlabs container registry.
 
 ## Bug fixes and minor improvements
 

@@ -2,6 +2,8 @@ name: Azure Container Registry
 
 on:
   push:
+    branches:
+      main
 
 env:
   IMAGE_NAME: tissuetmdd-app
