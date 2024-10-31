@@ -4,6 +4,7 @@
 #'     DO NOT REMOVE.
 #' @import shiny
 #' @import bs4Dash
+#' @import bsicons
 #' @noRd
 app_ui <- function(request) {
   tagList(
@@ -14,10 +15,11 @@ app_ui <- function(request) {
     # Your application UI logic
     bs4Dash::dashboardPage(
       preloader = list(html = tagList(spin_1(), "Loading TissueTMDD"), color = "#333e48"),
-      help = TRUE,
+      help = NULL,
       bs4Dash::dashboardHeader(
         title = "TissueTMDD",
-        version_badge()
+        version_badge(),
+        tags$a(bsicons::bs_icon("github"), href = "https://github.com/esqLABS/TissueTMDD", style = "color: black; margin-left: 5px;")
       ),
       mod_sidebar_ui("sidebar_1"),
       mod_body_ui("body_1"),

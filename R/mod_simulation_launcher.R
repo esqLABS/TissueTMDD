@@ -9,15 +9,11 @@
 #' @importFrom shiny NS tagList
 mod_simulation_launcher_ui <- function(id) {
   ns <- NS(id)
-  tooltip(
-    bs4Dash::actionButton(
-      inputId = ns("run_simulation_btn"),
-      label = "Run",
-      icon = icon("play"),
-      width = "100%"
-    ),
-    title = "Use this button to start the simulation",
-    placement = "top"
+  bs4Dash::actionButton(
+    inputId = ns("run_simulation_btn"),
+    label = "Run",
+    icon = icon("play"),
+    width = "100%"
   )
 }
 

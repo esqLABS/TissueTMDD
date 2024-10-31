@@ -18,100 +18,64 @@ mod_input_handler_ui <- function(id) {
       mod_preset_selector_ui(ns("preset_selector_1")),
       mod_settings_importer_ui(ns("settings_importer_1")),
     ),
-    tooltip(
-      shinyWidgets::sliderTextInput(ns("param_kdeg"),
-        "Kdeg [/h]",
-        choices = sort(c(0.001, 0.003, 0.01, 0.03, 0.1, 0.3, 1, 3, 10)),
-        selected = get_parameters_default_value()["kdeg"],
-        grid = T
-      ),
-      title = "Target degradation constant",
-      placement = "top"
+    shinyWidgets::sliderTextInput(ns("param_kdeg"),
+      label = label_tooltip("Kdeg [/h]", "Target degradation constant"),
+      choices = sort(c(0.001, 0.003, 0.01, 0.03, 0.1, 0.3, 1, 3, 10)),
+      selected = get_parameters_default_value()["kdeg"],
+      grid = T
     ),
-    tooltip(
-      shinyWidgets::sliderTextInput(ns("param_kd"),
-        "Kd, [nM]",
-        choices = sort(c(0.001, 0.003, 0.01, 0.03, 0.1, 0.3, 1, 3, 10, 30, 100)),
-        selected = get_parameters_default_value()["kd"],
-        grid = T
-      ),
-      title = "Equilibrium dissociation constant",
-      placement = "top"
+    shinyWidgets::sliderTextInput(ns("param_kd"),
+      label_tooltip("Kd, [nM]", "Equilibrium dissociation constant"),
+      choices = sort(c(0.001, 0.003, 0.01, 0.03, 0.1, 0.3, 1, 3, 10, 30, 100)),
+      selected = get_parameters_default_value()["kd"],
+      grid = T
     ),
-    tooltip(
-      shinyWidgets::sliderTextInput(ns("param_koff"),
-        "Koff, [/h]",
-        choices = sort(c(0.001, 0.003, 0.01, 0.03, 0.1, 0.3, 1, 3, 10, 30, 100)),
-        selected = get_parameters_default_value()["koff"],
-        grid = T
-      ),
-      title = "Drug-Target Dissociation constant",
-      placement = "top"
+    shinyWidgets::sliderTextInput(ns("param_koff"),
+      label_tooltip("Koff, [/h]", "Drug-Target Dissociation constant"),
+      choices = sort(c(0.001, 0.003, 0.01, 0.03, 0.1, 0.3, 1, 3, 10, 30, 100)),
+      selected = get_parameters_default_value()["koff"],
+      grid = T
     ),
-    tooltip(
-      shinyWidgets::sliderTextInput(ns("param_kint"),
-        "Kint",
-        choices = sort(c(0.001, 0.003, 0.01, 0.03, 0.1, 0.3, 1, 3, 10)),
-        selected = get_parameters_default_value()["kint"],
-        grid = T
-      ),
-      title = "Complex Internalization Rate Constant",
-      placement = "top"
+    shinyWidgets::sliderTextInput(ns("param_kint"),
+      label_tooltip("Kint", "Complex Internalization Rate Constant"),
+      choices = sort(c(0.001, 0.003, 0.01, 0.03, 0.1, 0.3, 1, 3, 10)),
+      selected = get_parameters_default_value()["kint"],
+      grid = T
     ),
-    tooltip(
-      shinyWidgets::sliderTextInput(ns("param_target_c"),
-        "Target Concentration, [nM]",
-        choices = sort(c(0.01, 0.03, 0.1, 0.3, 1, 3, 10, 30, 100)),
-        selected = get_parameters_default_value()["target_c"],
-        grid = T
-      ),
-      title = "Target Concentration",
-      placement = "top"
+    shinyWidgets::sliderTextInput(ns("param_target_c"),
+      label_tooltip("Target Concentration, [nM]", "Target Concentration"),
+      choices = sort(c(0.01, 0.03, 0.1, 0.3, 1, 3, 10, 30, 100)),
+      selected = get_parameters_default_value()["target_c"],
+      grid = T
     ),
-    tooltip(
-      selectInput(ns("organ"),
-        "Target Expression Tissue",
-        choices = get_organs(),
-        multiple = FALSE,
-        selected = get_parameters_default_value()["organ"],
-        width = "100%"
-      ),
-      title = "Target Expression Tissue",
-      placement = "top"
+    selectInput(ns("organ"),
+      label_tooltip("Organ", "Enable target expression in specific organ. Other organ's target expression set to 0."),
+      choices = get_organs(),
+      multiple = FALSE,
+      selected = get_parameters_default_value()["organ"],
+      width = "100%"
     ),
-    tooltip(
-      numericInput(ns("param_mol_w_kda"),
-        "Molecular Weight [kDa]",
-        value = get_parameters_default_value()["mol_w_kda"],
-        min = 1,
-        width = "100%"
-      ),
-      title = "Molecular Weight of Drug",
-      placement = "top"
+    numericInput(ns("param_mol_w_kda"),
+      label_tooltip("Molecular Weight [kDa]", "Molecular Weight of Drug"),
+      value = get_parameters_default_value()["mol_w_kda"],
+      min = 1,
+      width = "100%"
     ),
-    tooltip(
-      textInput(ns("param_dose"),
-        "Dose, [mg/kg]",
-        value = get_parameters_default_value()["dose_1"],
-        width = "100%"
-      ),
-      title = "Drug dose",
-      placement = "top"
+    textInput(ns("param_dose"),
+      label_tooltip("Dose, [mg/kg]", "Drug dose per intake"),
+      value = get_parameters_default_value()["dose_1"],
+      width = "100%"
     ),
-    tooltip(
-      selectInput(ns("param_dose_frequency"),
-        label = "Dose Frequency",
-        choices = list(
-          "Single Dose" = 0,
-          "Once a Day" = 1,
-          "Once a Week" = 7,
-          "Once every two weeks" = 14
-        ),
-        selected = get_parameters_default_value()["dose_frequency"],
-        width = "100%"
+    selectInput(ns("param_dose_frequency"),
+      label = label_tooltip("Dose Frequency", "Chose interval between doses"),
+      choices = list(
+        "Single Dose" = 0,
+        "Once a Day" = 1,
+        "Once a Week" = 7,
+        "Once every two weeks" = 14
       ),
-      title = "Chose interval between doses",
-      placement = "top"
+      selected = get_parameters_default_value()["dose_frequency"],
+      width = "100%"
     )
   )
 }
@@ -176,7 +140,6 @@ mod_input_handler_server <- function(id, r) {
 
     # Add outputs corresponding to the selected organ
     observeEvent(r$parameters$organ$value, {
-
       output_paths <- vector(mode = "character", length = length(defaut_output_paths()))
 
       for (i in seq_along(defaut_output_paths())) {

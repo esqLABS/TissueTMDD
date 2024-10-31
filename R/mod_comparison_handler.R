@@ -13,13 +13,9 @@ mod_comparison_handler_ui <- function(id) {
     column(
       5,
       br(),
-      tooltip(
-        checkboxInput(ns("compare_sim_toggle"),
-          label = "Compare with",
-          width = "100%"
-        ),
-        title = "Compare with other simulation results",
-        placement = "top"
+      checkboxInput(ns("compare_sim_toggle"),
+        label = "Compare with",
+        width = "100%"
       )
     ),
     tooltip(
@@ -31,8 +27,7 @@ mod_comparison_handler_ui <- function(id) {
         selected = NULL,
         options = list(maxItems = 7)
       ),
-      title = "Pick the simulation you want to compare",
-      placement = "top"
+      title = "Pick the simulation you want to compare"
     )
   )
 }
@@ -66,7 +61,6 @@ mod_comparison_handler_server <- function(id, r) {
     # When current results or selected simulation changes,
     # Refresh the dataframe containing all simulation results to compare
     observeEvent(list(input$compare_sim_select, r$result_df), ignoreNULL = FALSE, {
-
       display_df <- r$result_df
 
       for (simulation in input$compare_sim_select) {

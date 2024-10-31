@@ -78,7 +78,6 @@ mod_result_sidebar_handler_server <- function(id, r) {
 
     # Update output path select input when simulation data is available
     observeEvent(r$display_df, {
-
       if (is.null(input$output_path_select) || !(input$output_path_select %in% r$output_paths)) {
         selected <- r$output_paths[1]
       } else if (input$output_path_select %in% r$output_paths) {
