@@ -1,3 +1,5 @@
+# TissueTMDD 1.1.2
+
 # TissueTMDD 1.1.1
 
 ## Bug fixes and minor improvements
