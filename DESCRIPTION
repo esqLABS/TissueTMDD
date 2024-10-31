@@ -12,6 +12,7 @@ Depends:
     R (>= 4.0.0)
 Imports: 
     bs4Dash,
+    bsicons,
     config (>= 0.3.1),
     dplyr,
     ggplot2,

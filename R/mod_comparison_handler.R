@@ -61,7 +61,6 @@ mod_comparison_handler_server <- function(id, r) {
     # When current results or selected simulation changes,
     # Refresh the dataframe containing all simulation results to compare
     observeEvent(list(input$compare_sim_select, r$result_df), ignoreNULL = FALSE, {
-
       display_df <- r$result_df
 
       for (simulation in input$compare_sim_select) {

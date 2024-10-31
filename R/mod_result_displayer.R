@@ -35,9 +35,9 @@ mod_result_displayer_server <- function(id, r) {
             width = 6,
             offset = 3,
             bs4Dash::callout("Please, run the simulation",
-                             title = "No data",
-                             status = "danger",
-                             width = 12
+              title = "No data",
+              status = "danger",
+              width = 12
             ),
             style = "margin-top: 30vh;"
           )
