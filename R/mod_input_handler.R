@@ -49,7 +49,7 @@ mod_input_handler_ui <- function(id) {
       grid = T
     ),
     selectInput(ns("organ"),
-      label_tooltip("Organ", "Target Expression Tissue"),
+      label_tooltip("Organ", "Enable target expression in specific organ. Other organ's target expression set to 0."),
       choices = get_organs(),
       multiple = FALSE,
       selected = get_parameters_default_value()["organ"],
