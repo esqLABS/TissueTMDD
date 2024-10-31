@@ -17,7 +17,11 @@ app_ui <- function(request) {
       preloader = list(html = tagList(spin_1(), "Loading TissueTMDD"), color = "#333e48"),
       help = NULL,
       bs4Dash::dashboardHeader(
-        title = "TissueTMDD",
+        title = list(
+          tags$h1("TissueTMDD", style = "margin: 1rem;"),
+          tags$a("DOI: 10.1002/psp4.13262", href = "https://doi.org/10.1002/4.13262", style = "font-size: 1rem;margin:1em;")
+        ),
+        # title = "TissueTMDD",
         version_badge(),
         tags$a(bsicons::bs_icon("github"), href = "https://github.com/esqLABS/TissueTMDD", style = "color: black; margin-left: 5px;")
       ),

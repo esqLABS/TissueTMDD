@@ -34,7 +34,7 @@ mod_introduction_provider_ui <- function(id) {
       <br>
       Various outputs can be selected in the plot options.
       <br>
-      Disclaimer: no rights can be derived from this model or any of its output.")
+      <i>Disclaimer: no rights can be derived from this model or any of its output.</i>")
     )
   )
 }
