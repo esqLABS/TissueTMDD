@@ -15,15 +15,12 @@ app_ui <- function(request) {
     # Your application UI logic
     bs4Dash::dashboardPage(
       preloader = list(html = tagList(spin_1(), "Loading TissueTMDD"), color = "#333e48"),
-      help = NULL,
+      help = TRUE,
       bs4Dash::dashboardHeader(
-        title = list(
-          tags$h1("TissueTMDD", style = "margin: 1rem;"),
-          tags$a("DOI: 10.1002/psp4.13262", href = "https://doi.org/10.1002/4.13262", style = "font-size: 1rem;margin:1em;")
-        ),
-        # title = "TissueTMDD",
-        version_badge(),
-        tags$a(bsicons::bs_icon("github"), href = "https://github.com/esqLABS/TissueTMDD", style = "color: black; margin-left: 5px;")
+        title = "TissueTMDD",
+        tooltip(version_badge(),title = "Application Version"),
+        tooltip(tags$a(bsicons::bs_icon("github"), href = "https://github.com/esqLABS/TissueTMDD", style = "color: black; margin-left: 5px;"), title = "Code Repository"),
+        tooltip(tags$a(bsicons::bs_icon("file-text-fill"), "DOI: 10.1002/psp4.13262", href = "https://doi.org/10.1002/4.13262", style = "color: black; margin-left: 5px;"), title = "Publication")
       ),
       mod_sidebar_ui("sidebar_1"),
       mod_body_ui("body_1"),
