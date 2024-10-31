@@ -4,6 +4,7 @@
 #'     DO NOT REMOVE.
 #' @import shiny
 #' @import bs4Dash
+#' @import bsicons
 #' @noRd
 app_ui <- function(request) {
   tagList(

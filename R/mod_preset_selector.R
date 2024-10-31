@@ -9,15 +9,11 @@
 #' @importFrom shiny NS tagList
 mod_preset_selector_ui <- function(id) {
   ns <- NS(id)
-  tooltip(
-    selectInput(ns("preset_select"),
-      "Presets",
-      multiple = FALSE,
-      choices = c("default"),
-      width = "50%"
-    ),
-    "Preconfigured settings",
-    "top"
+  selectInput(ns("preset_select"),
+    label_tooltip("Presets", "Select a preset to load preconfigured settings"),
+    multiple = FALSE,
+    choices = c("default"),
+    width = "50%"
   )
 }
 

@@ -28,7 +28,7 @@ mod_sidebar_ui <- function(id) {
       )
     ),
     bs4Dash::box(
-      title = "Compare Simulations",
+      title = label_tooltip("Compare Simulations", "Compare the current simulation with other simulation results"),
       width = 12,
       collapsible = FALSE,
       icon = icon("arrow-right-arrow-left"),

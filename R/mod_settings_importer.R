@@ -9,16 +9,12 @@
 #' @importFrom shiny NS tagList
 mod_settings_importer_ui <- function(id) {
   ns <- NS(id)
-  tooltip(
-    fileInput(ns("import_settings"),
-      label = "Import",
-      buttonLabel = icon("upload"),
-      multiple = TRUE,
-      accept = ".json",
-      width = "50%"
-    ),
-    title = "Import a `.json` setting file",
-    placement = "top"
+  fileInput(ns("import_settings"),
+    label = label_tooltip("Import", "Import a .json setting file"),
+    buttonLabel = icon("upload"),
+    multiple = TRUE,
+    accept = ".json",
+    width = "50%"
   )
 }
 
@@ -37,7 +33,6 @@ mod_settings_importer_server <- function(id, r) {
 
       tryCatch(
         {
-
           imported_settings <- read_settings_from_fileInput(input$import_settings)
 
           generate_toast(

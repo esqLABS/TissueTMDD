@@ -13,13 +13,9 @@ mod_comparison_handler_ui <- function(id) {
     column(
       5,
       br(),
-      tooltip(
-        checkboxInput(ns("compare_sim_toggle"),
-          label = "Compare with",
-          width = "100%"
-        ),
-        title = "Compare with other simulation results",
-        placement = "top"
+      checkboxInput(ns("compare_sim_toggle"),
+        label = "Compare with",
+        width = "100%"
       )
     ),
     tooltip(
@@ -31,8 +27,7 @@ mod_comparison_handler_ui <- function(id) {
         selected = NULL,
         options = list(maxItems = 7)
       ),
-      title = "Pick the simulation you want to compare",
-      placement = "top"
+      title = "Pick the simulation you want to compare"
     )
   )
 }

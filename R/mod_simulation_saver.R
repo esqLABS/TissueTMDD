@@ -28,22 +28,25 @@ mod_simulation_saver_server <- function(id, r) {
   moduleServer(id, function(input, output, session) {
     ns <- session$ns
 
-
-    mod_settings_exporter_server("settings_exporter_1", r)
-
     # Disable save button when there is not simulation data
     observeEvent(r$result_df, ignoreNULL = FALSE, {
       if (is.null(r$result_df)) {
-        shinyjs::disable("save_simulation_btn")
+        updateActionButton(inputId = "save_simulation_btn", disabled = TRUE)
       } else {
-        shinyjs::enable("save_simulation_btn")
+        updateActionButton(inputId = "save_simulation_btn", disabled = FALSE)
       }
     })
+
 
     # Display modal when button is clicked
     observeEvent(input$save_simulation_btn, {
       showModal(
         generate_modal()
+      )
+
+      addTooltip(
+        id = "export-checkbox-tooltip",
+        options = list(title = "Export the settings to a json file")
       )
     })
 
@@ -61,6 +64,7 @@ mod_simulation_saver_server <- function(id, r) {
       }
     })
 
+    # Modal generation function
     generate_modal <- function(failed = FALSE) {
       modalDialog(
         title = "Save Simulation Settings",
@@ -72,7 +76,22 @@ mod_simulation_saver_server <- function(id, r) {
           ),
           column(1)
         ),
-        mod_settings_exporter_ui(ns("settings_exporter_1")),
+        # Hidden button because download file only works through button
+        downloadButton(ns("download_settings"), "Download", style = "visibility: hidden;height: 0px;"),
+        fluidRow(
+          column(4),
+          checkboxInput(ns("export_checkbox"),
+            label = list("Export Settings", tooltip(
+              span(bsicons::bs_icon("info-circle"),
+                id = "export-checkbox-tooltip"
+              ),
+              title = "Export the settings to a json file"
+            )),
+            width = "33%"
+          ),
+          column(4)
+        ),
+        # mod_settings_exporter_ui(ns("settings_exporter_1")),
         if (failed) {
           fluidRow(
             column(8,
@@ -92,6 +111,46 @@ mod_simulation_saver_server <- function(id, r) {
         )
       )
     }
+
+    # When the save_simulation button is clicked, export the settings to a json file
+    observeEvent(r$save_simulation, {
+      if (input$export_checkbox) {
+        message("Export Settings to json file")
+        # We simulate a click on the hidden "download button"
+        click(id = "download_settings")
+      }
+    })
+
+    # Download the settings to a json file
+    output$download_settings <- downloadHandler(
+      filename = function() {
+        paste(r$simulation_name, "_tissuetmdd_settings", ".json", sep = "")
+      },
+      content = function(file) {
+        tryCatch(
+          {
+            write(
+              get_settings_values_to_json(r$simulation_name, r$presets[[r$simulation_name]]),
+              file
+            )
+            generate_toast(
+              title = "Settings Exported",
+              body = paste(r$simulation_name, "successfully exported to json file"),
+              icon = "fas fa-upload",
+              status = "success"
+            )
+          },
+          error = function(e) {
+            generate_toast(
+              title = "Settings Export Failed",
+              body = paste("Error:", e),
+              icon = "fas fa-xmak",
+              status = "danger"
+            )
+          }
+        )
+      }
+    )
   })
 }
 
@@ -100,3 +159,17 @@ mod_simulation_saver_server <- function(id, r) {
 
 ## To be copied in the server
 # mod_simulation_saver_server("simulation_saver_1")
+
+get_settings_values_to_json <- function(simulation_name, settings) {
+  only_values <- purrr::map(settings, ~ purrr::keep_at(.x, "value"))
+
+  to_export <- list()
+
+  to_export[[simulation_name]] <- only_values
+
+  jsonlite::toJSON(to_export,
+    pretty = TRUE,
+    auto_unbox = TRUE,
+    digits = NA
+  )
+}
