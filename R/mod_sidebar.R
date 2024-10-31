@@ -11,7 +11,7 @@ mod_sidebar_ui <- function(id) {
   ns <- NS(id)
   dashboardSidebar(
     disable = FALSE,
-    width = "30%",
+    width = "27%",
     collapsed = FALSE,
     minified = FALSE,
     fixed = TRUE,
@@ -23,8 +23,8 @@ mod_sidebar_ui <- function(id) {
       collapsible = FALSE,
       icon = icon("play"),
       fluidRow(
-        column(7, mod_simulation_launcher_ui(ns("simulation_launcher_1"))),
-        column(4, mod_simulation_saver_ui(ns("simulation_saver_1"))),
+        column(width = 4, offset = 1, mod_simulation_launcher_ui(ns("simulation_launcher_1"))),
+        column(width = 4, offset = 1, mod_simulation_saver_ui(ns("simulation_saver_1")))
       )
     ),
     bs4Dash::box(

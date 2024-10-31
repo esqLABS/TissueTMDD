@@ -10,10 +10,11 @@
 mod_simulation_saver_ui <- function(id) {
   ns <- NS(id)
   tooltip(
-    actionButton(
+    bs4Dash::actionButton(
       inputId = ns("save_simulation_btn"),
       label = "Save",
       icon = icon("save"),
+      size = "lg",
       width = "100%"
     ),
     title = "Save simulation settings and results",

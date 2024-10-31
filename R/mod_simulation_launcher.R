@@ -13,7 +13,9 @@ mod_simulation_launcher_ui <- function(id) {
     inputId = ns("run_simulation_btn"),
     label = "Run",
     icon = icon("play"),
-    width = "100%"
+    status = "primary",
+    size = "lg",
+    width = "100%",
   )
 }
 
