@@ -73,7 +73,11 @@ mod_simulation_launcher_server <- function(id, r) {
 
       message("Run simulation")
 
-      r$simulation_results <- ospsuite::runSimulationBatches(r$simulationBatch)
+      r$simulation_results <- ospsuite::runSimulationBatches(r$simulationBatch,
+        simulationRunOptions = ospsuite::SimulationRunOptions$new(
+          numberOfCores = max(parallel::detectCores() - 1, 1)
+        )
+      )
     })
   })
 }

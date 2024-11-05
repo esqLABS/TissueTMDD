@@ -23,6 +23,7 @@ Imports:
     lubridate,
     magrittr,
     ospsuite,
+    parallel,
     pkgload,
     purrr,
     shinipsum,
