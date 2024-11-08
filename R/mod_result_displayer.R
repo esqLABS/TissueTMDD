@@ -45,6 +45,7 @@ mod_result_displayer_server <- function(id, r) {
       } else {
         bs4Dash::box(
           title = "Simulation Results",
+          maximizable = TRUE,
           collapsible = FALSE,
           width = 12,
           height = "80vh",
@@ -105,7 +106,7 @@ mod_result_displayer_server <- function(id, r) {
           labs(
             x = glue::glue("Time [{r$plot_settings$selected_time_unit}]"),
             y = glue::glue("{path} [{unit}]"),
-            title = glue::glue("Simulation of {path} ({r$parameters$organ$value})")
+            title = glue::glue("{path} ({r$parameters$organ$value})")
           )
 
         if (r$compare_sim_toggle && length(r$compared_sim) > 0) {
@@ -137,12 +138,13 @@ mod_result_displayer_server <- function(id, r) {
         plot <- plot +
           ggthemes::theme_economist() +
           theme(
+            plot.title.position = "plot",
             panel.background = element_blank(),
             plot.background = element_blank(),
             panel.grid.major.y = element_line(colour = "grey40", linewidth = 0.2),
             axis.text.y = element_text(hjust = 1),
-            axis.title.y = element_text(margin = margin(t = 0, r = 15, b = 0, l = 0)),
-            axis.title.x = element_text(margin = margin(t = 15, r = 0, b = 0, l = 0)),
+            axis.title.y = element_text(size = 10, margin = margin(t = 0, r = 15, b = 0, l = 0)),
+            axis.title.x = element_text(size = 10, margin = margin(t = 15, r = 0, b = 0, l = 0)),
             legend.position = "right"
           )
 
