@@ -11,7 +11,7 @@ mod_sidebar_ui <- function(id) {
   ns <- NS(id)
   dashboardSidebar(
     disable = FALSE,
-    width = "27%",
+    width = "365px",
     collapsed = FALSE,
     minified = FALSE,
     fixed = TRUE,

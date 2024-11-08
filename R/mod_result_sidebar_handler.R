@@ -10,8 +10,8 @@
 mod_result_sidebar_handler_ui <- function(id) {
   ns <- NS(id)
   boxSidebar(
+    width = 75,
     id = ns("plot_sidebar"),
-    width = 33,
     startOpen = FALSE,
     h3("Plot Settings"),
     fluidRow(

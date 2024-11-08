@@ -148,10 +148,8 @@ mod_result_displayer_server <- function(id, r) {
 
         on.exit(stop_loading_bar(r, target_id = r$plot_id))
 
-
         return(plot)
-      },
-      res = 150
+      }
     )
   })
 }
