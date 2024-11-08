@@ -1,12 +1,16 @@
 # TissueTMDD 1.1.2
 
+## Bug fixes and minor improvements
+
+- Improve Mobile support.
+
 # TissueTMDD 1.1.1
 
 ## Bug fixes and minor improvements
 
 - Fixed a bug where comparing simulation would lead to empty plot. (#46)
 - Fixed a bug where previously saved settings could not be loaded properly. (#48)
-- Tooltips are now displayed on top of ℹ buttons (#55)
+- Tooltips are now displayed on top of ℹ buttons. (#55)
 
 # TissueTMDD 1.1.0
 
