@@ -20,7 +20,7 @@ app_ui <- function(request) {
         title = "TissueTMDD",
         tooltip(version_badge(),title = "Application Version"),
         tooltip(tags$a(bsicons::bs_icon("github"), href = "https://github.com/esqLABS/TissueTMDD", style = "color: black; margin-left: 5px;"), title = "Code Repository"),
-        tooltip(tags$a(bsicons::bs_icon("file-text-fill"), "DOI: 10.1002/psp4.13262", href = "https://doi.org/10.1002/4.13262", style = "color: black; margin-left: 5px;"), title = "Publication")
+        tooltip(tags$a(bsicons::bs_icon("file-text-fill"), "DOI: 10.1002/psp4.13262", href = "https://doi.org/10.1002/psp4.13262", style = "color: black; margin-left: 5px;"), title = "Publication")
       ),
       mod_sidebar_ui("sidebar_1"),
       mod_body_ui("body_1"),
