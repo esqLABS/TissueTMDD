@@ -26,4 +26,3 @@ jobs:
         with:
           push: true
           tags: ${{ secrets.ACR_ENDPOINT }}/${{ env.IMAGE_NAME }}
-
